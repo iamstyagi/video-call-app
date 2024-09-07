@@ -1,0 +1,699 @@
+<div class="layout-sidebar">
+    <audio #remoteAudio autoplay></audio>
+    <audio #localMedia autoplay></audio>
+    <div class="layout-menu-container">
+        <ul class="layout-menu">
+            <li>
+                <div class="card col"
+                    style="color: rgb(3, 83, 136); padding-bottom:0px !important;width: 12.4rem; padding-top:4px; ">
+                    <!-- <div  style="padding: 0rem; margin-left: 5px; "> -->
+                    <label style="font-size: 11px; font-weight:500;" for="agentID">AgentID : </label>
+                    <span style="font-size: 11px; " id="agnt_id_set"></span>
+                    <br>
+                    <label style="font-size: 11px; font-weight:500;" for="name">Name : </label>
+                    <span style="font-size: 11px; " id="agnt_name_set"></span>
+                    <br>
+                    <label style="font-size: 11px; font-weight:500;" for="campaign">Campaign : </label>
+                    <span style="font-size: 11px; " id="camp_name_set"></span>
+                    <img style="margin-left: -11px;border-radius: 14px;width: 11.9rem;margin-bottom: -6px; margin-top:-5px"
+                        alt="users" src="assets/layout/images/dashboard/users.svg">
+                    <!-- </div> -->
+                </div>
+
+                <div class="card" style=" width: 12.4rem !important; padding-bottom:0px !important; padding-top:8px;">
+                    <div class="row" style="    margin-top: 4px;"> &nbsp;
+                        <button class="content-container" pButton pRipple type="button" (click)="Mode()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">call_made</i></div>
+                                <div class="text-container">Mode</div>
+                            </div>
+                        </button>&nbsp;
+                        <button class="content-container" pButton pRipple type="button" (click)="MakeCall()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">add_ic_call</i></div>
+                                <div class="text-container">Makecall</div>
+                            </div>
+                        </button>&nbsp;
+                        <button class="content-container" pButton pRipple type="button" (click)="Redial()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">tty</i></div>
+                                <div class="text-container">Redial</div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="row" style="    margin-top: 4px;">&nbsp;
+                        <button button class="content-container" id="changeButtonColor" pButton pRipple type="button"
+                            (click)="Break()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">timelapse</i></div>
+                                <div class="text-container">Break</div>
+                            </div>
+                        </button>&nbsp;
+                        <button class="content-container" pButton pRipple type="button" (click)="Hold()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">phone_paused</i></div>
+                                <div class="text-container" id="hold"></div>
+                            </div>
+                        </button>&nbsp;
+                        <button class="content-container" style="background-color: red !important;" pButton pRipple
+                            type="button" (click)="Release()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">phone_disabled</i></div>
+                                <div class="text-container">Hangup</div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="row" style="    margin-top: 4px;">&nbsp;
+                        <button class="content-container" pButton pRipple type="button" (click)="TransferCall()"
+                            [disabled]="!extn_set_state_value">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">phone_forwarded</i></div>
+                                <div class="text-container">Transfer</div>
+                            </div>
+                        </button>&nbsp;
+                        <button button class="content-container" pButton pRipple type="button" (click)="consult()"
+                            [disabled]="!extn_set_state_value">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">phone_forwarded</i></div>
+                                <div class="text-container">Consult</div>
+                            </div>
+                        </button>&nbsp;
+                        <button button class="content-container" pButton pRipple type="button" (click)="Preview()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">preview</i></div>
+                                <div class="text-container">Preview</div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="row" style="margin-top: 4px; text-align: center; justify-content: center;">&nbsp;
+                        <button button class="content-container" pButton pRipple type="button"
+                            (click)="videoCall()">
+                            <div class="content-container">
+                                <div class="icon-container">
+                                    <i class="material-icons">Video</i>
+                                </div>
+                                <div class="text-container">Pvr_Db</div>
+                            </div>
+                        </button>&nbsp;
+                        <button class="content-container" style="margin-right: 13px;" pButton pRipple type="button"
+                            (click)="checkMuteUnmute(muteUnmuteText)" *ngIf="setNewVariable"
+                            [ngClass]="{'muted-button': muteUnmuteText == 'Unmute', 'unmuted-button': muteUnmuteText == 'Mute'}">
+                            <div class="content-container">
+                                <div class="icon-container">
+                                    <i class="material-icons" *ngIf="muteUnmuteText == 'Unmute'">mic_off</i>
+                                    <i class="material-icons" *ngIf="muteUnmuteText == 'Mute'">mic</i>
+                                </div>
+                                <div class="text-container">{{muteUnmuteText}}</div>
+                            </div>
+                        </button>
+                        <button class="content-container" style="margin-right: 13px;" pButton pRipple type="button"
+                            (click)="checkVideoEnableDisable()" >
+                            <div class="content-container">
+                                <div class="icon-container">
+                                    <i class="material-icons">stop_circle</i>
+                                </div>
+                                <div class="text-container">Video</div>
+                            </div>
+                        </button>
+                        <!-- <p-checkbox *ngIf="setNewVariable" [label]="muteUnmuteText" name="Mute" value="mute"
+                        (onChange)="checkMuteUnmute($event)"></p-checkbox> -->
+
+                        <!-- <button button class="content-container" pButton pRipple type="button" (click)="consult()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons">phone_forwarded</i></div>
+                                <div class="text-container">Consult</div>
+                            </div>
+                        </button>&nbsp;
+                        <button button class="content-container" pButton pRipple type="button" (click)="Preview()">
+                            <div class="content-container">
+                                <div class="icon-container"> <i class="material-icons"
+                                    >preview</i></div>
+                                <div class="text-container">Preview</div>
+                            </div>
+                        </button> -->
+
+                    </div>
+                    <img style="border-radius: 14px;  width: 11.6rem; margin-bottom:-5px;" alt="users"
+                        src="assets/layout/images/dashboard/locations.svg">
+                </div>
+
+
+
+                <div class="card col"
+                    style="color: rgb(3, 83, 136); padding-bottom:0px !important;width: 12.4rem; padding-top:4px; ">
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="status">Status :
+                    </label>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" id="extn_set"></span>
+                    <br>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="time">State Time :
+                    </label>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" id="timecntrl"></span>
+                    <br>
+                    <!-- webrtc strat -->
+                    <!-- <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="status"
+                        *ngIf="getSessionDataStatus">WebRTC Status : </label>
+                    <br *ngIf="getSessionDataStatus">
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);"
+                        *ngIf="getSessionDataStatus">{{getSessionDataStatus}}</span> -->
+
+                    <div class="status-container" *ngIf="getSessionDataStatus">
+                        <label class="status-label" for="status">WebRTC Status : </label>
+                        <span class="status-data" *ngIf="!myStatusChangeValue">{{getSessionDataStatus}}</span>
+                        <span style="font-size: 11px; color: rgb(3, 83, 136);"
+                            *ngIf="myStatusChangeValue">{{myDataStatus}}</span>
+                    </div>
+
+                    <!-- <br *ngIf="getSessionDataStatus"> -->
+                    <!-- <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="status"
+                        *ngIf="setNewVariable">Mute : </label> -->
+                    <!-- <p-checkbox *ngIf="setNewVariable" [label]="muteUnmuteText" name="Mute" value="mute"
+                        (onChange)="checkMuteUnmute($event)"></p-checkbox> -->
+                    <!-- <br *ngIf="setNewVariable"> -->
+
+                    <!-- webrtc end -->
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="callbacks">Agent Mode
+                        : </label>
+                    <span style="font-size: 11px;  color: rgb(3, 83, 136);" id="iscallMode">{{mode}}</span>
+
+                    <img style="margin-left: -11px;border-radius: 14px;width: 11.9rem;margin-bottom: -6px; margin-top:-5px"
+                        alt="users" src="assets/layout/images/dashboard/interactions.svg">
+                </div>
+
+
+
+                <div class="card col"
+                    style="color: rgb(3, 83, 136); padding-bottom:0px !important;width: 12.4rem; padding-top:4px; ">
+
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="number">Phone No :
+                    </label>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" id="phone_no" *ngIf="newVariableFalseTrueCheck" ></span>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);opacity: 0;display: none;" id="phone_no" *ngIf="!newVariableFalseTrueCheck" ></span>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" *ngIf="!newVariableFalseTrueCheck" >{{ newPhoneNumber}}</span>
+
+                    <!-- <span style="font-size: 11px; color: rgb(3, 83, 136);">{{ newPhoneNumber}}</span> -->
+                    <!-- <a pTooltip="Whatsapp" tooltipPosition="bottom" [hidden]="!enableWhatsApp || !checkPhnNo" (click)="openWhatsapp()"> -->
+                        <!-- uncomment for now -->
+                    <a  *ngIf="newVariableFalseTrueCheck && !hideWhatsapp"  pTooltip="Whatsapp" tooltipPosition="bottom" [hidden]="hideWhatsapp" (click)="openWhatsapp()">
+                        <img src="assets/images/WhatsApp.svg.webp" style="
+                        height: 20px;
+                        padding-top: 2px;
+                        cursor: pointer;
+                        margin-bottom: -5px !important;">
+                    </a>
+                    <div></div>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="state">Call State :
+                    </label>
+                    <span style="font-size: 11px;  color: rgb(108, 115, 119);" id="callstate"></span>
+                    <div></div>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="callbacks">Callback :
+                    </label>
+                    <span style="font-size: 11px;  color: rgb(3, 83, 136);" id="iscallbackyes"></span>
+                    <div></div>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="skill">Call Skillset :
+                    </label>
+                    <span style="font-size: 11px;  color: rgb(3, 83, 136);" id="skill12"></span>
+                    <div></div>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="skill">Agent Skillset
+                        : </label>
+                    <span style="font-size: 11px;  color: rgb(3, 83, 136);" id="skill1"></span>
+                    <div></div>
+
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="dnis">DNIS : </label>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" id="dnis_no"></span>
+                    <div></div>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);;" for="queue">Call Type :
+                    </label>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" id="callType"></span>
+                    <div></div>
+                    <label style="font-size: 11px; font-weight:500; color: rgb(3, 83, 136);" for="queue">Queue :
+                    </label>
+                    <span style="font-size: 11px; color: rgb(3, 83, 136);" id="queuecount"></span>
+                    <div></div>
+                    <img style="margin-left: -11px;border-radius: 14px;width: 11.9rem;margin-bottom: -5px; margin-top:-5px"
+                        alt="users" src="assets/layout/images/dashboard/users.svg">
+                </div>
+
+                <p-dialog [(visible)]="modeDialogBox" [style]="{width: '350px'}" header="Mode"
+                    [modal]="true" [blockScroll]="true" styleClass="p-fluid">
+                    <br>
+                    <div class="p-field-radiobutton" style="text-align: center;">
+                        <input id="dialmode:0" name="dialmode" type="radio" value="1" [(ngModel)]="modeRadioBtn">
+                        <label for="d:0">Auto</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                        <input id="dialmode:1" name="dialmode" type="radio" value="2" checked="checked"
+                            [(ngModel)]="modeRadioBtn">
+                        <label for="dialmode:1">Manual</label>
+                    </div>
+                    <ng-template pTemplate="footer" style="text-align:center;">
+                        <p-button id="dialmode" name="dialmode" (click)="modeDialogBox=false" label="OK"
+                            (click)="selectMode(value)"></p-button>
+                    </ng-template>
+                </p-dialog>
+
+
+                <p-dialog [(visible)]="makeCallDialogBox"
+                    [style]="{width: '350px','z-index': '30000 !important'}" header="MakeCall"
+                    [modal]="true" [blockScroll]="true" [draggable]="false">
+                    <br>
+                    <div class="p-field p-col-12 p-md-5" style="font-size:12px;">
+                        <label for="makecallinput">Phone No</label>&nbsp;&nbsp;
+                        <span style="margin-left:10px;"></span>
+                        <p-inputNumber inputId="makecallinput" [(ngModel)]="phoneCallMakeCall" 
+                            placeholder="Phone Number" [useGrouping]="false" maxlength="10" class="p-inputtext-sm"
+                            (keydown.enter)="dialCall()"></p-inputNumber>
+                        <br><br>
+                        <div class="p-field-checkbox">
+                            <label for="ny">Dial by CustomerID</label>&nbsp;&nbsp;
+                            <p-checkbox name="group1" value="Dial by CustomerID"
+                                [(ngModel)]="selectedCustomerID"></p-checkbox>
+                                &nbsp; &nbsp;
+                                <label for="ny">Dial by PhoneID</label>&nbsp;&nbsp;
+                                <p-checkbox name="group1" [binary]="true" [(ngModel)]="selectedPhoneId"></p-checkbox>
+                        </div>
+                    </div>
+                    <ng-template pTemplate="footer">
+                        <p-button (click)="makeCallDialogBox=false" label="Dial" (click)="dialCall();"></p-button>
+                        <p-button (click)="makeCallDialogBox=false" label="Cancel"></p-button>
+                    </ng-template>
+                </p-dialog>
+
+
+                <p-dialog [(visible)]="transferDialogBox" [style]="{width: '300px','margin-left':'8%'}"
+                    header="Transfer" [modal]="true" [blockScroll]="true" styleClass="p-fluid">
+                    <br>
+                    <label for="integeronly">Campaign</label>
+                    <p-dropdown inputId="state" [options]="resCampListData" [(ngModel)]="selectCamp"
+                        placeholder="Select" optionLabel="campname" optionValue="crmID">
+                    </p-dropdown>
+
+                    <label for="integeronly">SkillSet</label>
+                    <p-dropdown inputId="state" [options]="resSkillListData" [(ngModel)]="selectSkills"
+                        placeholder="Select" optionLabel="skillsetname" optionValue="crmID">
+                    </p-dropdown>
+                    <div class="p-field p-col-12 p-md-3">
+                        <label for="transferinput">Phone No</label>
+                        <input type="text" pInputText id="transferinput" placeholder="Phone Number" />
+                    </div>
+                    <ng-template pTemplate="footer">
+                        <p-button icon="pi pi-check" (click)="transferDialogBox=false" label="Dial"
+                            (click)="transferDial()"></p-button>
+                        <p-button icon="pi pi-times" (click)="transferDialogBox=false" label="Cancel"></p-button>
+                    </ng-template>
+                </p-dialog>
+
+
+                <p-dialog [(visible)]="breakDialogBox" [style]="{width: '300px', height: '52vh','margin-left':'8%'}"
+                    header="Break" [modal]="true" [blockScroll]="true" styleClass="p-fluid">
+                    <br>
+                    <div class="p-field-dropdown">
+                        <p-dropdown inputId="state" [options]="resBreakListData" [(ngModel)]="selectedBreak"
+                            placeholder="Select" optionLabel="breakname" optionValue="breakid"
+                            appendTo="body"></p-dropdown>
+                    </div>
+                    <ng-template pTemplate="footer">
+                        <p-button icon="pi pi-check" (click)="breakDialogBox=false" label="Save"
+                            (click)="breakCall()"></p-button>
+                        <p-button icon="pi pi-times" (click)="breakDialogBox=false" label="Cancel"></p-button>
+                    </ng-template>
+                </p-dialog>
+               
+
+
+                <p-dialog [(visible)]="consultDialogBox" [style]="{width: '60vw', height:'60vh','margin-left':'8%'}"
+                    header="Consult" [modal]="true" [blockScroll]="true" styleClass="p-fluid">
+                    <div style="margin-top:5px;"></div>
+                    <p-table [value]="consultDataTable" styleClass="p-datatable-gridlines" [resizableColumns]="true"
+                        columnResizeMode="expand" [tableStyle]="{'max-width': '70rem'}">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="channelno" style="width: 3.2px;">Channel No
+                                    <p-sortIcon field="channelno"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="phoneno" style="width:3.2px;">Phone No
+                                    <p-sortIcon field="phoneno"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="state" style="width: 3.2px;">State
+                                    <p-sortIcon field="state"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hold" style="width:3.2px;">Hold
+                                    <p-sortIcon field="hold"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="hangup" style="width: 3.2px;">Hangup
+                                    <p-sortIcon field="hangup"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product>
+                            <tr>
+                                <td>{{product[2]}}</td>
+                                <td>{{product[4]}}</td>
+                                <td>{{product[3]}}</td>
+                                <td><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="consultHold()" label="Hold"></p-button></td>
+                                <td><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="consultRelease()" label="Release"></p-button></td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="5" class="table-rowdata">No Record found.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                    <!-- <div style="font-size: 10px;" id="agnt_id_set"></div> -->
+
+                    <br>
+                    <div class="p-field p-col-12 p-md-3">
+                        <label for="makecallinput" style="font-size:12px; margin-left:5px;">Phone No</label>&nbsp;&nbsp;
+                        <div style="width:250px;">
+                            <p-inputNumber mode="decimal" inputId="makecallinput" placeholder="Phone Number"
+                                class="p-inputtext-sm" [useGrouping]="false"
+                                [(ngModel)]="phone_no_consult"></p-inputNumber>
+                        </div>
+                        <br>
+                    </div>
+                    <div style="width: 120px;" style="display:flex;">
+                        <p-button label="Dial" (click)="ConsultDial()"></p-button>
+                        <span style="margin-left:10px"></span>
+                        <p-button label="Transfer Call" (click)="consultTransferCall()"></p-button>
+                        <span style="margin-left:10px"></span>
+                        <p-button label="Conference" (click)="consultConference()"></p-button>
+                    </div>
+                </p-dialog>
+
+
+                <p-dialog [(visible)]="previewDialogBox" [style]="{width: '80vw'}" header="Preview"   [position]="position" 
+                    [modal]="true" [blockScroll]="true" styleClass="p-fluid" [draggable]="false">
+                    <div style="margin-top:5px;"></div>
+                    <p-tabView >
+                        <p-tabPanel header="Preview">
+                    <p-table #dt1 [value]="previewDataTable" styleClass="p-datatable-gridlines"  [rows]="10" [showCurrentPageReport]="true" (onPage)="pageChangeEvent($event)"
+                    [rowsPerPageOptions]="[10,15,25,35,45,50,75,100,1000]"
+                    styleClass="p-datatable-gridlines"  [paginator]="true"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        [resizableColumns]="true" columnResizeMode="expand" [tableStyle]="{'max-width': '70rem'}" >
+                     
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pResizableColumn="phno" pSortableColumn="phno" style="width: 3.2px;" *ngIf="newVariableFalseTrueCheck">PhNo
+                                    <p-sortIcon field="phno"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="schlCode" pSortableColumn="schlCode" style="width: 3.2px;" *ngIf="!newVariableFalseTrueCheck">School Code
+                                <p-sortIcon field="schlCode"></p-sortIcon>
+                            </th>
+                                <th pResizableColumn="schlCode" pSortableColumn="schlCode" style="width: 3.2px;" *ngIf="!newVariableFalseTrueCheck">Designation
+                                <p-sortIcon field="schlCode"></p-sortIcon>
+                            </th>
+                                <th pResizableColumn="dial" pSortableColumn="dial" style="width:3.2px;">Dial
+                                    <p-sortIcon field="dial"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="callback" pSortableColumn="phno" style="width: 3.2px;">Callback
+                                    <p-sortIcon field="callback"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="schd" pSortableColumn="schd" style="width: 3.2px;">SchdCall
+                                    <p-sortIcon field="schd"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="schdtime" pSortableColumn="schdtime" style="width:3.2px;">SchdTime
+                                    <p-sortIcon field="schdtime"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="info" pSortableColumn="info" style="width: 3.2px;">Info
+                                    <p-sortIcon field="info"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="discard" pSortableColumn="discard" style="width:3.2px;" *ngIf="newVariableFalseTrueCheck">Discard
+                                    <p-sortIcon field="discard"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn="remove" pSortableColumn="remove" style="width: 3.2px;" *ngIf="newVariableFalseTrueCheck">Remove
+                                    <p-sortIcon field="remove"></p-sortIcon>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="caption">
+                            <div class="flex">
+
+                                <span class="p-input-icon-left ml-auto" style="width: 20% !important">
+                                    <i class="pi pi-search" (click)="searchpreview()"></i>
+                                    <input pInputText type="text" [(ngModel)]="searchvalue"
+                                        (input)="dt1.filterGlobal($event.target.value, 'contains')"
+                                        (keyup.enter)="searchpreview()" placeholder="Search keyword" />
+                                </span>
+                                &nbsp;&nbsp;
+                                <button style="width: 100px; background-color: rgb(3, 83, 136); font-size: 9px;" pButton
+                                    label="Clear" class="p-button-filled" icon="pi pi-filter-slash"
+                                    (click)="searchpreviewss()"></button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product let product=i;>
+                            <tr>
+                                <td *ngIf="newVariableFalseTrueCheck">{{product[6]}}</td>
+                                <td *ngIf="!newVariableFalseTrueCheck">{{product[22]}}</td>
+                                <td *ngIf="!newVariableFalseTrueCheck">{{product[23]}}</td>
+                                <td *ngIf="newVariableFalseTrueCheck"><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="previewCall(product[6],product[3],product[4],product[2],product[5])"
+                                        label="Call" [disabled]="extn_set_state_value"></p-button></td>
+                                <td *ngIf="!newVariableFalseTrueCheck"><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="previewCallNew(product[6],product[3],product[4],product[2],product[5])"
+                                        label="Call" [disabled]="extn_set_state_value"></p-button></td>
+                                <td>{{product[13]}}</td>
+                                <td [innerHTML]="product[13]==1?'Yes':'No'">{{product[13]}}</td>
+                                <td>{{product[14]}}</td>
+                                <td><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="info(product[6],product[4],product[2],product[5])" label="Info"
+                                        [disabled]="extn_set_state_value"></p-button></td>
+                                <td *ngIf="newVariableFalseTrueCheck"><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="disscardPreviewDialList(product[4],product[2],1,'Discarded',i)"
+                                        label="Discard" [disabled]="extn_set_state_value"></p-button></td>
+                                <td *ngIf="newVariableFalseTrueCheck"><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="remove(i)" label="Remove" [disabled]="extn_set_state_value"></p-button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorleft">
+                            <p-button type="button" icon="pi pi-minus" styleClass="p-button-text" (click)="minusValue()"></p-button>
+                        </ng-template>
+                        <ng-template pTemplate="paginatorright">
+                            <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="plusValue()"></p-button>
+                        </ng-template>
+                    </p-table>
+                        </p-tabPanel>
+                    <p-tabPanel header="Preview Search Wise">
+                        <div class="grid forms-grid flex-row p-fluid" style="font-size: 12px;">
+                            <div class="col-12 md:col-1" style="margin-top:2px;">From*</div>
+                            <div class="col-12 md:col-3">
+                                <p-calendar [(ngModel)]="fromdate" [showTime]="true" hourFormat="24" [showIcon]="true" appendTo="body"
+                                    [showSeconds]="true" inputId="time"></p-calendar>
+                            </div>
+                            <div style="margin-top:2px;" class=" col-12 md:col-1">To*</div>
+                            <div class=" col-12 md:col-3">
+                                <p-calendar [(ngModel)]="todate" [showTime]="true" hourFormat="24" [minDate]="fromdate" [showIcon]="true" appendTo="body"
+                                    [showSeconds]="true" inputId="time"></p-calendar>
+                            </div>
+                
+                            <div style="margin-top:2px;" class=" col-12 md:col-1" >Mob No</div>
+                            <div class=" col-12 md:col-3" >
+                                <input type="text" pInputText [(ngModel)]="mob_no" class="p-inputtext-sm">
+                            </div>
+                
+                            
+                    </div>
+                    <div class="grid forms-grid flex-row p-fluid" style="font-size: 12px;">
+                        <div class="col-12 md:col-1" >Parent Disposition</div>
+                        <div class="col-12 md:col-3">
+                            <p-dropdown id="type" [options]="parentDispoition" [filter]="true" filterBy="fld_dispName"
+                                [showClear]="true"  class=" p-inputtext-sm" appendTo="body"
+                                [(ngModel)]="parentDispoitionValue" (onClick)="parentDispoitionValueagent()"
+                                optionLabel="dispname" optionValue="dispid" placeholder="Select Disposition"
+                                >
+                                <ng-template let-selectedType pTemplate="item">
+                                    <div class="selectedType-item">
+                                        <div class="contect-inner-data">{{selectedType.dispname}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                
+                        <div style="margin-top:2px;" class=" col-12 md:col-1" >Mode</div>
+                            <div class=" col-12 md:col-3" >
+                                <p-dropdown id="type" [options]="modeData" [filter]="true" filterBy="fld_dispName"
+                                [showClear]="true"  class=" p-inputtext-sm" [(ngModel)]="selectedMode" appendTo="body"
+                                (onClick)="getMode()"  optionLabel="label" optionValue="value"
+                                placeholder="Select Mode" >
+                                <ng-template let-selectedType pTemplate="item">
+                                    <div class="selectedType-item">
+                                        <div class="contect-inner-data">{{selectedType.label}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                            </div>
+
+                            <div style="margin-top:2px;" class=" col-12 md:col-1" >Show Calls</div>
+                            <div class=" col-12 md:col-1" >
+                                <p-radioButton 
+                                name="call" 
+                                value="1" 
+                                [(ngModel)]="calls" 
+                                inputId="call1" label="All"></p-radioButton>
+                           
+                            </div>
+                            <div class=" col-12 md:col-1" >
+                                <p-radioButton 
+                                name="call" 
+                                value="2" 
+                                [(ngModel)]="calls" 
+                                inputId="call2" label="Only Fresh Calls"></p-radioButton>
+                            </div>
+                            <div class=" col-12 md:col-1" >
+                                <p-radioButton 
+                                name="call" 
+                                value="3" 
+                                [(ngModel)]="calls" 
+                                inputId="call2" label="Only CallBacks"></p-radioButton>
+                            </div>
+                    </div>
+                    <div class="grid forms-grid flex-row p-fluid" style="font-size: 12px;">
+                    <div class="col-12 md:col-2">
+                        <button type="button"  pButton label="Submit" (click)="onSubmitPreviewDashboard()"></button>
+                    </div>
+                    <div class="col-12 md:col-2">
+                        <button type="button"  pButton label="Clear" (click)="onClearData()"></button>
+                    </div>
+                    </div>
+
+                    <p-table #dt2 [value]="previewDataSearchTablee"  styleClass="p-datatable-gridlines" [resizableColumns]="true"
+                    columnResizeMode="expand" 
+                    [tableStyle]="{'max-width': '70rem'}">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th pResizableColumn="phno" pSortableColumn="phno" style="width: 3.2px;">PhNo
+                                <p-sortIcon field="phno"></p-sortIcon>
+                            </th>
+                            <!-- <th pResizableColumn="schlCode" pSortableColumn="schlCode" style="width: 3.2px;">School Code
+                                <p-sortIcon field="schlCode"></p-sortIcon>
+                            </th> -->
+
+                            <th pResizableColumn="leadname" pSortableColumn="leadname" style="width: 3.2px;">leadname
+                                <p-sortIcon field="leadname"></p-sortIcon>
+                            </th>
+                            <th pResizableColumn="dial" pSortableColumn="dial" style="width:3.2px;">Dial
+                                <p-sortIcon field="dial"></p-sortIcon>
+                            </th>
+                            <th pResizableColumn="schd" pSortableColumn="schd" style="width: 3.2px;">Schd
+                                <p-sortIcon field="schd"></p-sortIcon>
+                            </th>
+                            <th pResizableColumn="schdtime" pSortableColumn="schdtime" style="width:3.2px;">SchdTime
+                                <p-sortIcon field="schdtime"></p-sortIcon>
+                            </th>
+                            <th pResizableColumn="info" pSortableColumn="info" style="width: 3.2px;">Info
+                                <p-sortIcon field="info"></p-sortIcon>
+                            </th>
+                            <th pResizableColumn="discard" pSortableColumn="discard" style="width:3.2px;">Discard
+                                <p-sortIcon field="discard"></p-sortIcon>
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-product let product=i;>
+                        <tr >
+                            <td >{{product.phoneno}}</td>
+                            <td >{{product.leadname}}</td>
+                            <td><p-button
+                                    [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                    (click)="previewCallSearch(product.phoneno,product.leadid,product.recordid,product.phoneid)"
+                                    label="Call"></p-button></td>
+                            <td >{{product.isscheduled}}</td>
+                            <td>{{product.scheduledatetime}}</td>
+                            <td><p-button
+                                    [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                    (click)="info1(product)" label="Info"></p-button></td>
+                                    <td><p-button
+                                        [style]="{'background-color': 'rgb(3, 83, 136)',' height': '10px',  'font-size': '9px'}"
+                                        (click)="disscardPreviewSearch(product)"
+                                        label="Discard"></p-button></td>
+                   
+                        </tr>
+                    </ng-template>
+                </p-table>
+                    </p-tabPanel>
+                    </p-tabView>
+                </p-dialog>
+
+
+
+                <p-dialog [(visible)]="previewDashDialogBox" [style]="{width: '80vw','margin-left':'15%'}"
+                    header="Preview Dashboard" [modal]="true" [blockScroll]="true" styleClass="p-fluid"
+                    [draggable]="false">
+                    <div style="margin-top:5px;"></div>
+                    <p-table #dt3 [value]="previewDashDataTable" styleClass="p-datatable-gridlines"
+                        [resizableColumns]="true" columnResizeMode="expand" [tableStyle]="{'max-width': '70rem'}"
+                        [globalFilterFields]="['phoneno', 'thirdpartycallid', 'assignid']">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pResizableColumn="phno" pSortableColumn="phno" style="width: 3.2px;">PhNo
+                                </th>
+                                <th pResizableColumn="dial" pSortableColumn="dial" style="width:3.2px;">Callback
+                                </th>
+                                <th pResizableColumn="phno" pSortableColumn="phno" style="width: 3.2px;">SchdCall
+                                </th>
+                                <th pResizableColumn="schd" pSortableColumn="schd" style="width: 3.2px;">SchdDateTime
+                                </th>
+                                <th pResizableColumn="schdtime" pSortableColumn="schdtime" style="width:3.2px;">AssignId
+                                </th>
+                                <th pResizableColumn="info" pSortableColumn="info" style="width: 3.2px;">3rd Party
+                                    Callid
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <!-- <ng-template pTemplate="caption">
+                            <div class="flex">
+                                <span class="p-input-icon-left ml-auto" style="width: 20% !important">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text"
+                                        (input)="dt3.filterGlobal($any($event.target).value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </span>
+                                &nbsp;&nbsp;
+                                <button style="width: 100px; background-color: rgb(3, 83, 136); font-size: 9px;" pButton
+                                    label="Clear" class="p-button-filled" icon="pi pi-filter-slash"></button>
+                            </div>
+                        </ng-template> -->
+                        <ng-template pTemplate="caption">
+                            <div class="flex">
+                                <!-- <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button> -->
+                                <span class="p-input-icon-left ml-auto" style="width: 20% !important">
+                                    <i class="pi pi-search"></i>
+                                    <input pInputText type="text"
+                                        (input)="dt3.filterGlobal($event.target.value, 'contains')"
+                                        placeholder="Search keyword" />
+                                </span>
+                                &nbsp;&nbsp;
+                                <button style="width: 100px; background-color: rgb(3, 83, 136); font-size: 9px;" pButton
+                                    label="Clear" class="p-button-filled" icon="pi pi-filter-slash"></button>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-product>
+                            <tr>
+                                <td>{{product.phoneno}}</td>
+                                <td>{{product.iscallback}}</td>
+                                <td>{{product.iscallback}}</td>
+                                <td>{{product.scheduledatetime}}</td>
+                                <td>{{product.assignid}}</td>
+                                <td>{{product.thirdpartycallid}}</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-dialog>
+            </li>
+        </ul>
+    </div>
+   
+</div>
+
+<p-dialog [(visible)]="breakDialogBox1" [style]="{width: '300px', height: '52vh','margin-left':'8%'}"
+header="Video Enabled"  [position]="positionNew"   styleClass="p-fluid">
+<video #remoteVideo autoplay style="height: 20px;width: 10px;"></video>
+<video #localVideo autoplay muted style="height: 200px;"></video>
+</p-dialog>

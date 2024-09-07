@@ -1,0 +1,48 @@
+<!-- <div class="ui-fluid" responsiveLayout="stack"style="height: 100%; margin-top: -25px;">
+    <div class="header grid flex flex-row p-fluid col-12 mb-0 md:col-12" >
+        <div class="col-12 mb-0 md:col-2" style="padding-top: 25px; margin-left: 12px;">Enter Contact No.</div>
+        <div class="col-12 mb-0 md:col-4"><input type="text" pInputText [(ngModel)]="phoneno"></div>
+    </div>
+
+    <div class="body">
+        <div class="p-3 md:px-4 lg:px-6 lg:py-4 " style="height: 100%;" #chatWindow
+           >
+            <div *ngFor="let message of msg">
+                <div class="grid grid-nogutter mb-0">
+                    <div class="col mt-1" *ngIf="message.isreceive; else notReceived">
+                        <span *ngIf="message.messagetype !== 'image'"
+                            class="text-700 inline-block font-medium border-1 surface-border p-1 white-space-normal border-round"
+                            style="word-break: break-word; max-width:80%; background: #fff !important; color: black !important;">{{message.msg}}</span>
+                        <a *ngIf="message.messagetype == 'image'" [href]="message.mediaurl" download="image.jpg"
+                            target="_blank">
+                            <img [src]="message.mediaurl" class="w-13rem h-16rem border-square shadow-4" />
+                        </a>
+                        <p class="text-700 mt-1" style="color: black !important;">{{message.inserdatetime}}</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-nogutter mb-0">
+                    <ng-template #notReceived style="background-color: #fff;">
+                        <div class="col mt-1 text-right">
+                            <span *ngIf="message.messagetype !== 'image'"
+                                class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                                style="word-break: break-word; max-width:80%; background: #fff !important; color: black !important;">{{
+                                message.msg }}</span>
+
+                            <a *ngIf="message.messagetype === 'image'" [href]="message.mediaurl" download="image.jpg"
+                                target="_blank">
+                                <img [src]="message.mediaurl" class="w-13rem h-16rem border-square shadow-4" />
+                            </a>
+
+                            <p class="text-700 mt-1" style="color: black !important;">{{ message.inserdatetime }}</p>
+                        </div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+        <div class="footer col-12 mb-0 md:col-12 flex" style="margin-left: -17px; margin-top: -19px;">
+        <div class="col-12 mb-0 md:col-9"><textarea rows="5" cols="30" pInputTextarea class="textArea" [(ngModel)]="textArea"></textarea></div>
+        <div class="col-12 mb-0 md:col-1" style="padding-top: 25px;"><p-button label="Send" class="sendBtn" (click)="sendText()"></p-button></div>
+    </div>
+</div> -->

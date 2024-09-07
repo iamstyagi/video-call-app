@@ -1,0 +1,89 @@
+.font-size{
+    font-size: 12px;
+}
+::ng-deep .p-datatable .p-datatable-header {
+    background: #f8f9fa;
+    color: #343a40;
+    border: 1px solid #dee2e6;
+    border-width: 1px 0 1px 0;
+    padding: 0.4rem 1rem !important;
+    font-weight: 700;
+}
+::ng-deep .p-inputtext {
+    padding: 0.55rem 0.75rem !important;
+}
+.card{
+    border-radius: 1px !important;
+    // border: 1px solid lightgray !important;
+}
+.table{
+    font-weight: 500 !important;
+}
+// ::ng-deep .p-dropdown {
+//     width: -webkit-fill-available !important;
+// }
+
+
+.table{
+    margin: 0 15px;
+    padding-bottom: 15px;
+    border-radius: 7px;
+
+    .header{
+        background-color: #1089bec9;
+
+        color: #fff;
+        border-radius: 7px 7px 0 0;
+    }
+}
+
+
+
+.file{ 
+    margin: 0 15px !important;
+}
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    font-size: 12px !important;
+    white-space: pre !important;
+    padding: 0px 1rem !important;
+  }
+::ng-deep .p-button{
+    background-color: #1089bec9 !important;
+    border-color: #1089bec9 !important;
+    color: #fff !important;
+ }
+ ::ng-deep .p-button:hover{
+    background-color: #3B82F6 !important;
+    border-color: #3B82F6 !important;
+    color: #fff !important;
+ }
+ .newTableCss > th {
+    white-space: pre !important;
+    min-width: 125px !important;
+    background: #4db2dfc2;
+    // color: #fff;
+    font-size: 12px;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+}
+.newTableCss > td {
+    padding: 7px 1rem !important;
+    min-width: 125px !important;
+    font-size: 11px;
+}
+::ng-deep .p-datatable .p-datatable-header {
+    padding: 2px 1rem !important;
+}
+::ng-deep .p-datatable.p-datatable-hoverable-rows .p-datatable-tbody > tr:not(.p-highlight):hover {
+    // background: linear-gradient(90deg, rgba(88,79,236,1) 0%, rgba(124,124,176,1) 42%, rgba(66,134,147,1) 100%) !important;
+    color: #fff !important;
+    background: linear-gradient(90deg, rgba(195,204,205,1) 0%, rgba(187,187,224,1) 42%, rgba(195,215,219,1) 100%);
+}
+::ng-deep tr:nth-child(even){
+    background: #eaeaea !important;
+}
+
+@media(max-width:901px){
+  .addTableNewCss{
+    display: block;
+  }
+}

@@ -1,0 +1,55 @@
+<div class="ui-fluid" responsiveLayout="stack">
+    <div class="grid forms-grid flex-row p-fluid">
+     
+
+        <div class="col-12 mb-0 md:col-8 md:mb-0 leftsidedata">
+            <img style="border-radius: 50px;"
+                alt="users" src="assets/images/callCenter2.jpg">
+            <!-- <img style="border-radius: 50px; height: 30rem; width: 58rem; margin-left: 32px; margin-top: 50px;"
+                alt="users" src="assets/images/callCenter2.jpg"> -->
+        </div>
+
+        <div class="col-12 mb-0 md:col-4 md:mb-0 rightsidedata">
+            <!-- <div class="card" style="border-radius: 50px; height: 30rem; width: 28rem; margin-top: 40px;"> -->
+            <div class="card" style="border-radius: 50px;">
+                <div class="login-panel p-5 pt-6 p-fluid flex flex-column justify-content-center">
+                    <img src="assets/images/icallmate-ucp.png"
+                        style="max-width:250px; margin-top: 25px; margin-left: 30px;">
+                    <br>
+                    <span class="p-input-icon-left mb-3">
+                        <i class="pi pi-user"></i>
+                        <input type="text" name="agentId" placeholder="Agent Id" class="ng-invalid p-mr-2" pInputText
+                            [(ngModel)]="agentId" required="true" />
+                    </span>
+
+                    <span class="p-input-icon-left mb-6">
+                        <i class="pi pi-key"></i>
+                        <input type="password" name="password" placeholder="Password" class="ng-invalid p-mr-2"
+                            pInputText [(ngModel)]="password" required="true" (keyup.enter)="encryPasswd()" />
+                    </span>
+
+                    <br>
+                    <div>
+                        <button pButton pRipple class="p-mr-2" type="submit" (keyup.enter)="encryPasswd()" label="Sign In" (click)="encryPasswd()">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+
+        <!-- <button (click)="startScreenShare()" [disabled]="isSharing">Start Screen Sharing</button>
+        <button (click)="stopScreenShare()" [disabled]="!isSharing">Stop Screen Sharing</button> -->
+
+    </div>
+
+    <div class="col-12 mb-0 md:col-4 md:mb-0 " style="float: right;">
+        <h3 style="    text-align: center;
+    margin-top: 1em;">Version : 4.18 (08-Aug-2024)</h3>
+    </div>
+    <!-- <div class="col-12 mb-0 md:col-12 md:mb-0 " style="text-align: center;">
+        <span >Novus Connect Pvt Ltd.</span>
+    </div> -->
+    
+</div>
+<p-toast></p-toast>

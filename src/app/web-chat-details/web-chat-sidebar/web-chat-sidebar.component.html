@@ -1,0 +1,65 @@
+<p-toast></p-toast>
+<div class="w-full h-full flex row-gap-4 flex-column surface-border p-2" style="background-color: #ebeef2 !important;">
+  <div class="flex mb-2">
+  </div>
+
+  <div class="flex flex-row mb-1 gap-4 md:flex-column overflow-auto" style="margin-top: -20px;">
+    <br>
+    <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none
+    hover:surface-hover transition-colors transition-duration-150" *ngFor="let item of nofificationDetailsArray"
+     tabindex="0">
+    <div class="flex align-items-center">
+        <div class="relative md:mr-3">
+            <img src="assets/images/dummy-pro.jpg" alt="user" class="w-3rem h-3rem border-circle shadow-4">
+            
+        </div>
+        <div class="flex-column hidden md:flex">
+         
+            <!-- <span class="text-900 font-semibold block" >{{item?.phoneNo}}</span> -->
+        </div>
+    </div>
+</div>
+  </div>
+
+</div>
+
+
+<!-- <p-dialog position="top" [(visible)]="newNumberDialog" [style]="{'width': '45vw', 'height': 'auto'}" header="New Number"
+  [modal]="true" [draggable]="false" [resizable]="false">
+
+  <div class="grid forms-grid flex-row p-fluid mt-2">
+    <div class="col-12 mb-0 md:col-4 md:mb-0">Enter your Number<span style="color:red">*</span> :</div>
+    <div class="col-12 mb-0 md:col-8 md:mb-0">
+      <input type="text" pInputText [(ngModel)]="newNo" class="p-inputtext-sm" maxlength="12" [maxlength]="12" [maxLength]="12"/>
+    </div>
+
+    <div class="flex col-12 mb-0 md:col-12 md:mb-0" style="padding: 0;">
+      <div class="col-12 mb-0 md:col-4 md:mb-0"></div>
+      <div class="col-12 mb-0 md:col-8" 
+      style="margin-top: -29px; font-size: 10px;">Please enter your number with your country code</div>
+    </div>
+  </div>
+
+  <div class="grid forms-grid flex-row p-fluid">
+    <div class="col-12 mb-0 md:col-4 md:mb-0">Select Template<span style="color:red">*</span> :</div>
+    <div class="col-12 mb-0 md:col-8 md:mb-0">
+      <p-dropdown [options]="selectTemplates" optionLabel="tempName" optionValue="tempName" class="p-inputtext-sm"
+        [(ngModel)]="selectedTemplateValue" placeholder="Select Template" [filter]="true" filterBy="tempName"
+        appendTo="body">
+        <ng-template let-selectedType pTemplate="item">
+          <div class="selectedType-item">
+            <div>{{ selectedType.tempName }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="grid forms-grid flex-row p-fluid">
+    <div class="col-12 mb-0 md:col-8 md:mb-0"></div>
+    <div class="col-12 mb-0 md:col-4 md:mb-0">
+      <button pButton label="Send Message" icon="pi pi-send" (click)="sendNewMsg()"></button>
+    </div>
+  </div>
+
+</p-dialog> -->

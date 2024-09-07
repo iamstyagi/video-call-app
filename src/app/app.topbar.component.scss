@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@500&display=swap');
+
+::ng-deep .p-menu.p-menu-overlay {
+    height: 300px !important;
+    overflow-y: scroll;
+    font-size: 10px;
+    z-index: 2102 !important;
+    transform-origin: center top !important;
+    top: 55.4667px !important;
+    left: 1152.2px !important;
+}
+
+.p-dialog .p-dialog-header {
+    height: 60px !important;
+}
+
+
+::ng-deep .p-fileupload .p-fileupload-content {
+    display: none !important;
+}
+
+::ng-deep .p-fileupload .p-fileupload-buttonbar {
+    padding: 0 !important;
+    background: transparent !important;
+    border: 0 !important;
+}
+
+::ng-deep .p-fileupload .p-fileupload-content {
+    display: none !important;
+}
+
+// ::ng-deep .searchDialogue .p-dialog {
+//    margin-left:16% !important;
+// }
+
+::ng-deep .p-dialog .p-dialog-header {
+    padding: 0px 10px !important;
+}
+
+
+.tableDataFontSize {
+    font-size: 12px;
+}
+
+.tableDataFontAlign {
+    text-align: center !important;
+}
+
+::ng-deep .p-datatable.p-datatable-gridlines .p-datatable-header {
+    text-align: center !important;
+    padding: 0px !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+
+    padding: 0.5rem 1rem;
+}
+
+.counter {
+    position: absolute;
+    color: #000;
+    font-weight: 490;
+    top: 10px;
+    margin-left: -10px !important;
+    font-size: 10px;
+    // border: 1px solid #a8a8a8;
+    border-radius: 50%;
+    padding: 0 3px;
+    background: lightgray
+}
+
+::ng-deep .p-datepicker table th {
+    color: #000 !important;
+}
+
+::ng-deep .p-datepicker .p-timepicker .p-link {
+    color: #000 !important;
+}
+
+:ng-deep .p-tabview .p-tabview-nav li .p-tabview-nav-link {
+    padding: 7px !important;
+}
+
+.newUpdatedCss {
+    padding: 5px !important;
+}
+
+::ng-deep .p-datatable.p-datatable-gridlines .p-datatable-thead>tr>th {
+    padding: 7px !important;
+}
+
+.mystylingAdded {
+    height: 10px !important;
+}
+
+.mobileResponse {
+    display: none;
+}
+
+.notMobileResponse {
+    display: block;
+}
+
+.addMainData {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.bigImage {
+    max-width: 250px;
+    // margin-bottom: 30px;
+    margin-left: -5px;
+    //  margin-top: 27px;
+}
+
+.smallLogo {
+    width: 60px;
+    height: 60px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+.addNewD{
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}
+@media(max-width:901px) {
+    .counter {
+        top: 33px;
+    }
+
+    .mobileResponse {
+        display: block;
+    }
+
+    .notMobileResponse {
+        display: none !important;
+    }
+
+    .bigImage {
+        max-width: 180px;
+    }
+
+    .smallLogo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .addedDropDown p-dropdown>div.p-dropdown {
+        width: 100% !important;
+    }
+
+    ::ng-deep .addedDropDown p-dropdown>div.p-dropdown {
+        width: 100% !important;
+    }
+}

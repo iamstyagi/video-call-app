@@ -1,0 +1,72 @@
+<p-toast></p-toast>
+<div class="w-full h-full flex row-gap-4 flex-column surface-border p-2" style="background-color: #ebeef2 !important;">
+  <div class="flex mb-2">
+    <span class="p-input-icon-left" *ngIf="showMobile" style="width: 67%;">
+      <i class="pi pi-search" style="margin-top: -7px;"></i>
+      <input type="text" id="selectInput" pInputText placeholder="Search" class="w-full" [(ngModel)]="searchValue" (input)="filter()"
+        autocomplete="off" (keyup.enter)="searchFromDB()"/>
+    </span>
+
+    <span class="flex flex-wrap new" (click)="newNumber()" style="cursor: pointer;">
+      <nav>New</nav>
+    </span>
+  </div>
+
+  <div class="flex flex-row mb-1 gap-4 md:flex-column overflow-auto" style="margin-top: -20px;">
+    <app-user-card *ngFor="let user of filteredUsers" [user]="user" [hidden]="true"></app-user-card>
+    <br>
+    <div class="card1 flex flex-wrap col-12 mb-0 md:col-12 md:mb-0" style="margin: 0; padding: 0;" *ngFor="let user of filteredUsers" (click)="sendMobile(user.phoneNumber, '1')" (click)="sendSession(user.inchat)">
+      <div class="col-12 mb-0 md:col-9 md:mb-0" style="padding: 4px 15px;">
+        <span style="font-weight: bold;">{{ user.phoneNumber }}</span>
+        <p class="truncate-text" style="margin: 0; padding: 0;"> {{ user.messages[0] || 'No messages' }}</p>
+      </div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0" style="padding: 0; padding-top: 14px;">
+        <span [ngClass]="{'unread': user.unreadcount > 0}">{{ user.unreadcount }} </span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+
+<p-dialog position="top" [(visible)]="newNumberDialog" [style]="{'width': '45vw', 'height': 'auto'}" header="New Number"
+  [modal]="true" [draggable]="false" [resizable]="false">
+
+  <div class="grid forms-grid flex-row p-fluid mt-2">
+    <div class="col-12 mb-0 md:col-4 md:mb-0">Enter your Number<span style="color:red">*</span> :</div>
+    <div class="col-12 mb-0 md:col-8 md:mb-0">
+      <input type="text" pInputText [(ngModel)]="newNo" class="p-inputtext-sm" maxlength="12" [maxlength]="12" [maxLength]="12"/>
+    </div>
+
+    <div class="flex col-12 mb-0 md:col-12 md:mb-0" style="padding: 0;">
+      <div class="col-12 mb-0 md:col-4 md:mb-0"></div>
+      <div class="col-12 mb-0 md:col-8" 
+      style="margin-top: -29px; font-size: 10px;">Please enter your number with your country code</div>
+    </div>
+  </div>
+
+  <div class="grid forms-grid flex-row p-fluid" *ngIf="this.selectTemplates.length > 1">
+    <div class="col-12 mb-0 md:col-4 md:mb-0">Select Template<span style="color:red">*</span> :</div>
+    <div class="col-12 mb-0 md:col-8 md:mb-0">
+      <p-dropdown [options]="selectTemplates" optionLabel="tempName" optionValue="tempName" class="p-inputtext-sm"
+        [(ngModel)]="selectedTemplateValue" placeholder="Select Template" [filter]="true" filterBy="tempName"
+        appendTo="body">
+        <ng-template let-selectedType pTemplate="item">
+          <div class="selectedType-item">
+            <div>{{ selectedType.tempName }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
+  </div>
+
+  <div class="grid forms-grid flex-row p-fluid">
+    <div class="col-12 mb-0 md:col-8 md:mb-0"></div>
+    <div class="col-12 mb-0 md:col-4 md:mb-0">
+      <button pButton label="Send Message" icon="pi pi-send" (click)="sendNewMsg()" style="background: #128C7E !important;
+      border: #128C7E !important;"></button>
+    </div>
+  </div>
+
+</p-dialog>

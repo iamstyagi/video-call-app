@@ -1,0 +1,58 @@
+<div>
+    <div class="overflow-auto mt-5" style="height: 100vh;
+    overflow-y: scroll !important;
+    max-height: 91vh;
+    /* border: 1px solid; */
+    margin-top: 15px !important;
+">
+        <ul class="flex flex-row md:flex-column gap-0 md:gap-0 list-none m-0 p-0 overflow-auto">
+            <li pRipple [ngClass]="{'selected-bg': selectedIndex === items.length}"
+                class="cursor-pointer select-none p-3 transition-duration-150 border-round flex align-items-center justify-content-center md:justify-content-start md:flex-1 flex-auto"
+                (click)="navigateNew();">
+                <span class="text-900 font-medium hidden md:inline"
+                [ngClass]="{'selected-bg2': selectedIndex === items.length}">New</span>
+            </li>
+
+            <li pRipple *ngFor="let item of items; let i = index" [ngClass]="{'selected-bg': selectedIndex === i}"
+                class="cursor-pointer select-none p-3 transition-duration-150 border-round flex align-items-center justify-content-center md:justify-content-start md:flex-1 flex-auto"
+                (click)="navigate(i); sendMobileNo(item)">
+                <span class="text-900 font-medium hidden md:inline"
+                    [ngClass]="{'selected-bg2': selectedIndex === i}">{{item}}</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+<p-dialog position="top" [(visible)]="newNumberDialog" [style]="{'width': '45vw', 'height': 'auto'}" header="New Number"
+  [modal]="true" [draggable]="false" [resizable]="false">
+
+  <div class="grid forms-grid flex-row p-fluid mt-2">
+    <div class="col-12 mb-0 md:col-4 md:mb-0">Enter your Number<span style="color:red">*</span> :</div>
+    <div class="col-12 mb-0 md:col-8 md:mb-0">
+      <input type="text" pInputText [(ngModel)]="newNo" class="p-inputtext-sm" maxlength="12" [maxlength]="12" [maxLength]="12"/>
+    </div>
+
+    <div class="flex col-12 mb-0 md:col-12 md:mb-0" style="padding: 0;">
+      <div class="col-12 mb-0 md:col-4 md:mb-0"></div>
+      <div class="col-12 mb-0 md:col-8" 
+      style="margin-top: -29px; font-size: 10px;">Please enter your number with your country code</div>
+    </div>
+  </div>
+
+  <div class="grid forms-grid flex-row p-fluid">
+    <div class="col-12 mb-0 md:col-4 md:mb-0">Enter Text<span style="color:red">*</span> :</div>
+    <div class="col-12 mb-0 md:col-8 md:mb-0">
+        <textarea rows="5" cols="30" pInputTextarea class="textArea" [(ngModel)]="textArea"></textarea>
+    </div>
+  </div>
+
+  <div class="grid forms-grid flex-row p-fluid">
+    <div class="col-12 mb-0 md:col-8 md:mb-0"></div>
+    <div class="col-12 mb-0 md:col-4 md:mb-0">
+        <p-button label="Send" class="sendBtn" (click)="sendText()"></p-button>
+    </div>
+  </div>
+
+</p-dialog>

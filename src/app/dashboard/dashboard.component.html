@@ -1,0 +1,187 @@
+
+<div class="" style="padding-left: 10px !important; margin-top:0px; font-size:10px;">
+    <span (click)="backToBlankPage()" style="    margin-left: 21px;
+    margin-top: 10px;cursor: pointer;">
+    <i class="pi pi-arrow-circle-left" style="font-size: 2rem"></i>
+</span>
+  <span class="mobileHide">
+    <div class="col-12 mb-0 md:col-1 md:mb-0  " >Ticket Type</div>
+    <div class="col-12 mb-0 md:col-2 md:mb-0  ">
+        <p-multiSelect [options]="ticketTypeDrodown" class="p-inputtext-sm" [style]="{height:'35px'}" [(ngModel)]="selectedTicketTypeData" optionLabel="label" 
+         optionValue="value"
+        placeholder="select" (onClick)="getTicketType()"></p-multiSelect>
+        </div>
+
+        <div class="col-12 mb-0 md:col-1 md:mb-0  " >Start Date</div>
+        <div class="col-12 mb-0 md:col-2 md:mb-0  ">
+                         <p-calendar  [(ngModel)]="startdate" [style]="{height:'35px','font-size':'12px'}" [showTime]="true" [showSeconds]="true"></p-calendar>
+            </div>
+
+            <div class="col-12 mb-0 md:col-1 md:mb-0  ">End Date</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0  ">
+                <p-calendar  [(ngModel)]="enddate" [style]="{height:'35px','font-size':'12px'}" [showTime]="true" [showSeconds]="true" ></p-calendar>
+                </div>
+
+                <div class="col-12 mb-0 md:col-2 md:mb-0  "><button type="button" pButton label="Reload" (click)="onReload()" style=" background: rgb(3, 83, 136); color:white; font-size:12px; height:30px;"></button></div>  
+  </span>
+  <span class="mobileShow">
+  <div class="dFlxDtl">
+    <div class="col-4 mb-0 md:col-1 md:mb-0  " >Ticket Type</div>
+    <div class="col-9 mb-0 md:col-2 md:mb-0  ">
+        <p-multiSelect [options]="ticketTypeDrodown" class="p-inputtext-sm" [style]="{height:'35px'}" [(ngModel)]="selectedTicketTypeData" optionLabel="label" 
+         optionValue="value"
+        placeholder="select" (onClick)="getTicketType()"></p-multiSelect>
+        </div>
+  </div>
+  <div class="dFlxDtl">
+        <div class="col-4 mb-0 md:col-1 md:mb-0  " >Start Date</div>
+        <div class="col-9 mb-0 md:col-2 md:mb-0  ">
+                         <p-calendar  [(ngModel)]="startdate" [style]="{height:'35px','font-size':'12px'}" [showTime]="true" [showSeconds]="true"></p-calendar>
+            </div>
+  </div>
+  <div class="dFlxDtl">
+            <div class="col-4 mb-0 md:col-1 md:mb-0  ">End Date</div>
+            <div class="col-9 mb-0 md:col-2 md:mb-0  ">
+                <p-calendar  [(ngModel)]="enddate" [style]="{height:'35px','font-size':'12px'}" [showTime]="true" [showSeconds]="true" ></p-calendar>
+                </div>
+            </div>
+                <div class="col-12 mb-0 md:col-2 md:mb-0  "><button type="button" pButton label="Reload" (click)="onReload()" style=" background: rgb(3, 83, 136); color:white; font-size:12px; height:30px;"></button></div>  
+  </span>
+        </div>
+        <div class="addedForMobile" >
+        <div class="cardDashboard" style="text-align: center; margin-left:17px;">
+            <h3>Open</h3>
+            <p-knob [(ngModel)]="OpebCircle"[readonly]="true" valueColor="red" rangeColor="lightgray" styleClass="knobHeight"></p-knob>
+        </div>
+
+        <div class="cardDashboard" style="text-align: center;">
+            <h3>Escalated</h3>
+            <p-knob [(ngModel)]="escalatedCircle"[readonly]="true" valueColor="orange" rangeColor="lightgray" styleClass="knobHeight"></p-knob>
+        </div>
+
+        <div class="cardDashboard" style="text-align: center;">
+            <h3>Closed</h3>
+            <p-knob [(ngModel)]="closedCircle"[readonly]="true" valueColor="green" rangeColor="lightgray" styleClass="knobHeight"></p-knob>
+        </div>
+
+        <div class="cardDashboard" style="text-align: center;">
+            <h3>Other</h3>
+            <p-knob [(ngModel)]="otherCircle"[readonly]="true" valueColor="blue" rangeColor="lightgray" styleClass="knobHeight"></p-knob>
+        </div>
+
+    </div>
+
+    <div style="display:flex; margin-top:10px; font-size:12px;">
+        <div class="cardSource" style="margin-left:17px;">
+            <span style="color:white; ">Source wise</span>
+        </div>
+            <div class="cardSource" style="margin-left:17px;">
+                <span style="color:white;">Status wise</span>
+                </div>
+                <div class="cardSource" style="margin-left:17px;">
+                    <span style="color:white;">Ticket Type wise</span>
+                    </div>
+    </div>
+    <div style="display:flex; margin-top:-3px;" >
+        <div class="cardSource1" style="margin-left:17px;">
+            <p-table [value]="sourceWiseTableData"  styleClass="p-datatable-gridlines"  scrollHeight="270px" responsiveLayout="scroll" 
+            >
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td class="fontSize"><div >{{product.queueName}}</div><div> <p-progressBar [value]=product.queueCount unit="" [color]="product.queueName==='Email'?'green':'Red'"
+                        [styleClass]="product.queueName === 'Email' ? 'custom-progressbar' : product.queueName === 'Voice' ?'custom-progressbar1':''"
+                        
+                         ></p-progressBar></div></td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </div>
+            <div class="cardSource1" style="margin-left:17px;">
+                <p-table [value]="statusWiseTableData"  styleClass="p-datatable-gridlines"   scrollHeight="270px" responsiveLayout="scroll" 
+                >
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td class="fontSize" (click)="onSatusWise(product)">{{product.queueName}}<div> <p-progressBar [value]=product.queueCount unit="" [color]="product.queueName==='Email'?'green':'Red'"
+                            [styleClass]="product.queueName === 'Closed' ? 'custom-progressbar' : product.queueName === 'Open' ?'custom-progressbar1':
+                            product.queueName === 'Customer Not Contactable'?'custom-progressbar2':'custom-progressbar3'"
+                            [styleClass]="product.queueCount == 1 ? 'customWidth' : product.queueCount == 2 ? 'customWidth' :product.queueCount == 3 ? 'customWidth' : ''"
+                           
+                            ></p-progressBar></div></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+                </div>
+                <div class="cardSource1" style="margin-left:17px;">
+                    <p-table [value]="ticketTypeWiseTableData"  styleClass="p-datatable-gridlines" scrollHeight="270px" responsiveLayout="scroll" 
+                    >
+                    <ng-template pTemplate="body" let-product>
+                        <tr>
+                            <td class="fontSize"  (click)="onTicketTypeWiseSatusWise(product)">{{product.queueName}}<div> <p-progressBar [value]=product.queueCount unit=""
+                                 [color]="product.queueName==='Email'?'green':'Red'"
+                                 [styleClass]="product.queueCount == 1 ? 'customWidth' : product.queueCount == 2 ? 'customWidth' :product.queueCount == 3 ? 'customWidth' : ''"></p-progressBar></div></td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                    </div>
+    </div>
+
+    <p-dialog [(visible)]="showTicketHistoryDialogue" header="Ticket Status"  [modal]="true" [draggable]="false">
+    <p-table [value]="TicketHistoryWiseTableData"   scrollHeight="270px" responsiveLayout="scroll"
+    styleClass="p-datatable-gridlines" [resizableColumns]="true"
+    columnResizeMode="expand">
+    <ng-template pTemplate="header">
+        <tr style="text-align: center; font-size:12px;">
+            <th>Ticket Id</th>
+            <th>Ticket Time</th>
+            <th>Assigned By</th>
+            <th>Ticket Type</th>
+            <th>Source Type</th>
+            <th>Status</th>
+            <th>Agent Remarks</th>
+            <th>Campaign</th>      
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr class="fontSize">
+            <td class="fontSize" ><button type="button" class="newBtnClsAd" pButton label="{{product.fld_TicketID}}" (click)="onTicketHistortStatus(product)"></button></td>
+            <td class="fontSize">{{product.fld_Ticket_Time}}</td>
+            <td class="fontSize">{{product.fld_AssignedByID}}</td>
+            <td class="fontSize">{{product.fld_SourceType == "0" ? "VOICE" : 'EMAIL' }}</td>
+            <td class="fontSize">{{product.fld_source_name}}</td>
+            <td class="fontSize">{{product.fld_Ticket_StatusName}}</td>
+            <td class="fontSize newellipsisCss">{{product.fld_Remarks}}</td>
+            <td class="fontSize">{{product.fld_CampaignName}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+</p-dialog>
+
+
+<p-dialog [(visible)]="showTicketTypeWiseHistoryDialogue" header="Ticket Status"  [modal]="true" [draggable]="false">
+    <p-table [value]="TicketTypeWiseTableData"   scrollHeight="270px" responsiveLayout="scroll"
+    styleClass="p-datatable-gridlines" [resizableColumns]="true"
+    columnResizeMode="expand">
+    <ng-template pTemplate="header">
+        <tr style="text-align: center; font-size:12px;">
+            <th>Ticket Id</th>
+            <th>Ticket Time</th>
+            <th>Assigned By</th>
+            <th>Ticket Type</th>
+            <th>Status</th>
+            <th>Agent Remarks</th>
+            <th>Campaign</th>      
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+        <tr class="fontSize">
+            <td class="fontSize"  ><button type="button" class="newBtnClsAd" pButton label="{{product.fld_TicketID}}" (click)="onTicketHistortStatus(product)"></button></td>
+            <td class="fontSize">{{product.fld_Ticket_Time}}</td>
+            <td class="fontSize">{{product.fld_AssignedByID}}</td>
+            <td class="fontSize">{{product.fld_SourceType == "0" ? "VOICE" : 'EMAIL'}}</td>
+            <td class="fontSize">{{product.fld_Ticket_StatusName}}</td>
+            <td class="fontSize newellipsisCss">{{product.fld_Remarks}}</td>
+            <td class="fontSize">{{product.fld_CampaignName}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+</p-dialog>

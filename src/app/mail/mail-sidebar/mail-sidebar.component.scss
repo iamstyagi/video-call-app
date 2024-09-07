@@ -1,0 +1,30 @@
+::ng-deep .selected-bg {
+    color: #fff !important;
+    background-color: #1089be !important;
+}
+
+::ng-deep .selected-bg2 {
+    color: #fff !important;
+    // background-color: #1089be !important;
+}
+
+// ::ng-deep .p-button-outlined:focus{
+//     color: #fff !important;
+//     background-color: #1089be !important;
+    
+//     .selected-bg {
+//         // color: #fff !important;
+//         background-color: none !important;
+//     }
+    
+//     .selected-bg2 {
+//         color: #fff !important;
+//         background-color: none !important;
+//     }
+    
+// }
+::ng-deep.p-button {
+    color: #ffffff;
+    background: #3B82F6;
+    border: 1px solid #3B82F6;
+}

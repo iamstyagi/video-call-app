@@ -1,0 +1,77 @@
+<span  >
+    <button  type="button" pRipple pButton  label="Back"  (click)="backToBlankPage()"></button>
+</span>
+<div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px; margin-left: 0px;margin-right: 0px;font-size:10px;">
+          <div class="col-12 lg:col-4 xl:col-3">
+          <div class="card p-0 overflow-hidden flex flex-column">
+            <div class="flex align-items-center p-3">
+              <i class="pi pi-comments text-6xl text-blue-500"></i>
+              <div class="ml-3">
+                <span class="text-blue-500 block white-space-nowrap">Total Send Message</span>
+                <span class="text-blue-500 block text-4xl font-bold">{{dashboard?.totalSendMessages}}</span>
+              </div>
+            </div>
+            <img alt="users" class="w-full" src="https://verona.primeng.org/assets/demo/images/dashboard/users.svg">
+          </div>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-3">
+          <div class="card p-0 overflow-hidden flex flex-column">
+            <div class="flex align-items-center p-3">
+              <i class="pi pi-comments text-6xl text-orange-500"></i>
+              <div class="ml-3">
+                <span class="text-orange-500 block white-space-nowrap">Total Received Message</span>
+                <span class="text-orange-500 block text-4xl font-bold">{{dashboard?.totalReceiveMessage}}</span>
+              </div>
+            </div>
+            <img alt="locations" class="w-full" src="https://verona.primeng.org/assets/demo/images/dashboard/locations.svg">
+          </div>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-3">
+          <div class="card p-0 overflow-hidden flex flex-column">
+            <div class="flex align-items-center p-3">
+              <i class="pi pi-inbox text-6xl text-green-500"></i>
+              <div class="ml-3">
+                <span class="text-green-500 block white-space-nowrap">Total Request</span>
+                <span class="text-green-500 block text-4xl font-bold">{{dashboard?.totalDataInQueue}}</span>
+              </div>
+            </div>
+            <img alt="conversion" class="w-full" src="https://verona.primeng.org/assets/demo/images/dashboard/rate.svg">
+          </div>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-3">
+          <div class="card h-full p-0 overflow-hidden flex flex-column">
+            <div class="flex align-items-center p-3">
+              <i class="pi pi-comments text-6xl text-purple-500"></i>
+              <div class="ml-3">
+                <span class="text-purple-500 block white-space-nowrap">Total Seen Message</span>
+                <span class="text-purple-500 block text-4xl font-bold">{{dashboard?.totalSeenMessage}}</span>
+              </div>
+            </div>
+            <img alt="interactions" class="w-full mt-auto" src="https://verona.primeng.org/assets/demo/images/dashboard/interactions.svg">
+          </div>
+        </div>
+        <div class="col-12 lg:col-4 xl:col-3">
+            <div class="card p-0 overflow-hidden flex flex-column">
+              <div class="flex align-items-center p-3">
+                <i class="pi pi-comments text-6xl text-blue-500"></i>
+                <div class="ml-3">
+                  <span class="text-blue-500 block white-space-nowrap">Total Unseen Message</span>
+                  <span class="text-blue-500 block text-4xl font-bold">{{dashboard?.totalNotSeenMessage}}</span>
+                </div>
+              </div>
+              <img alt="users" class="w-full" src="https://verona.primeng.org/assets/demo/images/dashboard/users.svg">
+            </div>
+          </div>
+          <div class="col-12 lg:col-4 xl:col-3">
+            <div class="card p-0 overflow-hidden flex flex-column">
+              <div class="flex align-items-center p-3">
+                <i class="pi pi-star text-6xl text-orange-500"></i>
+                <div class="ml-3">
+                  <span class="text-orange-500 block white-space-nowrap">Total Feedback</span>
+                  <span class="text-orange-500 block text-4xl font-bold">{{dashboard?.totalFeedback}}</span>
+                </div>
+              </div>
+              <img alt="locations" class="w-full" src="https://verona.primeng.org/assets/demo/images/dashboard/locations.svg">
+            </div>
+          </div>
+  </div>

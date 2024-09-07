@@ -1,0 +1,161 @@
+/* You can add global styles to this file, and also import other style files */
+$gutter: 1rem; //for primeflex grid system
+
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+@import "../node_modules/prismjs/themes/prism-coy.css";
+@import "../node_modules/@fullcalendar/daygrid/main.min.css";
+@import "../node_modules/@fullcalendar/timegrid/main.min.css";
+@import "assets/demo/flags/flags.css";
+
+
+
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+
+
+/* You can add global styles to this file, and also import other style files */
+$gutter: 1rem; //for primeflex grid system
+
+/* Layout */
+// @import "assets/layout/styles/layout/layout.scss";
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+
+/* Quill Text Editor for p-editor */
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
+/* Demos */
+// @import "assets/demo/styles/flags/flags.css";
+// @import "assets/demo/styles/badges.scss";
+// @import "assets/demo/styles/code.scss";
+
+@import 'material-icons/iconfont/material-icons.css';
+
+html, body { height: 100%; }
+body { 
+    margin: 0; 
+    font-family: sans-serif  !important; 
+}
+
+
+.svgIcons{
+    height: 25px;
+    // margin-bottom: -10px;
+    // margin-left: 6px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.menu-button{
+    width: fit-content !important;
+    text-align: center;
+}
+
+.layout-topbar .layout-topbar-left{
+    width: 100%;
+}
+
+.content-container {
+    // background-color: rgb(3, 83, 136);  height:38px; width:42px; cursor:pointer; font-size: 9px;
+    // margin-top:2px !important;
+    // border-color: rgb(3,83,136) !important;
+    // padding: 0 !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    // margin-left: 0px;
+    grid-gap: 0px;
+    gap: 0px;
+    // border-radius: 4px !important;
+    display: table-row !important;
+}
+
+.icon-container {
+    // margin-top:2px !important;
+    // padding-left: 0px;
+    /* margin-top: -1px; */
+    color: white !important;
+    font-size: 15px;
+    // margin-bottom: -3px;
+}
+
+.text-container {
+    color: white !important;
+    font-size: 9px;
+    // margin-top: 0px;
+}
+
+.material-icons {
+    font-size: 17px !important;
+}
+
+.p-dialog .p-dialog-footer {
+    border-top: 0 none;
+    background: #ffffff;
+    color: #043d75;
+    padding: 0 1.5rem 1.5rem 1.5rem;
+    text-align: center !important;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}
+
+.p-dropdown .p-dropdown-label.p-placeholder {
+    color: #1e4469 !important;
+}
+
+.commentsSectionAddedCs{
+  margin-top: 10px;
+  min-height: 60px;
+  max-width: 100%;
+  width: auto;
+  min-height: 60px;
+  background: #F0F2F5;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  margin-left: 12px;
+  min-width: 300px;
+}
+.addedImageAndText{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+.imgCommentSec{
+    height: 32px;
+    width: 32px;border-radius: 100%;
+}
+.p-inputtext.p-inputtext-sm {
+    font-size: 0.875rem;
+    padding: 0.6rem 0.65625rem !important;
+  }
+  .button{
+    
+  }
+  .newBtnClsAd{
+    height: 20px !important;
+    border-radius: 5px !important;
+  }
+  .tableHeaderOne div{
+font-size: 12px !important;
+padding: 6px;
+  }
+  .cls-new-css-find-one div{
+font-size: 12px;
+white-space: pre;
+  }
+  .cls-new-css-find{
+    font-size: 12px;
+    white-space: pre;
+  }
+  
+  ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    font-size: 12px !important;
+    white-space: pre !important;
+  }

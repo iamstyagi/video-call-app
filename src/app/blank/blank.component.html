@@ -1,0 +1,111 @@
+<!-- <iframe id="iFrame1" height="1610" width="100%"></iframe> -->
+
+<!-- original -->
+<!-- <iframe id="iFrame1" height="100%" width="100%" style="border-bottom-left-radius: 30px;
+border-top-left-radius: 30px; border-width:1px;"></iframe> -->
+
+<p-toast></p-toast>
+<div class="layout-content" style="    border-radius: unset;">
+    <p-tabView [(activeIndex)]="activeIndex" style="height: 100% !important; width: 100% !important;"
+    (activeIndexChange)="checValue1($event)"   [scrollable]="true">
+
+        <p-tabPanel [selected]="voiceTab" >
+            <ng-template pTemplate="header">
+                <span>
+                    {{tabName}}
+                </span>
+            </ng-template>
+            <iframe id="iFrame1" height="100% !important" width="100% !important" style="border-bottom-left-radius: 30px;
+        border-top-left-radius: 30px; border-width:1px;    border-radius: unset;border: none;"></iframe>
+        </p-tabPanel>
+
+
+        <p-tabPanel *ngIf="whatsappTab" [selected]="selectedWpTab">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    WhatsApp <i class="pi pi-times" (click)="sendInviteApi($event,'WhatsApp')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame2" height="100% !important" width="100% !important" style="border-bottom-left-radius: 30px;
+        border-top-left-radius: 30px; border-width:1px;    border-radius: unset;
+        border: none;"></iframe>
+        </p-tabPanel>
+
+
+        <p-tabPanel *ngIf="emailTab"  [selected]="selectedEmailTab">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    Email <i class="pi pi-times" (click)="sendInviteApi($event,'Email')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame3" height="100% !important" width="100% !important" style="border: none;border-radius: unset;"></iframe>
+        </p-tabPanel>
+
+
+        <p-tabPanel *ngIf="twitterTab"  [selected]="selectedTwitterTab">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    Twitter <i class="pi pi-times" (click)="sendInviteApi($event,'Twitter')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame4" height="100% !important" width="100% !important" style="border-bottom-left-radius: 30px;
+        border-top-left-radius: 30px; border-width:1px;"></iframe>
+        </p-tabPanel>
+
+
+        <p-tabPanel *ngIf="fbTab" [selected]="selectedfbTab">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    Facebook <i class="pi pi-times" (click)="sendInviteApi($event,'Facebook')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame5" height="100% !important" width="100% !important" style="border: none;border-radius: unset;"></iframe>
+        </p-tabPanel>
+
+
+        <p-tabPanel *ngIf="smsTab" [selected]="selectedSMSTab">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    SMS <i class="pi pi-times" (click)="sendInviteApi($event,'SMS')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame6" height="100% !important" width="100% !important" style="border-bottom-left-radius: 30px;
+        border-top-left-radius: 30px; border-width:1px;"></iframe>
+        </p-tabPanel>
+
+
+        <p-tabPanel *ngIf="instagramTab" [selected]="selectedInstaTab">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    Instagram <i class="pi pi-times" (click)="sendInviteApi($event,'Instagram')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame7" height="100% !important" width="100% !important" style="border: none;border-radius: unset;"></iframe>
+        </p-tabPanel>
+        <p-tabPanel *ngIf="webChatTab" [selected]="selectedWebChat">
+            <ng-template pTemplate="header">
+                <span class="flex">
+                    Web-Chat <i class="pi pi-times" (click)="sendInviteApi($event,'Webchat')"
+                        style="z-index: 999; margin-top: 5px; margin-left: 5px;"></i>
+                </span>
+            </ng-template>
+            <iframe id="iFrame8" height="100% !important" width="100% !important" style="border-bottom-left-radius: 30px;
+        border-top-left-radius: 30px; border-width:1px;"></iframe>
+        </p-tabPanel>
+    </p-tabView>
+</div>
+
+<p-confirmPopup>
+    <ng-template pTemplate="content" let-message>
+      <div class="flex flex-column align-items-center w-full gap-3 border-bottom-1 surface-border p-3 mb-3">
+        <i [class]="message.icon" class="text-6xl text-primary-500"></i>
+        <p>{{ message.message }}</p>
+      </div>
+    </ng-template>
+  </p-confirmPopup>

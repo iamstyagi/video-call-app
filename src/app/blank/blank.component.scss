@@ -1,0 +1,21 @@
+::ng-deep .p-tabview-panel{
+    height: 525px;
+    background: transparent;
+}
+
+::ng-deep .p-tabview .p-tabview-panels{
+    background: transparent;
+    padding: 0px;
+}
+::ng-deep .cancelBtn{
+    background: #c4cbd2 !important;
+    border: 2px solid #f1f5f9 !important;
+    border-radius: 50px !important;
+    color: #000 !important;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+    ::ng-deep .successBtnN{
+        background: #22c55e !important;
+        border: 1px solid #22c55e !important;
+        border-radius: 50px !important;
+    }

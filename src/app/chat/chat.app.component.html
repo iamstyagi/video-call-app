@@ -1,0 +1,8 @@
+<div class="flex flex-column md:flex-row gap-3" style="height: 100vh;">
+    <div class="md:w-14rem card p-0" style="border-radius: 0 !important; height: 100vh; background: white !important;">
+        <app-chat-sidebar></app-chat-sidebar>
+    </div>
+    <div class="flex-1 card p-0" style="border-radius: 0 !important; background: url('assets/images/bg-image.jpg');" >
+        <app-chat-box [user]="activeUser"></app-chat-box>
+    </div>
+</div>

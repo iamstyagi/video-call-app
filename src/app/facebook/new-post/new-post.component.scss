@@ -1,0 +1,35 @@
+
+
+::ng-deep .p-dropdown {
+    width: 100% !important;
+}
+
+::ng-deep textarea{
+    width: 100% !important;
+    margin: 0 20px;
+    height: 100px !important;
+}
+
+// ::ng-deep .p-inputtext {
+//     margin: 0 15px !important;
+// }
+
+::ng-deep .p-fileupload{
+    margin: 0 15px !important;
+}
+::ng-deep .p-button:hover{
+    background-color: #1089bec9 !important;
+    border-color: #1089bec9 !important;
+ }
+ ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    font-size: 12px !important;
+    white-space: pre !important;
+  }
+  ::ng-deep .p-button{
+    background-color: #1089bec9 !important;
+    border-color: #1089bec9 !important;
+ }
+ ::ng-deep .p-button:hover{
+    background-color: #3B82F6 !important;
+    border-color: #3B82F6 !important;
+ }

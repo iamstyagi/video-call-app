@@ -1,0 +1,29 @@
+<div class="layout-wrapper"
+    [ngClass]="{'layout-static': app.menuMode === 'static',
+                                        'layout-mobile-active': staticMenuMobileActive,
+                                        'layout-static-inactive': staticMenuDesktopInactive && app.menuMode === 'static',
+                                        'p-input-filled': app.inputStyle === 'filled', 'p-ripple-disabled': !app.ripple}"
+   >
+<!-- <div class="layout-wrapper"
+    [ngClass]="{'layout-static': app.menuMode === 'static',
+                                        'layout-mobile-active': staticMenuMobileActive,
+                                        'layout-static-inactive': staticMenuDesktopInactive && app.menuMode === 'static',
+                                        'p-input-filled': app.inputStyle === 'filled', 'p-ripple-disabled': !app.ripple}"
+    (click)="onLayoutClick()"> -->
+
+    <app-topbar></app-topbar>
+
+    <!-- <app-menu></app-menu> -->
+
+    <div class="layout-content-wrapper">
+        <div >
+            <router-outlet></router-outlet>
+           
+        </div>
+        <app-menu></app-menu>
+
+        <app-footer></app-footer>
+    </div>
+
+    <!-- <app-config></app-config> -->
+</div>

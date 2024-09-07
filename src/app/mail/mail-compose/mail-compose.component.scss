@@ -1,0 +1,161 @@
+::ng-deep .p-dropdown {
+    width: -webkit-fill-available !important;
+}
+::ng-deep .p-chips {
+width: 100% !important;
+}
+button:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
+
+
+::ng-deep .grid {
+margin-right: 0rem !important; 
+}
+
+::ng-deep .p-fluid .p-dropdown .p-dropdown-label {
+font-size: 10px !important;
+}
+
+.break{
+margin-bottom: 10px;
+}
+
+::ng-deep.field {
+margin-bottom: 0.6rem !important;
+}
+
+::ng-deep.field > label {
+display: inline-block;
+margin-bottom: 0rem !important;
+}
+
+.separator {
+text-align: center !important;
+position: relative;
+font-size:11px !important;
+}
+
+.separator-text {
+display: inline-block;
+padding: 0 0px;
+}
+
+
+.dynamic-form-card{
+height: 100%;
+margin-top: 1px;
+margin-left: 0px;
+width:99.9% !important;
+}
+
+.dispositioncard1{
+margin-left:12px;
+width:99%;
+box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+border-radius: 14px;
+border-bottom-left-radius: 0px !important;
+border-bottom-right-radius: 0px !important;
+}
+
+.dispositioncard2{
+margin-left:12px;
+width:99%;
+box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1), 0px 24px 36px rgba(0, 0, 0, 0.04);
+border-radius: 14px;
+border-top-left-radius: 0px !important;
+border-top-right-radius: 0px !important;
+}
+
+.callbackCard{
+width:99.9%;
+}
+
+.cardTicket{
+font-size: 11px;;
+// border: 1px solid rgba(211, 211, 211, 0.6509803922);
+
+background-color: var(--surface-card);
+padding: .5rem;
+
+}
+
+::ng-deep ul {
+list-style-type: none !important;
+}
+
+
+::ng-deep p-dropdown{
+width:100% !important;
+}
+
+::ng-deep .layout-topbar {
+position: inherit !important;
+margin-bottom: -60px !important;
+}
+
+.separator-text {
+flex: 1; /* This will make the text take up the remaining space */
+}
+
+.remaining-space {
+flex: 1;
+height: 1px;
+background-color: lightgray;
+margin-left: 10px;
+margin-top: 10px;
+}
+
+::ng-deep .p-menu{
+z-index: 1001 !important;
+transform-origin: center top !important;
+top: 72px !important;
+left: 328px !important;
+}
+
+
+::ng-deep .p-datepicker .p-timepicker .p-link {
+color: black !important;
+}
+::ng-deep .p-dropdown-items-wrapper {
+    overflow: unset !important;
+}
+::ng-deep .p-dropdown .p-dropdown-panel {
+    width: 100px  !important;
+    overflow: auto  !important;
+}
+
+::ng-deep.p-button {
+    color: #ffffff;
+    background: #3B82F6;
+    border: 1px solid #3B82F6;
+}
+.autocomplete-list{
+    margin: 5px;
+    text-align: left;
+    padding-left: 15px;
+    z-index: 99999999;
+    display: block;
+    position: relative;
+    min-height: 200px;
+    overflow-y: scroll;
+    height: 200px;
+}
+.newAddedOne{
+    height: 44.47px;
+}
+::ng-deep .newCssAdded .p-dropdown{
+    height: 47.47px !important;
+ }
+
+ ::ng-deep .p-button{
+    background-color: #1089bec9 !important;
+    border-color: #1089bec9 !important;
+ }
+ ::ng-deep .p-button:hover{
+    background-color: #3B82F6 !important;
+    border-color: #3B82F6 !important;
+ }
+
+ 

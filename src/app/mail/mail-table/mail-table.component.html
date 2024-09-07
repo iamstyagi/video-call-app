@@ -1,0 +1,1116 @@
+<div >
+  <p-table #dt [value]="mails" responsiveLayout="scroll"  [scrollable]="true" 
+  [rows]="10" [showCurrentPageReport]="true" (onPage)="pageChangeEvent($event)"
+      [rowsPerPageOptions]="[10,15,25,35,45,50,75,100,1000]" [globalFilterFields]="['from','title','message']"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+      [paginator]="true"  [(selection)]="selectedMails"
+      scrollHeight="350px" selectionMode="multiple" [rowHover]="true" dataKey="id"
+      [globalFilterFields]="['fld_From','fld_Subject','fld_TicketID','fld_InsertDateTime']">
+      <ng-template pTemplate="caption">
+          <div class="flex flex-wrap align-items-center justify-content-between gap-3">
+              <div class="flex gap-2 align-items-center">
+              </div>
+  
+              <span class="p-input-icon-left">
+                  <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                      placeholder="Search Mail" class="w-full sm:w-auto" [(ngModel)]="searchValue"
+                      (keyup.enter)="returnenterKeyPressed($event)" />
+              </span>
+          </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+          <tr class="font-size addTableNewCss newTableCss">
+              <th>From</th>
+              <th>To</th>
+              <th>Subject</th>
+              <th *ngIf="ticketEnable">Ticket No.</th>
+              <th>Mail Time</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-mail>
+          <tr (click)="selectRow(mail)" (click)="onRowSelect(mail.id)" class="font-size cursor-pointer newTableCss">
+  
+              <td  [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                  {{mail.fld_From}}
+              </td>
+  
+              <td  [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                  {{mail.fld_To}}
+              </td>
+              <td  [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                  <span class="font-medium white-space-nowrap overflow-hidden text-overflow-ellipsis block"
+                      [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                      >
+                      {{mail.fld_Subject}}
+                  </span>
+              </td>
+              <td *ngIf="ticketEnable" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                  {{mail.fld_TicketID}}
+              </td>
+              <td [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                  <div class="flex w-full px-0">
+                      <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                          {{mail.fld_InsertDateTime  | date: 'MMM d, y, h:mm:ss a'}}
+                      </span>
+                  </div>
+              </td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="paginatorleft">
+      </ng-template>
+      <ng-template pTemplate="paginatorleft">
+        <p-button type="button" icon="pi pi-minus" styleClass="p-button-text" (click)="minusValue()"></p-button>
+    </ng-template>
+    <ng-template pTemplate="paginatorright">
+        <p-button type="button" icon="pi pi-plus" styleClass="p-button-text" (click)="plusValue()"></p-button>
+        <p-button type="button" label="More" styleClass="p-button-text" style="margin-left: 4px !important;" (click)="onMore()"></p-button>
+  
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr style="display: flex;justify-content: center;align-items: center;text-align: center;">
+         <div style="display: flex;justify-content: center;align-items: center;text-align: center;">
+          <p-progressSpinner ariaLabel="loading" ></p-progressSpinner>
+         </div>
+      </tr>
+  </ng-template>
+      <!-- <ng-template pTemplate="paginatorright">
+      </ng-template> -->
+      
+  </p-table>
+</div>
+
+
+<p-dialog header="View" [(visible)]="emailDialog" [modal]="true" [style]="{ width: '100vw','max-height': '100%','margin':'0px' }" [draggable]="false"
+    [resizable]="false" [position]="'top'">
+    <!-- <div class="card view-card"> -->
+    <div class="isMobileViewNot" style="margin-top:5px;">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Account</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0">
+            <p-dropdown class="p-inputtext-sm" [options]="account" [(ngModel)]="selectedAccount" optionLabel="account"
+                [readonly]="true"></p-dropdown>
+        </div>
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">To</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from" [readonly]="true" />
+        </div>
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">CC</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC"
+                [readonly]="true" /></div>
+    </div>
+
+    <div class="isMobileView" style="margin-top:5px;">
+      <div style="display: flex;">
+        <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">Account</div>
+        <div class="col-9 mb-0 md:col-3 md:mb-0">
+            <p-dropdown class="p-inputtext-sm" [options]="account" [(ngModel)]="selectedAccount" optionLabel="account"
+                [readonly]="true"></p-dropdown>
+        </div>
+      </div>
+      <div style="display: flex;">
+            <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">To</div>
+          <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from" [readonly]="true" />
+          </div>
+          </div>
+          <div style="display: flex;">
+          <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">CC</div>
+          <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC"
+                  [readonly]="true" /></div>
+         </div>
+          <div style="display: flex;">
+            <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">BCC</div>
+            <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_BCC" /></div>
+         </div>
+          <div style="display: flex;">
+        <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">Subject</div>
+        <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="subject" [readonly]="true">
+        </div>
+         </div>
+      </div>
+    <div class="flex flex-wrap row-1" style="margin-top: -16px;">
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">From</div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from" [readonly]="true"/></div> -->
+            <div class="col-12 mb-0 md:col-1 md:mb-0 isMobileViewNot" style="padding-top: 20px;">BCC</div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0 isMobileViewNot"><input type="text" pInputText [(ngModel)]="fld_BCC" /></div>
+        <div class="col-12 mb-0 md:col-1 md:mb-0 isMobileViewNot" style="padding-top: 25px;">Subject</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0 isMobileViewNot"><input type="text" pInputText [(ngModel)]="subject" [readonly]="true">
+        </div>
+        <div class="col-3 mb-0 md:col-1 md:mb-0"><button pButton (click)="reply()" [disabled]="hideOutbox">Reply</button></div>
+        <div class="col-3 mb-0 md:col-1 md:mb-0"><button pButton (click)="forward()" [disabled]="hideOutbox">Forward</button></div>
+        <div class="col-6 mb-0 md:col-2 md:mb-0" style="padding-left: 30px !important;"><button pButton
+                (click)="spam()" [disabled]="hideOutbox">Mark Spam</button></div>
+    </div>
+    <div class="flex flex-wrap">
+        <div class="col-12 mb-0 md:col-10 md:mb-0" style="padding:0.1rem !important;">
+            <!-- <p-editor [(ngModel)]="textEditor" [style]="{ height: '320px' }" [readonly]="true"></p-editor> -->
+            <p-editor [style]="{ height: '60px' }" [readonly]="true"></p-editor>
+            <div style="border: 1px solid lightgray;
+                max-height: 300px;
+                border-radius: 8px;
+                min-height: 300px;
+                overflow-y: scroll;
+                padding: 20px;" [innerHTML]="textEditor | safeHtml"></div>
+            <!-- <div style="border: 1px solid lightgray;
+                max-height: 100px;
+                border-radius: 8px;
+                min-height: 100px;
+                overflow-y: scroll;
+                padding: 20px;" [innerHTML]="signature | safeHtml"></div> -->
+        </div>
+        <div class="col-12 mb-0 md:col-2 md:mb-0">
+            <button pButton disabled><i class="pi pi-send" style="font-size: 1.5rem"></i> Send</button>
+            <div style="margin: 5px 0;"></div>
+            <button pButton disabled><i class="pi pi-send" style="font-size: 1.5rem"></i> Draft</button>
+        </div>
+    </div>
+    <div class="attachments card" style="padding:0.1rem !important; width:fit-content !important; margin-top:5px;">
+        <ul style="display:flex" *ngFor="let attachFiles of attachmentList">
+            <li><a (click)="onImageLink(attachFiles)" style="cursor: pointer;">{{attachFiles.fileName}}</a> &nbsp;
+                &nbsp; &nbsp;</li>
+
+        </ul>
+    </div>
+    <div class="table mt-4" *ngFor="let data of ticket">
+        <div class="header flex flex-wrap row-1 tableHeaderOne">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.: {{data.ticketID}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source: {{data.sourceName}}</div>
+            <!-- <div class="col-12 mb-0 md:col-2 md:mb-0">Type: {{data.source_SubType == 2 ? 'INC': (data.source_SubType
+                == 1 ? 'OUT' : 'N/A')}}</div> -->
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign: {{data.campName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.: {{data.action_No}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time: {{data.ticketElapsedTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1 tableHeaderOne">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Start Time:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{ data.start_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">End Time: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticket_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Duration: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticketTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 10px;">Ticket Type: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="ticketTypeArr"
+                    [(ngModel)]="ticketType" optionLabel="TicketType" [readonly]="updateDisable"
+                    optionValue="itemValue"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 25px;">Status: </div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown  class="p-inputtext-sm"  [options]="statusArr" [(ngModel)]="status" optionLabel="Status" [readonly]="updateDisable"></p-dropdown></div> -->
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="statusArr"
+                    [(ngModel)]="status" optionLabel="label" [readonly]="updateDisable"
+                    optionValue="value"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 10px;">Assigned By: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="assignedArr"
+                    [(ngModel)]="assignedBy" optionLabel="AssignedBy" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 25px;">UpdatedBy: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="updatedByArr"
+                    [(ngModel)]="updatedBy" optionLabel="updated" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div style="margin: 0 13px;" class="cls-new-css-find">Tree: </div>
+        <!-- <div style="margin: 0 13px;">
+            <div>Agent Remarks:</div>
+            <div><textarea type="text" pInputTextarea [(ngModel)]="agentRemarks" [readonly]="updateDisable" [innerHTML]="agentRemarks"></textarea>
+            </div>
+        </div> -->
+        <div class="flex flex-wrap row-1 mt-3" style="margin: 0 13px;">
+            <!-- <button pButton (click)="update()">{{updatedValue}}</button> -->
+            <div style="margin: 0 4px;"></div>
+            <button pButton (click)="ticketHistory(data)">View History</button>
+            <button pButton (click)="ticketOpen(data)" style="margin-left: 5px;">Update Ticket</button>
+        </div>
+    </div>
+    <!-- </div> -->
+</p-dialog>
+
+<p-dialog header="Reply" [(visible)]="replyDialog" [modal]="true" [style]="{ width: '100vw','max-height': '100%','margin':'0px' }" [draggable]="false" 
+    [resizable]="false" [position]="'top'" >
+    <!-- <div class="card view-card"> -->
+    <div class="isMobileViewNot" style="margin-top:5px;">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Account</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="account1"
+                [(ngModel)]="selectedAccount1" optionLabel="account"></p-dropdown></div>
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">To</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from1" /></div>
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Template</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0">
+            <p-dropdown class="p-inputtext-sm" placeholder="Select a Template" [options]="template1" [showClear]="true"
+                [(ngModel)]="selectedTemplate1" optionLabel="label" optionValue="value" (onClick)="getTemplate1()"
+                (onSelect)="selectedReplyTemplate($event)" (onChange)="selectedReplyTemplate($event)"></p-dropdown>
+        </div>
+
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0"><button pButton disabled><i class="pi pi-reply"
+                        style="font-size: 1.5rem"></i>&nbsp;&nbsp;Reply</button></div>
+            <div class="col-12 mb-0 md:col-1 md:mb:0"></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0"><button pButton disabled><i class="pi pi-arrow-right"
+                        style="font-size: 1.5rem"></i>&nbsp;&nbsp;Forward</button></div> -->
+        
+    </div>
+    <div class="isMobileViewNot">
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">CC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC_1" /></div>
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">BCC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_BCC_1" /></div>
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">Subject</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="subject1"></div>
+    </div>
+    <div class="isMobileView" style="margin-top:5px;">
+        <div style="display: flex;">
+          <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">Account</div>
+          <div class="col-9 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="account1"
+                  [(ngModel)]="selectedAccount1" optionLabel="account"></p-dropdown></div>
+        </div>
+     <div style="display: flex;">
+      <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">To</div>
+      <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from1" /></div>
+     </div>
+       <div style="display: flex;">
+        <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">Template</div>
+        <div class="col-9 mb-0 md:col-3 md:mb-0">
+            <p-dropdown class="p-inputtext-sm" placeholder="Select a Template" [options]="template1" [showClear]="true"
+                [(ngModel)]="selectedTemplate1" optionLabel="label" optionValue="value" (onClick)="getTemplate1()"
+                (onSelect)="selectedReplyTemplate($event)" (onChange)="selectedReplyTemplate($event)"></p-dropdown>
+        </div>
+       </div>
+
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0"><button pButton disabled><i class="pi pi-reply"
+                        style="font-size: 1.5rem"></i>&nbsp;&nbsp;Reply</button></div>
+            <div class="col-12 mb-0 md:col-1 md:mb:0"></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0"><button pButton disabled><i class="pi pi-arrow-right"
+                        style="font-size: 1.5rem"></i>&nbsp;&nbsp;Forward</button></div> -->
+       <div style="display: flex;">
+        <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">CC</div>
+        <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC_1" /></div>
+       </div>
+        <div style="display: flex;">
+          <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">BCC</div>
+          <div class="col-9 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_BCC_1" /></div>
+        </div>
+        <div style="display: flex;">
+          <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;">Subject</div>
+        <div class="col-9 mb-0 md:col-7 md:mb-0"><input type="text" pInputText [(ngModel)]="subject1"></div>
+        </div>
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 15px;"></div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"></div> -->
+    </div>
+    <div class="flex flex-wrap row-1" style="    margin-top: -16px;">
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">To</div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from1" /></div> -->
+
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0 isMobileViewNot" style="padding-top: 25px;">Subject</div>
+        <div class="col-12 mb-0 md:col-7 md:mb-0 isMobileViewNot"><input type="text" pInputText [(ngModel)]="subject1"></div> -->
+        <div class="col-12 mb-0 md:col-8 md:mb-0" *ngIf="showFileUpload">
+          <p-fileUpload accept="image/jpeg,image/png,image/gif,application/vnd.ms-excel,application/pdf,
+                  application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                  application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                  audio/mpeg,video/mp4" maxFileSize="50000000" [multiple]="true" customUpload="true"
+              (uploadHandler)="uploadHandler($event)" (onComplete)="onUpload($event)" [multiple]="true">
+              <ng-template pTemplate="content">
+                  <ul *ngIf="uploadedFiles.length">
+                      <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                  </ul>
+              </ng-template>
+          </p-fileUpload>
+      </div>
+        <div class="col-3 mb-0 md:col-1 md:mb-0"><button pButton disabled>Reply</button></div>
+        <div class="col-3 mb-0 md:col-1 md:mb-0"><button pButton disabled>Forward</button></div>
+        <div class="col-6 mb-0 md:col-2 md:mb-0" style="padding-left: 30px !important;"><button pButton
+                (click)="spam()">Mark Spam</button></div>
+    </div>
+
+    <!-- <div class="file flex flex-wrap" *ngIf="showFileUpload">
+        <div class="col-12 mb-0 md:col-10 md:mb-0" style="padding:0.1rem !important;">
+            <p-fileUpload accept="image/jpeg,image/png,image/gif,application/vnd.ms-excel,application/pdf,
+                    application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                    application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                    audio/mpeg,video/mp4" maxFileSize="50000000" [multiple]="true" customUpload="true"
+                (uploadHandler)="uploadHandler($event)" (onComplete)="onUpload($event)" [multiple]="true">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload>
+        </div>
+    </div> -->
+    <div class="flex flex-wrap row-1">
+        <div class="col-12 mb-0 md:col-10 md:mb-0">
+            <p-editor [(ngModel)]="textEditor13"></p-editor>
+            <!-- <p-editor [(ngModel)]="textEditor1" [style]="{ height: '260px' }" [readonly]="true"></p-editor> -->
+            <div style="border: 1px solid lightgray;
+                max-height: 300px;
+                border-radius: 8px;
+                min-height: 300px;
+                overflow-y: scroll;
+                padding: 20px;" [innerHTML]="textEditor1 | safeHtml"></div>
+            <div *ngIf="signature" style="border: 1px solid lightgray; 
+                 max-height: 100px;
+                 border-radius: 8px;
+                 min-height: 100px;
+                 overflow-y: scroll;
+                 padding: 20px;" [readonly]="true" [innerHTML]="signature | safeHtml"></div>
+        </div>
+
+
+
+        <div class="col-12 mb-0 md:col-2 md:mb-0">
+            <button pButton (click)="send1(false)"><i class="pi pi-send" style="font-size: 1.5rem"></i> Send</button>
+            <div style="margin: 5px 0;"></div>
+            <button pButton (click)="send1(true)"><i class="pi pi-send" style="font-size: 1.5rem"></i> Draft</button>
+            <!-- <button pButton (click)="draft1()"><i class="pi pi-send" style="font-size: 1.5rem"></i> Draft</button> -->
+        </div>
+    </div>
+    <div class="attachments card" style="padding:0.1rem !important; width:fit-content !important; margin-top:5px;">
+        <ul style="display:flex" *ngFor="let attachFiles of attachmentList">
+            <li><a (click)="onImageLink(attachFiles)" style="cursor: pointer;">{{attachFiles.fileName}}</a> &nbsp;
+                &nbsp; &nbsp;</li>
+        </ul>
+        <!-- <p-tree class="w-full md:w-30rem" [value]="files"></p-tree> -->
+    </div>
+    <div class="table" *ngFor="let data of ticket1">
+        <div class="header flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.: {{data.ticketID}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source: {{data.sourceName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Type: {{data.source_SubType == 2 ? 'INC': (data.source_SubType
+                == 1 ? 'OUT' : 'N/A')}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign: {{data.campName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.: {{data.action_No}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time: {{data.ticketElapsedTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Start Time:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{ data.start_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">End Time: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticket_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Duration: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticketTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 10px;">Ticket Type: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="ticketTypeArr1"
+                    [(ngModel)]="ticketType1" optionLabel="TicketType" [readonly]="updateDisable1"
+                    optionValue="itemValue"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 25px;">Status: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="statusArr1"
+                    [(ngModel)]="status1" optionLabel="label" [readonly]="updateDisable1"
+                    optionValue="value"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 10px;">Assigned By: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="assignedArr1"
+                    [(ngModel)]="assignedBy1" optionLabel="AssignedBy" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 25px;">UpdatedBy: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="updatedByArr1"
+                    [(ngModel)]="updatedBy1" optionLabel="updated" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div style="margin: 0 13px;" class="cls-new-css-find">Tree: </div>
+        <div style="margin: 0 13px;" >
+            <div class="cls-new-css-find">Agent Remarks:</div>
+            <div><textarea type="text" pInputTextarea [(ngModel)]="agentRemarks1"
+                    [readonly]="updateDisable1"></textarea></div>
+        </div>
+        <div class="flex flex-wrap row-1" style="margin: 0 13px;">
+            <button pButton (click)="update1()">{{updatedValue1}}</button>
+            <div style="margin: 0 4px;"></div>
+            <button pButton (click)="ticketHistory(data)">View History</button>
+        </div>
+    </div>
+    <!-- </div> -->
+</p-dialog>
+
+
+
+<p-dialog header="Forward" [(visible)]="forwardDialog" [modal]="true" [style]="{ width: '100vw','max-height': '100%','margin':'0px' }"  [draggable]="false"
+    [resizable]="false" [position]="'top'">
+    <!-- <div class="card view-card"> -->
+    <div class="isMobileViewNot">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Account</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="account2"
+                [(ngModel)]="selectedAccount2" optionLabel="account"></p-dropdown></div>
+                <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">From</div>
+                <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from2" [readonly]="true" />
+                </div>
+                <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">To</div>
+                <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="to2" /></div>
+       
+       
+    <!-- </div>
+    <div class="flex flex-wrap" style="margin-top:-15px;"> -->
+        
+    <!-- </div>
+    <div class="flex flex-wrap" style="margin-top:-15px;"> -->
+      
+    </div>
+    <div class="isMobileViewNot">
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">CC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC_2" /></div>
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">BCC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_BCC_2" /></div>
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Template</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0">
+          <p-dropdown class="p-inputtext-sm" placeholder="Select a Template" [options]="template2" [showClear]="true"
+              [(ngModel)]="selectedTemplate2" optionLabel="label" optionValue="value" (onClick)="getTemplate2()"
+              (onSelect)="selectedforwardTemplate($event)" (onChange)="selectedforwardTemplate($event)"></p-dropdown>
+      </div>
+    </div>
+    <!-- <div class="isMobileViewNot">
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">CC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC_2" /></div>
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">BCC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_BCC_2" /></div>
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;"></div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"></div>
+    </div> -->
+    <div class="isMobileView">
+<div style="display: flex;">
+  <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Account</div>
+  <div class="col-9 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="account2"
+          [(ngModel)]="selectedAccount2" optionLabel="account"></p-dropdown></div>
+</div>
+<div style="display: flex;">
+  <div class="col-4 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Template</div>
+  <div class="col-9 mb-0 md:col-3 md:mb-0">
+      <p-dropdown class="p-inputtext-sm" placeholder="Select a Template" [options]="template2" [showClear]="true"
+          [(ngModel)]="selectedTemplate2" optionLabel="label" optionValue="value" (onClick)="getTemplate2()"
+          (onSelect)="selectedforwardTemplate($event)" (onChange)="selectedforwardTemplate($event)"></p-dropdown>
+  </div>
+</div>
+
+
+    <!-- </div>
+    <div class="flex flex-wrap" style="margin-top:-15px;"> -->
+       <div style="display: flex;">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">From</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="from2" [readonly]="true" />
+        </div>
+       </div>
+        <div style="display: flex;">
+          <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">To</div>
+          <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="to2" /></div>
+        </div>
+    <!-- </div>
+    <div class="flex flex-wrap" style="margin-top:-15px;"> -->
+     <div style="display: flex;">
+      <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">CC</div>
+      <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_CC_2" /></div>
+     </div>
+      <div style="display: flex;">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;">BCC</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><input type="text" pInputText [(ngModel)]="fld_BCC_2" /></div>
+      </div>
+      <div style="display: flex;">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Subject</div>
+        <div class="col-12 mb-0 md:col-7 md:mb-0"><input type="text" pInputText [(ngModel)]="subject2"></div>
+      </div>
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 20px;"></div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"></div> -->
+    </div>
+    
+    <div class="flex flex-wrap" style="margin-top: -15px;">
+        <div class="col-12 mb-0 md:col-1 md:mb-0 isMobileViewNot" style="padding-top: 25px;">Subject</div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0 isMobileViewNot"><input type="text" pInputText [(ngModel)]="subject2"></div>
+    <!-- </div>
+    <div class="flex flex-wrap row-1" style="    margin-top: -16px;"> -->
+      <div class="col-12 mb-0 md:col-1 md:mb-0"><button pButton disabled><i class="pi pi-reply"
+        style="font-size: 1.5rem"></i>&nbsp;&nbsp;Reply</button></div>
+<!-- <div class="col-12 mb-0 md:col-1 md:mb:0"></div> -->
+<div class="col-12 mb-0 md:col-1 md:mb-0" ><button pButton disabled style="margin-left: 10px;"><i
+        class="pi pi-arrow-right" style="font-size: 1.5rem"></i>&nbsp;&nbsp;Forward</button></div>
+        <div class="col-12 mb-0 md:col-2 md:mb-0" ><button pButton style="margin-left:40px;" (click)="spam()">Mark as Spam</button></div>
+        <div class="col-12 mb-0 md:col-4 md:mb-0" >    <p-fileUpload accept="image/jpeg,image/png,image/gif,application/vnd.ms-excel,application/pdf,
+          application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+          application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+          audio/mpeg,video/mp4" maxFileSize="50000000" [multiple]="true" customUpload="true"
+          (uploadHandler)="uploadHandlerForward($event)" (onComplete)="onUpload1($event)" [multiple]="true">
+          <ng-template pTemplate="content">
+              <ul *ngIf="uploadedFiles.length">
+                  <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+              </ul>
+          </ng-template>
+      </p-fileUpload></div>
+    </div>
+    <!-- <div class="file" style="margin-top:-15px;">
+        <div class="col-12 mb-0 md:col-10 md:mb-0">
+            <p-fileUpload accept="image/jpeg,image/png,image/gif,application/vnd.ms-excel,application/pdf,
+                application/msword,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                audio/mpeg,video/mp4" maxFileSize="50000000" [multiple]="true" customUpload="true"
+                (uploadHandler)="uploadHandlerForward($event)" (onComplete)="onUpload1($event)" [multiple]="true">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload>
+        </div>
+    </div> -->
+    <div class="flex flex-wrap">
+        <div class="col-12 mb-0 md:col-10 md:mb-0">
+            <p-editor [(ngModel)]="textEditor23"></p-editor>
+            <div style="border: 1px solid lightgray;
+                max-height: 300px;
+                border-radius: 8px;
+                min-height: 300px;
+                overflow-y: scroll;
+                padding: 20px;" [innerHTML]="textEditor2 | safeHtml"></div>
+            <div *ngIf="signature" style="border: 1px solid lightgray; 
+                max-height: 100px;
+                border-radius: 8px;
+                min-height: 100px;
+                overflow-y: scroll;
+                padding: 20px;" [innerHTML]="signature | safeHtml"></div>
+        </div>
+        <div class="col-12 mb-0 md:col-2 md:mb-0">
+            <button pButton (click)="send2(false)"><i class="pi pi-send" style="font-size: 1.5rem"></i> Send</button>
+            <div style="margin: 5px 0;"></div>
+            <!-- <button pButton (click)="draft2()"><i class="pi pi-send" style="font-size: 1.5rem"></i> Draft</button> -->
+            <button pButton (click)="send2(true)"><i class="pi pi-send" style="font-size: 1.5rem"></i> Draft</button>
+        </div>
+    </div>
+    <div class="attachments card" style="padding:0.1rem !important; width:fit-content !important; margin-top:5px;">
+        <ul style="display:flex" *ngFor="let attachFiles of attachmentList">
+            <li><a (click)="onImageLink(attachFiles)" style="cursor: pointer;">{{attachFiles.fileName}}</a>
+                &nbsp;&nbsp;&nbsp;</li>
+        </ul>
+        <!-- <p-tree class="w-full md:w-30rem" [value]="files"></p-tree> -->
+    </div>
+    <div class="table" *ngFor="let data of ticket2">
+        <div class="header flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.: {{data.ticketID}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source: {{data.sourceName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Type: {{data.source_SubType == 2 ? 'INC': (data.source_SubType
+                == 1 ? 'OUT' : 'N/A')}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign: {{data.campName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.: {{data.action_No}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time: {{data.ticketElapsedTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Start Time:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{ data.start_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">End Time: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticket_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Duration: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticketTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 10px;">Ticket Type: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="ticketTypeArr2"
+                    [(ngModel)]="ticketType2" optionLabel="TicketType" [readonly]="updateDisable2"
+                    optionValue="itemValue"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 25px;">Status: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="statusArr2"
+                    [(ngModel)]="status2" optionLabel="label" [readonly]="updateDisable2"
+                    optionValue="value"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 10px;">Assigned By: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="assignedArr2"
+                    [(ngModel)]="assignedBy2" optionLabel="AssignedBy" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div class="flex flex-wrap row-1">
+            <div class="col-12 mb-0 md:col-1 md:mb-0 cls-new-css-find" style="padding-top: 25px;">UpdatedBy: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown class="p-inputtext-sm" [options]="updatedByArr2"
+                    [(ngModel)]="updatedBy2" optionLabel="updated" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div style="margin: 0 13px;" class="cls-new-css-find">Tree: </div>
+        <div style="margin: 0 13px;">
+            <div class="cls-new-css-find">Agent Remarks:</div>
+            <div><textarea type="text" pInputTextarea [(ngModel)]="agentRemarks2"
+                    [readonly]="updateDisable2"></textarea></div>
+        </div>
+        <div class="flex flex-wrap row-1" style="margin: 0 13px;">
+            <button pButton (click)="update2()">{{updatedValue2}}</button>
+            <div style="margin: 0 4px;"></div>
+            <button pButton (click)="ticketHistory(data)">View History</button>
+            <!-- <button pButton (click)="ticketHistory()">View History</button> -->
+        </div>
+    </div>
+    <!-- </div> -->
+</p-dialog>
+
+
+
+<p-dialog header="Update Ticket" [(visible)]="getUdatedDialogData" [modal]="true" [style]="{ width: '80vw' }"
+    [draggable]="false" [resizable]="false" [position]="'top'">
+     <!-- ticketing dashboard start -->
+     <div class="p-fluid formgrid grid overflow-y-auto" style="padding: 10px;
+     width: 100%;
+     margin: auto;">
+           <div class="col-12 md:col-12 card p-0">
+             <div class="cardTicket dispositioncard2">
+   
+               <div class="cardTicket" style="background-color: #1089bec9;
+               height: 33px;
+               display: flex;
+               align-items: center;
+               text-align: center;" *ngIf="showTicketCard">
+                 <ul class="cls-new-css-find" style="display: flex; color:white; margin-top:0rem; margin-bottom:0rem; padding-left:0.5rem;font-size: 14px;">
+                   <li>TicketNo: {{ticketNo}}</li>
+                   <span style="margin-left:40px;"></span>
+                   <li>Source: {{sourceName}}</li>
+                   <span style="margin-left:40px;"></span>
+                   <li>Campaign: {{ticketCampaignName}}</li>
+                   <span style="margin-left:40px;"></span>
+                   <li>ActionNo: {{actionNo}}</li>
+                   <span style="margin-left:40px;"></span>
+                   <li>Ticket Time: {{ticketTime}}</li>
+                   <span style="margin-left:40px;"></span>
+                   <li>Duration: {{ticketDuration}}</li>
+                 </ul>
+   
+               </div>
+               <div class="cardTicket" *ngIf="showTicketCard">
+                 <form [formGroup]="customForm">
+                   <div>
+                     <div class="mt-2 dynamic-form-card">
+                       <div class="p-fluid formgrid grid">
+                         <ng-container *ngFor="let field of formFields">
+                           <div *ngIf="field.fld_isNewRow==true"
+                             style="min-inline-size: -webkit-fill-available !important;">
+                           </div>
+                           <div class="field col-12 md:col-12" *ngIf="field.isSeparator==true">{{field.separatorText}}
+                           </div>
+                           <div style="font-size:11px !important; margin-top:5px;" class="field col-12 md:col-2"
+                             *ngIf="field.fld_Enable_Search==false">
+                             <span style="padding-left:10px; ">{{field.name}}</span>
+                           </div>
+                           <div class="field col-12 md:col-2">
+                             <span
+                               *ngIf="field.controlType.value == 0 && field.displayInClient==true && field.isUsed==true && field.isUsed==true && field.fld_Enable_Search==false">
+                               <div
+                                 *ngIf="field.name == 'Phone Number' || field.name == 'PhoneNo' || field.name == 'PhoneNo*' || field.name == 'Phone No'">
+                                 <input type="text" pInputText [formControlName]="field.fld_FieldName" *ngIf="!isMasked"
+                                   required="field.required" class="p-inputtext-sm" style=" user-select: none !important;">
+   
+                                 <input type="text" pInputText id="phoneInput" *ngIf="isMasked" required="field.required"
+                                   class="p-inputtext-sm" style=" user-select: none !important;">
+   
+                               </div>
+   
+                               <!-- <div *ngIf="!(field.name == 'Phone Number')"> -->
+                               <div
+                                 *ngIf="!(field.name == 'Phone Number' ||  field.name == 'PhoneNo' || field.name == 'PhoneNo*'  || field.name == 'Phone No')">
+                                 <input type="text" pInputText [formControlName]="field.fld_FieldName"
+                                   required="field.required" class="p-inputtext-sm" [readonly]="!field.isEditable">
+                               </div>
+                             </span>
+                             <span
+                               *ngIf="field.fld_Enable_Search==true && field.isUsed==true && myStudentFiledTrueFalse && !teacherFiledTrueFalse">
+                               <div
+                                 *ngIf="field.name === 'Student Id' || field.name === 'Student Name' || field.name === 'Grade'">
+                                 <div style="font-size:11px !important; margin-top:5px;">
+                                   <span style="padding-left:10px; ">{{field.name}}</span>
+                                 </div>
+                                 <input type="text" pInputText [formControlName]="field.fld_FieldName"
+                                   required="field.required" class="p-inputtext-sm" [readonly]="!field.isEditable"
+                                   style="user-select: none !important;">
+                               </div>
+                             </span>
+                             <span
+                               *ngIf="field.fld_Enable_Search==true && field.isUsed==true && teacherFiledTrueFalse && !myStudentFiledTrueFalse">
+                               <div
+                                 *ngIf="field.name === 'Teacher Code' || field.name === 'Teacher Name' || field.name === 'Registered Mobile Number'">
+                                 <div style="font-size:11px !important; margin-top:5px;">
+                                   <span style="padding-left:10px; ">{{field.name}}</span>
+                                 </div>
+                                 <input type="text" pInputText [formControlName]="field.fld_FieldName"
+                                   required="field.required" class="p-inputtext-sm" [readonly]="!field.isEditable"
+                                   style="user-select: none !important;">
+                               </div>
+                             </span>
+                             <span
+                               *ngIf="field.controlType.value == 2 && field.displayInClient==true && field.isUsed==true ">
+                               <ng-container *ngIf="!hideDropDownEnableDIsable">
+                                 <div *ngIf="field.name === 'School Code'">
+                                   <!-- <p-dropdown [options]="field.selectItems" optionlabel="label" optionValue="value"
+                                                       class="p-inputtext-sm" [formControlName]="field.fld_FieldName"
+                                                       required="field.required" placeholder="select" [readonly]="!field.isEditable"  (onSelect)="firstParentValue($event,field)" (onChange)="firstParentValue($event,field)"
+                                                       [filter]="true" filterBy="label">
+                                                   </p-dropdown> -->
+                                   <p-dropdown [options]="selctedSchoolCode" [(ngModel)]="schoolCodeValue"
+                                     placeholder="Select" [editable]="true" [ngModelOptions]="{standalone: true}"
+                                     [filter]="true" filterBy="sclCode" (onFilter)="customFilterFunction($event)"
+                                     (onClear)="ocClearData($event)" optionLabel="sclCode"
+                                     (onSelect)="checkValueAfterClick($event)" (onChange)="checkValueAfterClick($event)">
+                                     <ng-template pTemplate="selectedItem" let-selectedUser>
+                                       <div class="selectedUser-item">
+                                         <div>{{selectedUser.sclCode}}</div>
+                                       </div>
+                                     </ng-template></p-dropdown>
+                                 </div>
+                                 <ng-container>
+                                   <div *ngIf="field.name === 'School Name'">
+                                     <input type="text" class="p-inputtext-sm" pInputText [(ngModel)]="schoolNameValue"
+                                       [ngModelOptions]="{standalone: true}" />
+                                   </div>
+                                   <div *ngIf="field.name === 'District'">
+                                     <input type="text" class="p-inputtext-sm" pInputText [(ngModel)]="districtValue"
+                                       [ngModelOptions]="{standalone: true}" />
+                                   </div>
+                                   <div *ngIf="field.name === 'Block Name'">
+                                     <input type="text" class="p-inputtext-sm" pInputText [(ngModel)]="blockNameValue"
+                                       [ngModelOptions]="{standalone: true}" />
+                                   </div>
+                                 </ng-container>
+   
+                               </ng-container>
+                               <ng-container
+                                 *ngIf="hideDropDownEnableDIsable && field.name != 'Designation' && field.name != 'Problem Reported' && field.name != 'Problem Category' && field.name != 'Dependent upon (State/CG)' &&  field.name != 'Bot Name'">
+                                 <input type="text" pInputText [formControlName]="field.fld_FieldName"
+                                   required="field.required" class="p-inputtext-sm" [readonly]="!field.isEditable"
+                                   style="user-select: none !important;">
+                                 <span (click)="returnDropDownFirst" *ngIf="field.name === 'School Code'" style="    position: relative; 
+                                        float: right;
+                                        bottom: 43px;
+                                        left: 6px;">
+                                   <i class="pi pi-times-circle" style="font-size: 20px" (click)="returnDropDownFirst()"
+                                     sty></i>
+                                 </span>
+                               </ng-container>
+                               <ng-container
+                                 *ngIf="hidePropertyValueEnable && field.name != 'Designation'   &&  field.name != 'Bot Name' && field.name != 'District' &&  field.name != 'School Name' && field.name != 'School Code' && field.name != 'Block Name'">
+                                 <input type="text" pInputText [formControlName]="field.fld_FieldName"
+                                   required="field.required" class="p-inputtext-sm" [readonly]="!field.isEditable"
+                                   style="user-select: none !important;">
+                                 <span (click)="returnDropDownSecond" *ngIf="field.name === 'Problem Reported'" style="    position: relative;
+                                        float: right;
+                                        bottom: 43px;
+                                        left: 6px;">
+                                   <i class="pi pi-times-circle" style="font-size: 20px"
+                                     (click)="returnDropDownSecond()"></i>
+                                 </span>
+                               </ng-container>
+                               <div
+                                 *ngIf="field.name != 'District' &&  field.name != 'School Name' && field.name != 'School Code' && field.name != 'Block Name' && field.name != 'Problem Reported' && field.name != 'Problem Category' && field.name != 'Dependent upon (State/CG)'">
+                                 <p-dropdown [options]="field.selectItems" optionlabel="label" optionValue="value"
+                                   (onSelect)="getingBotNameValue($event,field)"
+                                   (onChange)="getingBotNameValue($event,field)" class="p-inputtext-sm"
+                                   [formControlName]="field.fld_FieldName" required="field.required" placeholder="select"
+                                   [readonly]="!field.isEditable" [filter]="true" filterBy="label">
+                                 </p-dropdown>
+                               </div>
+                               <ng-container *ngIf="!hidePropertyValueEnable">
+                                 <div *ngIf="field.name === 'Problem Reported'">
+                                   <!-- <p-dropdown [options]="field.selectItems" optionlabel="label" optionValue="value"
+                                                   class="p-inputtext-sm" [formControlName]="field.fld_FieldName"
+                                                   required="field.required" placeholder="select" [readonly]="!field.isEditable"  (onSelect)="firstProblemDropDownValue($event,field)" (onChange)="firstProblemDropDownValue($event,field)"
+                                                   [filter]="true" filterBy="label">
+                                               </p-dropdown> -->
+                                   <p-dropdown [options]="getValueParakhBot" [(ngModel)]="problemReportedValue"
+                                     [ngModelOptions]="{standalone: true}" optionLabel="value" optionValue="value"
+                                     class="p-inputtext-sm" placeholder="Select"
+                                     (onSelect)="firstProblemDropDownValue($event,field)"
+                                     (onChange)="firstProblemDropDownValue($event,field)" [filter]="true" filterBy="value">
+                                     <ng-template pTemplate="selectedItem" let-selectedUser>
+                                       <div class="selectedUser-item" style="width: 100px !important;">
+                                         <div>{{selectedUser.value}}</div>
+                                       </div>
+                                     </ng-template>
+                                   </p-dropdown>
+                                 </div>
+                                 <div *ngIf="field.name === 'Problem Category' && mainProblemDropDownValue">
+                                   <p-dropdown [options]="ProblemCategoryArr" optionlabel="label" optionValue="value"
+                                     class="p-inputtext-sm" [formControlName]="field.fld_FieldName"
+                                     required="field.required" placeholder="select" [readonly]="!field.isEditable"
+                                     (onSelect)="ProblemCategoryVFun($event,field)"
+                                     (onChange)="ProblemCategoryVFun($event,field)" [filter]="true" filterBy="label">
+                                   </p-dropdown>
+                                 </div>
+                                 <div *ngIf="field.name === 'Problem Category' && !mainProblemDropDownValue">
+                                   <p-dropdown [options]="field.selectItems" optionlabel="label" optionValue="value"
+                                     class="p-inputtext-sm" [formControlName]="field.fld_FieldName"
+                                     required="field.required" placeholder="select" [readonly]="!field.isEditable"
+                                     (onSelect)="ProblemCategoryVFun($event,field)"
+                                     (onChange)="ProblemCategoryVFun($event,field)" [filter]="true" filterBy="label">
+                                   </p-dropdown>
+                                 </div>
+                                 <div *ngIf="field.name === 'Dependent upon (State/CG)' && mainNewVariableCheckDepenedent">
+                                   <p-dropdown [options]="dependentVariavbles" optionlabel="label" optionValue="value"
+                                     class="p-inputtext-sm" [formControlName]="field.fld_FieldName"
+                                     required="field.required" placeholder="select" [readonly]="!field.isEditable"
+                                     (onSelect)="DependentuponFunc($event,field)"
+                                     (onChange)="DependentuponFunc($event,field)" [filter]="true" filterBy="label">
+                                   </p-dropdown>
+                                 </div>
+                                 <div
+                                   *ngIf="field.name === 'Dependent upon (State/CG)' && !mainNewVariableCheckDepenedent">
+                                   <p-dropdown [options]="field.selectItems" optionlabel="label" optionValue="value"
+                                     class="p-inputtext-sm" [formControlName]="field.fld_FieldName"
+                                     required="field.required" placeholder="select" [readonly]="!field.isEditable"
+                                     (onSelect)="DependentuponFunc($event,field)"
+                                     (onChange)="DependentuponFunc($event,field)" [filter]="true" filterBy="label">
+                                   </p-dropdown>
+                                 </div>
+                               </ng-container>
+   
+                             </span>
+   
+                             <span
+                               *ngIf="field.controlType.value == 3 && field.displayInClient==true && field.isUsed==true">
+                               <div>
+                                 <p-checkbox binary="true" inputId="binary" [formControlName]="field.fld_FieldName"
+                                   required="field.required" [readonly]="!field.isEditable">
+                                 </p-checkbox>
+                               </div>
+                             </span>
+   
+                             <span
+                               *ngIf="field.controlType.value == 4 && field.displayInClient==true && field.isUsed==true">
+                               <div>
+                                 <p-radioButton [formControlName]="field.fld_FieldName" required="field.required"
+                                   [readonly]="!field.isEditable">
+                                 </p-radioButton>
+                               </div>
+                             </span>
+   
+                             <span
+                               *ngIf="field.controlType.value == 5 && field.displayInClient==true && field.isUsed==true">
+                               <div>
+                                 <p-listbox [formControlName]="field.fld_FieldName" optionLabel="name"
+                                   required="field.required" [readonly]="!field.isEditable"></p-listbox>
+                               </div>
+                             </span>
+   
+                             <span
+                               *ngIf="field.controlType.value == 1 && field.displayInClient==true && field.isUsed==true">
+                               <div>
+                                 <textarea pInputTextarea [formControlName]="field.fld_FieldName" required="field.required"
+                                   [readonly]="!field.isEditable"></textarea>
+                               </div>
+                             </span>
+   
+                             <span
+                               *ngIf="field.controlType.value == 8 && field.displayInClient==true && field.isUsed==true">
+                               <div>
+                                 <p-multiSelect [options]="cities" class="p-inputtext-sm" optionLabel="name"
+                                   required="field.required" [formControlName]="field.fld_FieldName" placeholder="select"
+                                   [readonly]="!field.isEditable"></p-multiSelect>
+                               </div>
+                             </span>
+                           </div>
+                         </ng-container>
+                       </div>
+                       <!-- <div class="field col-12 md:col-5 flex">
+                               <p-button label="New Ticket" (onClick)="newTicket()" [hidden]="!ticketEnable"></p-button>
+                               <div style="margin: 0 5px;"></div>
+                               <p-button label="Open DM Chat" (click)="dmChat()" [hidden]="!liveDM"></p-button>
+                           </div> -->
+                     </div>
+                   </div>
+                 </form>
+                 <!-- assign by && Ticket Status -->
+                 <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;">
+                   <div class="col-12 mb-0 md:col-2 md:mb-0 cls-new-css-find">Assigned By:<span style="color:red">*</span></div>
+                   <div class="col-12 mb-0 md:col-3 md:mb-0">
+                     <input type="text" pInputText [(ngModel)]="selectedAssignedBy" readonly="true"
+                       class="p-inputtext-sm" />
+                   </div>
+   
+                   <div class="col-12 mb-0 md:col-2 md:mb-0 cls-new-css-find">Ticket Status<span style="color:red">*</span></div>
+                   <div class="col-12 mb-0 md:col-3 md:mb-0">
+                     <p-dropdown class="p-inputtext-sm" id="ticketStatus" [options]="ticketStatusDropdownData"
+                       [disabled]="disabledTicketFields" [filter]="true" filterBy="label" optionLabel="label"
+                       optionValue="value" [(ngModel)]="selectedticketStatus" [showClear]="true" placeholder="Select"
+                       (onClick)="getTicketStatus()">
+                       <ng-template let-selectedType pTemplate="item">
+                         <div class="selectedType-item">
+                           <div>{{selectedType.label}}</div>
+                         </div>
+                       </ng-template>
+                     </p-dropdown>
+                   </div>
+                 </div>
+   
+                 <!-- ticket type -->
+                 <!-- <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;">
+                       <div class="col-12 mb-0 md:col-2 md:mb-0 ">Ticket Type:<span style="color:red">*</span></div>
+                       <div class="col-12 mb-0 md:col-3 md:mb-0">
+                           <i class="pi pi-chevron-circle-left" style="font-size: 1.7rem"
+                               (click)="previousIconTicketType()"></i>
+                           <p-dropdown class="p-inputtext-sm" id="ticketType" [options]="ticketTypeDropdownData"
+                               appendTo="body" [disabled]="disabledTicketFields" [filter]="true" filterBy="label"
+                               optionLabel="label" optionValue="value" [(ngModel)]="selectedTicketType" [showClear]="true"
+                               placeholder="Select ">
+                               <ng-template let-selectedType pTemplate="item">
+                                   <div class="selectedType-item">
+                                       <div>{{selectedType.label}}</div>
+                                   </div>
+                               </ng-template>
+                           </p-dropdown>
+                           <i class="pi pi-chevron-circle-right" style="font-size: 1.7rem"
+                               (click)="forwardIconTicketType()"></i>
+                       </div>
+                   </div> -->
+   
+                 <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;">
+                   <div class="col-12 mb-0 md:col-2 md:mb-0 cls-new-css-find">Ticket Type:<span style="color:red">*</span></div>
+   
+                   <!-- 1st Dropdown -->
+                   <div class="col-12 mb-0 md:col-3 md:mb-0" *ngFor="let item of arrObj; let i = index">
+                     <p-dropdown class="p-inputtext-sm" id="ticketType[i]" [options]="ticketTypeDropdownData[i]"
+                       [disabled]="disabledTicketFields" appendTo="body" [filter]="true" filterBy="label"
+                       optionLabel="label" optionValue="value" [(ngModel)]="selectedTicketType[i] " [showClear]="true"
+                       placeholder="Select" (onChange)="ticketTypeDropdown(i)">
+                       <ng-template let-selectedType pTemplate="item">
+                         <div class="selectedType-item">
+                           <div>{{selectedType.label}}</div>
+                         </div>
+                       </ng-template>
+                     </p-dropdown>
+                   </div>
+   
+                 </div>
+   
+   
+                 <!-- tree -->
+                 <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;">
+                   <div class="col-12 mb-0 md:col-12 md:mb-0 cls-new-css-find">Tree : {{tree}}</div>
+   
+                 </div>
+   
+                 <!-- voice file -->
+                 <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;"
+                   *ngIf="voicefile">
+                   <div class="col-12 mb-0 md:col-2 md:mb-0 cls-new-css-find">Voice File:</div>
+                   <div class="col-12 mb-0 md:col-6 md:mb-0">
+                     <audio controls>
+                       <source [src]="voicefile" type="audio/wav">
+                     </audio>
+                   </div>
+                 </div>
+   
+                 <!-- agent remarks && moved to below just above the callback section -->
+                 <!-- <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;">
+                       <div class="col-12 mb-0 md:col-2 md:mb-0">Agent Remarks:</div>
+                       <div class="col-12 mb-0 md:col-6 md:mb-0">
+                           <textarea rows="2" cols="40" id="agentRemarks" name="agentRemarks" pInputTextarea
+                               [disabled]="disabledTicketFields" placeholder=" " [(ngModel)]="agentRemarks"></textarea>
+                       </div>
+                   </div> -->
+               </div>
+   
+         
+   
+               <div class="cardTicket" *ngIf="showTicketCard">
+                 <div class="grid forms-grid flex-row p-fluid" style="padding-left: 10px !important; margin-top:10px;">
+                   <div class="col-12 mb-0 md:col-2 md:mb-0 cls-new-css-find">Agent Remarks:</div>
+                   <div class="col-12 mb-0 md:col-6 md:mb-0">
+                     <textarea rows="2" cols="40" id="agentRemarks" name="agentRemarks" pInputTextarea
+                       [disabled]="disabledTicketFields" placeholder=" " [(ngModel)]="agentRemarks"></textarea>
+                   </div>
+                 </div>
+               </div>
+   
+   
+               <div class="cardTicket" *ngIf="showTicketCard">
+                 <div class="grid forms-grid flex-row p-fluid"
+                   style="padding-left: 10px !important; margin-top:10px;padding-bottom: 11px;">
+   
+                   <!-- <div class="col-12 mb-0 md:col-1 md:mb-0">
+                     <div class="cls-new-css-find">TicketNo</div>
+                   </div>
+                   <div class="col-12 mb-0 md:col-2 md:mb-0">
+                     <div><input class="p-inputtext-sm" type="text" pInputText [(ngModel)]="ticketNo" /></div>
+                   </div>
+   
+                   <div class="col-12 mb-0 md:col-2 md:mb-0">
+                     <button (click)="ticketHistory1(ticketNo)" pButton pRipple type="button" label="Ticket History"
+                       >
+                     </button>
+                   </div> -->
+            <!-- <button pButton (click)="ticketHistory(data)">View History</button> -->
+
+                   <div class="col-12 mb-0 md:col-2 md:mb-0">
+                     <button pButton pRipple type="submit"  label="Save"
+                       (click)="saveDynamicLeadCustField()" *ngIf="showSaveButton">
+                     </button>
+                     <!-- <button pButton pRipple type="submit"  label="Save" (click)="saveTicketData()"
+                               *ngIf="showSaveButton">
+                           </button> -->
+   
+                     <button pButton (click)="updateTiecket()" pButton pRipple  type="Update"
+                       label="Update" *ngIf="showUpdateButton">
+                     </button>
+                   </div>
+                 </div>
+               </div>
+             </div>
+   
+   
+   
+           </div>
+         </div>
+         <!-- ticketing dashboard end-->
+</p-dialog>
+<p-dialog header="Email Ticket History" [(visible)]="ticketHistoryDialog" [modal]="true" [style]="{ width: '80vw' }"
+    [draggable]="false" [resizable]="false" [position]="'top'">
+    <ng-container >
+        <form [formGroup]="customForm">
+            <div>
+                <div class="card dynamic-form-card">
+                    <div class="p-fluid formgrid grid">
+            <ng-container *ngFor="let field of formFields">
+                <div *ngIf="field.fld_isNewRow==true" style="min-inline-size: -webkit-fill-available !important;">
+                </div>
+                <div class="field col-12 md:col-12" *ngIf="field.isSeparator==true">{{field.separatorText}}</div>
+                <div style="font-size:11px !important; margin-top:5px;" class="field col-12 md:col-2" *ngIf="field.displayInClient==true && field.isUsed==true">
+                    <span style="padding-left:10px; " >{{field.name}}</span>
+                </div>
+                <div class="field col-12 md:col-2">
+                    <input type="text" pInputText [formControlName]="field.fld_FieldName" 
+                    required="field.required" class="p-inputtext-sm" [readonly]="true"
+                    style="cursor: not-allowed; user-select: none !important;">
+
+                </div>
+            </ng-container>
+                    </div>
+                </div>
+            
+            </div>
+        </form>
+    </ng-container>
+    <div class="table mt-4" *ngFor="let data of noOfTables">
+        <div class="header flex flex-wrap row-1 tableHeaderOne">
+            <!-- <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Type:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time:</div> -->
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.: {{data.ticketID}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source: {{data.sourceName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Type: {{data.source_SubType == 2 ? 'INC': (data.source_SubType ==
+                1 ? 'OUT' : 'N/A')}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign: {{data.campName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.: {{data.action_No}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time: {{data.ticketElapsedTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1 tableHeaderOne">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Start Time:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{ data.start_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">End Time: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticket_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Duration: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticketTime}}</div>
+        </div>
+        <div class="flex flex-wrap row-1 cls-new-css-find-one">
+            <div class="col-12 mb-0 md:col-2 md:mb-0 " style="padding-top: 13px;">Ticket Type: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.ticket_type_name}}</div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown  class="p-inputtext-sm"  [options]="ticketTypeHistoryArr" [(ngModel)]="ticketTypeHistory" optionLabel="TicketType"  optionValue="itemValue"></p-dropdown></div> -->
+            <div class="col-12 mb-0 md:col-2 md:mb-0 " style="padding-top: 13px;">Status: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.ticket_StatusName}}</div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown  class="p-inputtext-sm"  [options]="statusHistoryArr" [(ngModel)]="statusHistory" optionLabel="label"  optionValue="value"></p-dropdown></div> -->
+            <div class="col-12 mb-0 md:col-2 md:mb-0 " style="padding-top: 13px;">Assigned By: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.assignedByID}}</div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown  class="p-inputtext-sm"  [options]="assignedHistoryArr" [(ngModel)]="assignedByHistory" optionLabel="AssignedBy" ></p-dropdown></div> -->
+        </div>
+        <div class="flex flex-wrap row-1 cls-new-css-find-one">
+            <div class="col-12 mb-0 md:col-2 md:mb-0 " style="padding-top: 13px;">UpdatedBy: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.updatedByID}}</div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown  class="p-inputtext-sm"  [options]="updatedByHistoryArr" [(ngModel)]="updatedByHistory" optionLabel="updated" ></p-dropdown></div> -->
+        </div>
+        <div style="margin: 0 13px;" class="cls-new-css-find-one">Tree: </div>
+        <div class="flex flex-wrap row-1 cls-new-css-find-one">
+            <div class="col-12 mb-0 md:col-2 md:mb-0 ">Agent Remarks:</div>
+            <div class="col-12 mb-0 md:col-10 md:mb-0" [innerHTML]="data.remarks">{{data.remarks}}</div>
+            <!-- <div><textarea  type="text" pInputTextarea  [(ngModel)]="agentRemarksHistory"></textarea></div> -->
+        </div>
+    </div>
+</p-dialog>
+<p-toast></p-toast>

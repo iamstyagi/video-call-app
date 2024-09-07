@@ -1,0 +1,66 @@
+.card1 {
+    border: 1px solid lightgrey;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Add a smooth background color transition */
+    height: 50px;
+    padding: 5px 15px;
+
+    &:hover {
+        background-color: #ececec; /* Change background color on hover */
+    }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+    }
+
+    .user-avatar {
+        margin-right: 20px;
+    }
+
+    .user-name {
+        font-weight: bold;
+        color: #333; /* Change text color */
+    }
+
+    .user-last-message {
+        color: #666; /* Change text color */
+    }
+}
+
+
+.new{
+    width: 25%;
+    padding: 10px 9px;
+    /* border: 2px solid red; */
+    // background: rgb(3, 83, 136) !important;
+    background: #128C7E !important;
+    border: #128C7E !important;
+    color: #fff;
+    border-radius: 5px;
+    margin-left: 7px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.truncate-text {
+    white-space: nowrap;
+    overflow: hidden;   
+    text-overflow: ellipsis; 
+    max-width: 100%;       
+  }
+  
+
+  .unread{
+    padding: 3px 7px;
+    border-radius: 30px;
+    margin-right: 3px;
+    // background: lightgreen;
+    // background: rgb(3, 83, 136) !important;
+    background: #25d366 !important;
+    color: #fff;
+  }

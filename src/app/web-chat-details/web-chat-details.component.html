@@ -1,0 +1,154 @@
+<div class="flex flex-column md:flex-row gap-3" style="height: 100vh;">
+    <!-- <div class="md:w-14rem card p-0"  style="border-radius: 0 !important; height: 100vh; background: white !important;"> -->
+    <div class="md:w-14rem card p-0" [ngStyle]="sideBarMange ? {'display': 'block'} : {'display': 'none'}" style="border-radius: 0 !important; height: 100vh; background: white !important;">
+        <!-- <app-web-chat-sidebar></app-web-chat-sidebar> -->
+        <div class="w-full h-full flex row-gap-4 flex-column surface-border p-2" style="background-color: #ebeef2 !important;">
+            <div class="flex mb-2">
+                <span class="p-input-icon-left" *ngIf="nofificationDetailsArray" style="width: 100%;">
+                    <i class="pi pi-search" style="margin-top: -7px;"></i>
+                    <input type="text" pInputText placeholder="Search" class="w-full" [(ngModel)]="searchValue" 
+                      autocomplete="off" />
+                  </span>
+            </div>
+          
+            <div class="flex flex-row mb-1 gap-4 md:flex-column overflow-auto" style="margin-top: -20px;">
+              <br>
+              <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none
+              hover:surface-hover transition-colors transition-duration-150 newcsshvr" *ngFor="let item of nofificationDetailsArray | filterPhoneNo: searchValue;let i = index"
+               tabindex="0"  [ngClass]="{'active': i === activeTabIndex}"
+               (click)="activateTab(i);sendDataToChild(item)">
+              <div  class="flex align-items-center"  >
+                  <div class="md:mr-2">
+                      <!-- <p-badge [value]=" item?.seen == false ? '1' : '0'" ></p-badge> -->
+                      <!-- <img src="assets/images/dummy-pro.jpg" alt="user" class="w-2arem h-2rem border-circle shadow-4"> -->
+                      <div [ngStyle]="getAvatarStyle(item.phoneNo)" class="border-circle shadow-4">
+                        {{ item.phoneNo.substring(2, 4) }}
+                    </div>
+                  </div>
+                  <div class="flex-column hidden md:flex" >
+                   
+                      <span class="text-900 font-semibold block" style="    display: flex !important;
+                      justify-content: space-between;" [ngClass]="{'active1': i === activeTabIndex}">{{item?.phoneNo}} 
+        <!-- <p class="truncate-text" style="margin: 0; padding: 0;"> {{ item?.seen == true ? '1' : '0'}}</p> -->
+
+                        <i class="pi pi-info-circle" (click)="customerInfoDialog(item)" style="padding-left: 8px;
+                        margin-top: 4px;"></i>
+                      </span>
+                  </div>
+              </div>
+          </div>
+            </div>
+          
+          </div>
+    </div>
+
+    <p-dialog header="Customer Detail" [(visible)]="customerInfo" [style]="{width: '75vw',height:'85vh'}" [modal]="true"  [draggable]="false" [resizable]="true">
+      
+        <div class="grid forms-grid flex-row p-fluid" style="margin-top: 15px;">
+            <!-- <div class="col-12 mb-0 md:col-1 md:mb-0 contect-inner-data content-padding "
+                style="padding-left:18px; margin-top:15px;">
+                <span>Customer</span>
+            </div> -->
+            <div class="col-12 mb-0 md:col-3 md:mb-0 " style="margin-top:0px;padding-top: 0px;padding-bottom: 0px;" *ngFor="let field of array; let i = index">
+                <div  class="field" >
+                    <!-- <label class="block" style="font-weight: 600;">
+                        <input type="text" [(ngModel)]="field.name" pInputText>
+                    </label> -->
+                    <label class="block" style="font-weight: 600;">{{ field.name }}</label>
+                    <span>
+                        <div  *ngIf="field?.controlType == 'TextField' && (field?.controlValueType== 'Text' || field?.controlValueType == 'Numeric' || field?.controlValueType == 'Email' || field?.controlValueType == 'AssignedToAgentID' || field?.controlValueType == 'EMail' || field?.controlValueType== 'CRM_CallID' || field?.controlValueType== 'Circle')">
+                            <input style="padding-left: 5px !important" type="text" class="newAdded" value="{{field.value}}" [disabled]="!field.isEditable" [required]="field.required" 
+                            [(ngModel)]="field.value" (keyup)="saveEditedValues(i,field)" pInputText>
+                        </div>
+                        <div  *ngIf="field?.controlType == 'ComboBox' &&  field?.controlValueType== 'Text'">
+                            <input style="padding-left: 5px !important" type="text" class="newAdded" value="{{field.value}}" [disabled]="!field.isEditable" [required]="field.required" 
+                            [(ngModel)]="field.value" (keyup)="saveEditedValues(i,field)" pInputText>
+                        </div>
+
+                                                    <div  *ngIf="field?.controlType == 'TextField' && field?.controlValueType== 'TimeOnly'">
+                                                    
+                                                            <p-calendar  [showTime]="true" [showSeconds]="true" class="newAdded" timeOnly="true"  dateFormat="HH:mm:ss" [(ngModel)]="field.value" value="{{field.value}}" [disabled]="!field.isEditable" [required]="field.required" (onSelect)="onSelectTimeOnly($event,field)">
+                                                            </p-calendar>
+                                                    </div>
+                                                    <div  *ngIf="field?.controlType == 'TextField' && field?.controlValueType== 'SystemDate'">
+                                                    
+                                                            <!-- <p-calendar  [showTime]="true" [showSeconds]="true" class="newAdded" timeOnly="true"  value="{{field.value}}" >
+                                                            </p-calendar> -->
+                                                            
+                                                            <p-calendar    class="newAdded"  [(ngModel)]="field.value" dateFormat="yy-mm-dd" value="{{field.value}}" [disabled]="!field.isEditable" [required]="field.required" (onSelect)="onSelectSystemDate($event,field)">
+                                                            </p-calendar>
+                                                    </div>
+                                                    <div  *ngIf="field?.controlType == 'TextField' &&  field?.controlValueType== 'SystemDateTime'">
+                                                            <p-calendar  [showTime]="true" [showSeconds]="true"  class="newAdded"  [(ngModel)]="field.value" dateFormat="yy-mm-dd" [hourFormat]="24" [disabled]="!field.isEditable" [required]="field.required"  value="{{field.value}}" (onSelect)="onSelectSystemDateTime($event,field)"></p-calendar>
+                                                    </div>
+                                                    <div  *ngIf="field?.controlType == 'TextField' &&  field?.controlValueType== 'DateTime'">
+                                                            <p-calendar  [showTime]="true" [showSeconds]="true"  class="newAdded"  [(ngModel)]="field.value" dateFormat="yy-mm-dd" [hourFormat]="24" [disabled]="!field.isEditable" [required]="field.required"  value="{{field.value}}" (onSelect)="onSelectDateTime($event,field)"></p-calendar>
+                                                    </div>
+                                                    <div  *ngIf="field?.controlType == 'TextField' &&  field?.controlValueType== 'SystemTime'">
+                                                            <p-calendar  [showTime]="true" [showSeconds]="true"  class="newAdded"  [(ngModel)]="field.value" dateFormat="yy-mm-dd" [hourFormat]="24" [disabled]="!field.isEditable" [required]="field.required"  value="{{field.value}}" (onSelect)="onSelectDateTime($event,field)"></p-calendar>
+                                                    </div>
+                                                    <div  *ngIf="field?.controlType == 'TextField' && field?.controlValueType== 'DateOnly'">
+                                                    
+                                                            <p-calendar   class="newAdded"  dateFormat="yy-mm-dd" [(ngModel)]="field.value" value="{{field.value}}" [disabled]="!field.isEditable" [required]="field.required" (onSelect)="onSelectDateOnly($event,field)">
+                                                            </p-calendar>
+                                                    </div>
+
+                        <!-- <div  *ngIf="field?.controlType == 'TextField'">
+                            <input type="text" [(ngModel)]="field.value" (keyup)="saveEditedValues(i,field)"
+                                pInputText>
+                        </div> -->
+                        <div  *ngIf="field?.controlType == 'CheckBox'">
+                            <!-- <p-checkbox name="chkbox_showEnabled" [binary]="true"
+                                [ngModelOptions]="{standalone: true}" [(ngModel)]="field.value"></p-checkbox> -->
+                                <ng-container *ngFor="let item of field?.selectItems">
+                                    <ng-container *ngIf="field.value === item.value">
+                                        <p-checkbox name="chkbox_showEnabled" [binary]="true"
+                                            [ngModelOptions]="{standalone: true}"  [ngModel]="field.value === item.value" label="{{ item.label }}" [disabled]="!field.isEditable" [required]="field.required"  (click)="updateSelection(field, item)"></p-checkbox>
+                                        </ng-container>
+                                    <ng-container *ngIf="field.value != item.value">
+                                        <p-checkbox name="chkbox_showEnabled" [binary]="true"
+                                            [ngModelOptions]="{standalone: true}" [(ngModel)]="item.selected"  label="{{ item.label }}"  [disabled]="!field.isEditable" [required]="field.required" (click)="updateSelection(field, item)"></p-checkbox>
+                                        </ng-container>
+                                    </ng-container>
+                        </div>
+                        <div  *ngIf="field?.controlType == 'RadioList'">
+                            <!-- <p-radioButton [inputId]="field.value" name="category" [value]="field.value"
+                                [(ngModel)]="field.value" label="{{ field.label }}">
+                            </p-radioButton> -->
+                            <ng-container *ngFor="let item of field?.selectItems">
+                            <p-radioButton [inputId]="item.value" name="radioOption" [value]="item.value"
+                            [(ngModel)]="field.value" label="{{ item.label }}" [disabled]="!field.isEditable" [required]="field.required">
+                        </p-radioButton>
+                             </ng-container>
+                        </div>
+                        <div  *ngIf="field?.controlType == 'Dropdown'">
+                            <!-- <input type="text" [(ngModel)]="field.value" (keyup)="saveEditedValues(i,field)"  pInputText> -->
+                            <p-dropdown id="type" [options]="field.selectItems" class="p-inputtext-sm"
+                                [filter]="true" filterBy="label" optionLabel="label" optionValue="value"
+                                [(ngModel)]="field.value" (onClick)="getNewValue(field.value)"
+                                (onChange)="getselectedDropdownValue(field)" [disabled]="!field.isEditable" [required]="field.required"
+                                [style]="{'background-color':'#f5f5f5'}">
+                                <ng-template let-selectItems pTemplate="item">
+                                    <div class="selectedType-item">
+                                        <div>{{selectItems?.label}}</div>
+                                    </div>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div  *ngIf="field?.controlType == 'TextArea'">
+                            <!-- <input type="text" [(ngModel)]="field.value" (keyup)="saveEditedValues(i,field)"  pInputText> -->
+                            <textarea value="{{field.value}}" [(ngModel)]="field.value" pInputTextarea [disabled]="!field.isEditable" [required]="field.required"></textarea>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="setDiv">
+            <button pButton pRipple type="button" class="p-button p-button-filled p-button-danger newbtnClass" label="Update" (click)="sendToChat()"></button>
+        </div>
+        
+    </p-dialog>
+    <div class="flex-1 card p-0" style="border-radius: 0 !important; background: url('assets/images/bg-image.jpg');width: 100%;" >
+        <app-web-chat-box [parentValue]="sendValueTochild" (sendChildValue)="newFunction($event);"></app-web-chat-box>
+    </div>
+</div>

@@ -1,0 +1,43 @@
+.active {
+    background-color: #1089be !important;
+    color: #ffffff !important;
+   }
+.newcsshvr:hover {
+    background-color: #86b8d5 !important;
+    color: #ffffff !important;
+   }
+   .active1 {
+    color: #ffffff !important;
+    // font-weight: 400 !important;
+    // font-size: 12px;
+   }
+   .setDiv{
+       display: flex;
+       justify-content: center;
+   }
+   .newbtnClass{
+       color: #ffffff;
+       background: #1089be;
+       border: 1px solid #1089be;
+       padding: 0.75rem 1.25rem;
+       font-size: 1rem;
+       transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+       border-radius: 6px;
+       width: auto;
+       justify-content: center;
+       align-items: center;
+       text-align: center;
+   }
+   .font-semibold {
+    font-weight: 400 !important;
+    font-size: 12px;
+}
+// .active1{
+//     font-weight: 400 !important;
+//     font-size: 12px;
+// }
+::ng-deep .p-badge-no-gutter {
+    position: absolute;
+    bottom: 26px;
+    left: 0;
+}

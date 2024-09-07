@@ -1,0 +1,547 @@
+<div class="layout-topbar">
+    <div class="layout-topbar-left">
+        <a class="app-name">
+            <img alt="main logo"
+                src="assets/images/symbol.svg" class="app-logo smallLogo">
+            <img src="assets/images/icallmate-ucp.png"
+                class="bigImage">
+            <!-- <span style="font-family: 'Open Sans', sans-serif; width: max-content;">iUnifyMate-uCP</span> -->
+        </a>
+
+        <a class="menu-button" (click)="appMain.onMenuButtonClick($event)" style="cursor: pointer;">
+            <div class="menu-button-icon"></div>
+        </a>
+
+        <div  class="notMobileResponse addMainData">
+            <div style="display: flex; margin-left:40px;">
+                <!-- dashboard -->
+                <a class="menu-button" (click)="openDashboard()" [hidden]="!ticketEnable">
+                    <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"></path>
+                    </svg>
+                    <div style="font-size: 8px;">Dashboard</div>
+                </a>
+                <!-- web chat dashboard -->
+                <a class="menu-button" (click)="openWebChatDash()" [hidden]="!enableChat">
+                    <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"></path>
+                    </svg>
+                    <div style="font-size: 8px;">Web Chat Dashboard</div>
+                </a>
+
+                <!-- apr dashboard -->
+                <a class="menu-button" (click)="onAPRDashboard()">
+                    <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M3 13H11V3H3V13ZM3 21H11V15H3V21ZM13 21H21V11H13V21ZM13 3V9H21V3H13Z"></path>
+                    </svg>
+                    <div style="font-size: 8px;">APR Dashboard</div>
+                </a>
+            </div>
+
+
+            <div style="display: flex; margin-top: 10px;">
+                <span [hidden]="!ticketEnable">
+                    <input class="content-data content-padding" pInputText type="text" placeholder="Search"
+                        (keyup.enter)="onSearch()" [(ngModel)]="searchValue" style="height:34px; width: 130px;" />
+                    <!-- <i
+                        class="pi pi-search" style="font-size: 1.5rem; padding-top: 8px;" (click)="onSearch()"  [hidden]="!ticketEnable"></i> -->
+                </span>
+
+
+                <!-- cust form -->
+                <!-- <a style="margin-left: 5px;" pTooltip="Cust Form" (click)="onSubmit()" tooltipPosition="bottom">
+                    <img src="assets/images/customformicon.png" style="height: 30px; margin-top: 3px;" />
+                </a> -->
+
+                <!-- email -->
+                <a style="margin-left: 5px; width: 28px;" pTooltip="Email" tooltipPosition="bottom"
+                    [hidden]="!enableEmail" (click)="openEmail()" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons" style="height: 25px;"
+                        src="data:image/webp;base64,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"
+                        alt="">
+                    <span class="counter" style="background: #234eb4; color: #fff;"
+                        *ngIf="newVariableFalseTrueCheck">{{emailCounter}}</span>
+                </a>
+
+                <!-- facebook -->
+                <a style="margin-left: 11px; width: 28px;" pTooltip="Facebook" tooltipPosition="bottom"
+                    [hidden]="!enableFacebook" (click)="openFacebook()" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAD30lEQVR4AayShW4cMRCGLQgzHArKDK9xor5KnyDMSZmZmZmZRWWuKMy8e3y7U8/KvXG6PlR+6dM3Wtv/tElYulnzHXI918HnvQZ7PNfgGfdvz1XQEJzFtz14B++y+crCO+D2XoG97ssw475swhwuGWSOK26T3zX24luWbZbehTxe1uS+YOiuCzGwOB+3mA2yAvcFU8cO7Mrsf30R3Lz4nfMcL+eglZyNkm3QGXZhJ0snzrOw3nE61uc4zQs4wmKOxC3PaIszZA4/I2On6zSsY8ni4P9Kx6loX/WJMCCOk5G47dCZ+r79HLtxR8LfueN45F318TDEORYiW4TJHBcvbf8QhT/TJoRiJkQME2bCJvRpJnwaM8TbuX24Q/k3wS82VR0JwRwOB8nSjF5xJgRvhgxIEtEj3kngLibHcQzc1YdDetWhICSj8iD5UW8MUsX+PoBGdNzJ/qXqQHBv5f4AVHCEBX4yp1LMG26EIJ2I+2hpFn18J8OsuQi5lXv9MxV7/ZAul35HIY0k7cCduJtV7tN95bt0sNgdt5g1sjR/GrX/+E9+j8DyI35xV7eh6q/cpftY2Q5tDwfSoVxYj5jwf5Yf4qV0j+bknXtY2bbZZxxIh9KtlkERfjaD52QFcgdSvl17xkq3zP4u3TwDSAlZAZ2pgmeZgrtZ6aZpraRrGpR0kuVZFTpXv1eBu1lpx5RW3DEFFu1kmWzSM21AiehC04wWc/uUxorbpn4XtU6CiuLWKcvZ5HVPxN7ZQkZwNytqnnxW1DwBSGETWSabnPsSkjuV4G5W2DC+hwPJyCZdL/22ngLJYt7DihonfAW1Y2BRR5bJJhtvaeL9OFoJ7mZrGiC3sHb8b6vlcdswFATRL2ZCDagAX12H+3DOOWe7A8d2fFQZlsRMXpzu6z8kVnGdPcDgDbRJ5InP/nFB3lFOTMlck1TVuW8gD8wzcRO3FeQfFvfeQUbeQU5M2K0yOGBJXlVjcmaO1HFTsernecPZTd/c3ZQ0CeTM7M+S3L0MNWbpT/a94abql7ebXDrburidECiZa5LsspZUZO+kzNI2Z31r9JPsmlx7M2namzHZG7J1vaQkp6qBff09csYN3FKS6jt5w1mPA2stos8sCb/b6zFzIPMcduOG+kzORjpurUaBtRKRuRwSsz8LqnpWQuaoV8MAu9V3VF/MG9Zi2DQXAxrwUlhSENeZA7aWwyY/+bc1tkKu/hOXxkLwZswHVLlTUlINNW0mjFnswC71W+FtGLOd+9ps+7k2qw/MtEmSrlNZB+c6z5jBrPo3nZNjzXQm1FTrjgSp6dYDakr3oFd9U+9y1lO9tTZT6gAAAABJRU5ErkJggg=="
+                        alt="">
+                    <span class="counter" style="background: #1093f4; color: #fff;">{{fbCounter}}</span>
+                </a>
+
+                <!-- twitter -->
+                <a style="margin-left: 11px; width: 28px; margin-top: 3px;" pTooltip="Twitter" tooltipPosition="bottom"
+                    [hidden]="!enableTwitter" (click)="openTwitter()" (click)="appMain.onMenuButtonClick1($event)">
+                    <!-- <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M22.2125 5.65605C21.4491 5.99375 20.6395 6.21555 19.8106 6.31411C20.6839 5.79132 21.3374 4.9689 21.6493 4.00005C20.8287 4.48761 19.9305 4.83077 18.9938 5.01461C18.2031 4.17106 17.098 3.69303 15.9418 3.69434C13.6326 3.69434 11.7597 5.56661 11.7597 7.87683C11.7597 8.20458 11.7973 8.52242 11.8676 8.82909C8.39047 8.65404 5.31007 6.99005 3.24678 4.45941C2.87529 5.09767 2.68005 5.82318 2.68104 6.56167C2.68104 8.01259 3.4196 9.29324 4.54149 10.043C3.87737 10.022 3.22788 9.84264 2.64718 9.51973C2.64654 9.5373 2.64654 9.55487 2.64654 9.57148C2.64654 11.5984 4.08819 13.2892 6.00199 13.6731C5.6428 13.7703 5.27232 13.8194 4.90022 13.8191C4.62997 13.8191 4.36771 13.7942 4.11279 13.7453C4.64531 15.4065 6.18886 16.6159 8.0196 16.6491C6.53813 17.8118 4.70869 18.4426 2.82543 18.4399C2.49212 18.4402 2.15909 18.4205 1.82812 18.3811C3.74004 19.6102 5.96552 20.2625 8.23842 20.2601C15.9316 20.2601 20.138 13.8875 20.138 8.36111C20.138 8.1803 20.1336 7.99886 20.1256 7.81997C20.9443 7.22845 21.651 6.49567 22.2125 5.65605Z"
+                            fill="rgba(1,94,175,1)"></path>
+                    </svg> -->
+                    <img src="assets/images/twitter.png" style="height: 21px;
+                    margin-top: 5px;
+                    margin-left: 5px;">
+                    <span class="counter" style="background: #000; color: #fff;">{{twitterCounter}}</span>
+                </a>
+
+                <!-- twitter chat -->
+                <a style="margin-left: 11px; width: 32px;" pTooltip="Twitter DM" tooltipPosition="bottom"
+                    (click)="menu.toggle($event)" (click)="twitterDM()" [hidden]="!enableTwitter">
+                    <img src="assets/images/twitter-DM.png" style="height: 25px; margin-top: 7px;">
+                    <span class="counter" style="background: #1ca1f1; color: #fff;">{{twitterChatCounter}}</span>
+                </a>
+
+                <!-- instagram -->
+                <a style="margin-left: 11px; width: 28px;" pTooltip="Instagram" tooltipPosition="bottom"
+                    [hidden]="!enableiIG" (click)="openInstagram()" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons"
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAABU1BMVEVHcExIETGJE378lA3tD6r+gAP9mQd3Fv3+bwTtBLF3F/z8HYb2AZ39EoX9egv9tgn7Q0n9O1rbBMz9UzH////+AmT+IHf+wAP+A3D/9vX+ygD+A73+swD+BrH+CoeUFv3+LkiBE/r+PkX+jQD/17T/Y53+AY9zFP3+ogH+dBn+LVf+AFn+AH3/scjlANX9A6X/8vv+fgD+LGasAuPYANb+QzTuYuD+weP+Ui/+VwT+Zx3AAd7+Phr+3PT9GZjxCMz+ruj+AJj+ZQHyAMD+gxHNAdv+VBnSGvP/wMj+yWf+ttfyALH+W8L+G2STB+qhAff+Zi7+GlL/0cj+KjL3vPD7I7vkAMj+lwOuGPz/6uP+AEL/y9b/vrn+foH7dtHYXuj+Yoe+DvP+rGLiOuTpF+P+fp/+Wzf+lXv+fSXzHdT+woH+mjj+XFnWgvj+gl7+jwv+xlD0p65GAAAAFHRSTlMAAQFcXPLZzv7SXM/948TEXNjEw5VwnIwAAAI4SURBVCiRTdLZV5tAFMDhqXqM22lrexmhGiREaUJQCBZJIpBmNc2+m8XGfV/a//+pd0js8fcwD3zMsJxLCCErge9YKFSv1w8ODo6OjgqFH18WCPlAyFzAl9BMCiis/jJuIwFG29sNX/DqPqvf7+dQV0I+NS7Ozs4Opz2k0+lcrlJZIIFtrPFiwLuMCbPKMkEaNLoAbrf7c1rXBbCDQX1tjQwGg4sXMK7207nNt3oGTHQ9o5Dj4+MLA9A2N4MYUtWt9sDIZBSR4RW4aHhQsFpFd8HNuOApokaur68PoZvrBXXdZi9j67gzY8OupvHk4SE9wSue5xlglMu46HhiGZHnSa+nT6AsitoYbE1UFBtsRRH3YJfnOeJ54g3s8ZSCwVMRMwCfhshxHKG0hthSz6HEUUpFzT9xhqoq/YbTDi6llmlSyiPyHGIMUZI7DC0ZBEk1TZMzgHKxGVqWg+gknDaMJUlqjWEcq/1Hx3mF02QxcSuAUCrhoqqt0R6cxzieFIvJV2gnU6lUs81+QlvG/aPSFJPJbBSG2SiWbd7d3VqWLEujIZgcr5FkdikrwFM8n8/f30dTzeZtwuo8gzCq8SLJLsXjjyA8hVnx+FKqWHSeBbhp1ahC0MLhHYDhzlvtIUCpo9aoRz7GwyeRyKPwfkyEO0dWTbpK5pltbW1t/P3ld3l5eY8fJssmxdFdZLYxDW+KnITz0VTCktVVnNu5RWbf/BhHThCbCXmd+DM//2lmM/2Tjza/fkb7B9sPjRNHjz//AAAAAElFTkSuQmCC"
+                        alt="">
+                    <span class="counter" style="background: #fe0883; color: #fff;">{{instaCounter}}</span>
+                </a>
+
+                <!-- whatsapp -->
+                <a style="margin-left: 11px; width: 28px;" pTooltip="WhatsApp" tooltipPosition="bottom"
+                    [hidden]="!enableWhatsApp" (click)="openWhatsapp()" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons" src="assets/images/WhatsApp.svg.webp" alt="">
+                    <span class="counter" style="background: #4ccb5a; color: #fff;">{{wpCounter}}</span>
+                </a>
+
+                <!-- chat -->
+                <a style="margin-left: 11px; width: 28px;" pTooltip="Chat" tooltipPosition="bottom"
+                    [hidden]="!enableWEBCHAT" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons" src="assets/images/chat.svg" alt="">
+                    <span class="counter">{{chatCounter}}</span>
+                </a>
+
+                <!-- sms -->
+                <a style="margin-left: 11px; width: 28px;" pTooltip="SMS" tooltipPosition="bottom" (click)="openSMS()"
+                    [hidden]="!enableSMS" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons" src="assets/images/communication.png" alt="">
+                    <span class="counter" style="background: #f2c53f;">{{smsCounter}}</span>
+                </a>
+
+                <!-- webchat -->
+                <a style="margin-left: 11px; width: 28px;" pTooltip="Web Chat" tooltipPosition="bottom"
+                    (click)="openWebChat()" [hidden]="!enableChat" (click)="appMain.onMenuButtonClick1($event)">
+                    <img class="svgIcons" src="assets/images/massage.png" alt="">
+                    <span class="counter" style="background: #f2c53f;">{{countDetails}}</span>
+                </a>
+
+                <!-- logout -->
+                <!-- <a style="margin-left: 11px;" (click)="logout()" pTooltip="Logout" tooltipPosition="bottom">
+                    <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C15.2713 2 18.1757 3.57078 20.0002 5.99923L17.2909 5.99931C15.8807 4.75499 14.0285 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.029 20 15.8816 19.2446 17.2919 17.9998L20.0009 17.9998C18.1765 20.4288 15.2717 22 12 22ZM19 16V13H11V11H19V8L24 12L19 16Z">
+                        </path>
+                    </svg>
+                </a> -->
+            </div>
+        </div>
+
+<!-- <div class="mobileResponse" style="justify-content: space-between; width: 100%;">
+   
+</div> -->
+
+
+        <ul class="layout-topbar-main-menu " style="margin-left: 5px !important;">
+            <li class="flex flex-column"  >
+                <a (click)="getRTmMessage()" style="position: relative;top: 5px;" pTooltip="Notification" tooltipPosition="bottom">
+                    <i class="pi pi-bell text-3xl notMobileResponse"  pBadge [value]="mainDetailsLength" severity="warning"> </i>
+                    <!-- <i class="pi pi-bell"  pBadge severity="warning" ></i> -->
+                </a>  
+          
+                  <div  style="position: absolute;
+                  top: 46px;
+                  right: 128px;
+                  border: 1px solid #7b8794; overflow-wrap: break-word; width:260px; background-color: white;    z-index: 999;
+                  border-radius: 8px;"  *ngIf="showRTMList && mainDetailsLength">
+                   <ul *ngFor="let item of rtmMessagesList" >
+                      <li style="text-wrap: wrap; width:210px;" >
+                        {{item}}
+                      </li>
+                   </ul>  
+  
+  
+                  </div>
+              </li>
+              <li class="flex flex-column notMobileResponse"  >
+                <a (click)="logout()" pTooltip="Logout" tooltipPosition="bottom">
+                    <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path
+                            d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C15.2713 2 18.1757 3.57078 20.0002 5.99923L17.2909 5.99931C15.8807 4.75499 14.0285 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.029 20 15.8816 19.2446 17.2919 17.9998L20.0009 17.9998C18.1765 20.4288 15.2717 22 12 22ZM19 16V13H11V11H19V8L24 12L19 16Z">
+                        </path>
+                    </svg>
+                </a>
+              </li>
+
+        </ul>
+    </div>
+    <div class="mobileResponse addedDropDown" style="width: 100%;">
+       <div class="addNewD">
+        <p-dropdown 
+        placeholder="Select" 
+        [options]="groupedCities" 
+        [(ngModel)]="selectVal" 
+        (onChange)="getDeatilsAfterMobile($event)"
+        (onSelect)="getDeatilsAfterMobile($event)"
+        style="    width: 75%;"
+        >
+            <ng-template let-group pTemplate="item">
+                <div class="flex align-items-center">
+                    <span>
+                        <i [class]="group.icon" style="font-size: 1rem"></i>
+                        {{ group.label }}</span>
+                </div>
+            </ng-template>
+    </p-dropdown>
+ <div>
+    <a (click)="logout()" pTooltip="Logout" tooltipPosition="bottom">
+        <svg class="svgIcons" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path
+                d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C15.2713 2 18.1757 3.57078 20.0002 5.99923L17.2909 5.99931C15.8807 4.75499 14.0285 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C14.029 20 15.8816 19.2446 17.2919 17.9998L20.0009 17.9998C18.1765 20.4288 15.2717 22 12 22ZM19 16V13H11V11H19V8L24 12L19 16Z">
+            </path>
+        </svg>
+    </a>
+ </div>
+       </div>
+    </div>
+    <p-menu #menu [model]="notificationItems" [popup]="true"></p-menu>
+
+    <!-- <div class="layout-topbar-right">
+        <ul class="layout-topbar-actions">
+            <li #searchItem class="search-item" [ngClass]="{'active-topmenuitem': appMain.search}">
+                <div class="search-input-wrapper">
+                    <span class="p-input-icon-right">
+                        <input #input1 type="text" pInputText placeholder="Type your keywords"
+                            (click)="appMain.searchClick = true;" autofocus />
+                        <i class="pi pi-search"></i>
+                    </span>
+                </div>
+
+                <ul class="fadeInDown">
+                    <div class="search-input-wrapper p-fluid" style="width: 100%">
+                        <span class="p-input-icon-right">
+                            <input #input2 type="text" pInputText placeholder="Type your keywords"
+                                (click)="appMain.searchClick = true;" autofocus />
+                            <i class="pi pi-search"></i>
+                        </span>
+                    </div>
+                </ul>
+            </li>
+
+            <li #profile class="profile-item"
+                [ngClass]="{'active-topmenuitem fadeInDown': appMain.activeTopbarItem === profile}">
+                <div class="profile-container" (click)="logout()">
+                    <div class="name-container">
+                        <span class="name">Logout</span>
+                    </div>
+                    <i class="pi pi-sign-out"></i>
+                </div>
+            </li>
+
+        </ul>
+    </div> -->
+
+
+</div>
+
+<p-toast></p-toast>
+
+
+<p-dialog header="Live DM" [(visible)]="liveChat" [modal]="true" [style]="{ width: '50vw', height: '90vh' }"
+    [draggable]="false" [resizable]="false">
+    <p class="m-0">
+    <div class="flex flex-column h-full">
+        <div style="background-color: #1089be; color: #fff; text-align: center; height: 40px; padding-top: 5px;">
+            <h3>{{chatUser}}</h3>
+        </div>
+        <div class="p-3 md:px-4 lg:px-6 lg:py-4 mt-2 overflow-y-auto"
+            style="padding: 0 15px !important; max-height: 55vh; border: 1px solid lightgrey; border-radius: 8px;"
+            #chatWindow [scrollTop]="chatWindow.scrollHeight">
+            <div *ngFor="let message of chatMessages">
+                <div *ngIf="message.received" class="grid grid-nogutter mb-0">
+                    <div class="col mt-1">
+                        <p class="text-900 font-semibold mb-0" style="font-size: 12px; color: rgb(2 50 82) !important;">
+                            {{message.messageFrom}}</p>
+                        <span
+                            class="text-700 inline-block font-medium border-1 surface-border p-1 white-space-normal border-round"
+                            style="word-break: break-word; max-width:80%;">{{message.messageText}}</span>
+                        <p class="text-700 mt-0" style="font-size: 9px;">{{message.messageTime | date: 'dd/MM/yyyy,
+                            hh:mm a'}}</p>
+                    </div>
+                </div>
+
+                <div *ngIf="!message.received" class="grid grid-nogutter mb-0">
+                    <div class="col mt-1 text-right">
+                        <p class="text-900 font-semibold mb-0" style="font-size: 12px; font-weight: bolder !important;">
+                            {{message.messageFrom}}</p>
+                        <span
+                            class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                            style="word-break: break-word; max-width:80%;">{{message.messageText}}</span>
+                        <span *ngIf="message.media"
+                            class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                            style="word-break: break-word; max-width:80%;"><img
+                                [src]="'data:image/png;base64,' + message.mediabase64" style="height: 150px;"></span>
+                        <p class="text-700 mt-0" style="font-size: 9px;">{{message.messageTime | date: 'dd/MM/yyyy,
+                            hh:mm a'}} </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-3 md:p-4 lg:p-6 flex flex-column sm:flex-row align-items-center mt-auto border-top-1 surface-border gap-3"
+            style="padding: 10px 2px !important;">
+            <input id="message" type="text" pInputText placeholder="Type a message"
+                class="flex-1 w-full sm:w-auto border-round" [(ngModel)]="textContent" (keydown.enter)="sendMessage()"
+                autocomplete="off" />
+            <div style="margin-right: 5px;"></div>
+            <div class="flex w-full sm:w-auto gap-3">
+                <p-fileUpload #fileUpload [multiple]="false" [maxFileSize]="10000000" (onSelect)="dealWithFiles($event)"
+                    (onClear)="dealWithFiles($event)" (onRemove)="dealWithFiles($event)" [showCancelButton]="false"
+                    chooseLabel="Files" [showUploadButton]="false"></p-fileUpload>
+            </div>
+            <!-- <div style="margin-right: 5px;"></div> -->
+            <div class="flex w-full sm:w-auto gap-3">
+                <button pButton pRipple label="Send" icon="pi pi-send" class="w-full sm:w-auto"
+                    (click)="sendMessage()"></button>
+            </div>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog header="Search" [(visible)]="searchDialogue" [modal]="true" [style]="{ 'width': '80vw', 'height': '75vh' }"
+    [draggable]="false" [resizable]="false" class="searchDialogue">
+    <p-tabView [(activeIndex)]="activeIndex" (activeIndexChange)="onTabChange($event)">
+        <!-- ticket tab -->
+        <p-tabPanel header="Ticket">
+            <div class="grid forms-grid flex-row p-fluid" style="font-size: 12px;margin-top: 0px;">
+                <div class="col-12 md:col-1 newUpdatedCss" style="margin-top:2px;">From</div>
+                <div class="col-12 md:col-3 newUpdatedCss">
+                    <p-calendar [(ngModel)]="startdateN" [showTime]="true" hourFormat="24" [showIcon]="true"
+                        appendTo="body" [showSeconds]="true" inputId="time"></p-calendar>
+                </div>
+                <div style="margin-top:2px;" class=" col-12 md:col-1 newUpdatedCss">To</div>
+                <div class=" col-12 md:col-3 newUpdatedCss">
+                    <p-calendar [(ngModel)]="enddateN" [showTime]="true" hourFormat="24" [minDate]="startdateN"
+                        [showIcon]="true" appendTo="body" [showSeconds]="true" inputId="time"></p-calendar>
+                </div>
+                <div style="margin-top:2px;" class=" col-12 md:col-1 newUpdatedCss">Search</div>
+                <div class=" col-12 md:col-3 newUpdatedCss">
+                    <input type="text" pInputText [(ngModel)]="searchValue" class="p-inputtext-sm">
+                </div>
+                <div style="margin-top:2px;" class=" col-12 md:col-1 newUpdatedCss">Source Type</div>
+                <div class=" col-12 md:col-3 newUpdatedCss">
+                    <p-dropdown [options]="sorceName" [(ngModel)]="SourceValue" optionLabel="label" optionValue="value" placeholder="select"  [showClear]="true" 
+                    class="p-inputtext-sm newCssAdded" optionValue="value" (onSelect)="chanegAc($event)"></p-dropdown>
+                </div>
+                <div style="margin-top:2px;" class=" col-12 md:col-1 newUpdatedCss">Ticket Type</div>
+                <div class=" col-12 md:col-3 newUpdatedCss">
+                    <p-dropdown [options]="ticketTypeData" [(ngModel)]="ticketTypeNew" optionLabel="label" optionValue="value" placeholder="select"  [showClear]="true" 
+                    class="p-inputtext-sm newCssAdded" optionValue="value" ></p-dropdown>
+                </div>
+                <div class="col-12 mb-0 md:col-2 md:mb-0  newUpdatedCss"><button type="button" pButton label="Submit"
+                        (click)="onReload()"></button></div>
+
+              
+
+
+            </div>
+            <p-table #dt2 [value]="ticketDataTable" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10"
+                [rowsPerPageOptions]="[5, 10, 20, {showAll:'All'}]"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                responsiveLayout="scroll" [globalFilterFields]="['fld_Remarks','fld_TicketID']">
+                <ng-template pTemplate="caption" class="tableDataFontSize"> Ticket </ng-template>
+                <ng-template pTemplate="caption" class="tableDataFontSize">
+                    <div class="flex" style="width: 100%;justify-content: end;">
+                        <!-- <div style="width: 80%; padding-top: 10px">
+                            Ticket
+                        </div> -->
+                        <!-- <div>
+                            <div class="col-12 mb-0 md:col-1 md:mb-0  " >Start Date</div>
+                            <div class="col-12 mb-0 md:col-2 md:mb-0  ">
+                                <p-calendar [(ngModel)]="startdateN"  [showTime]="true" [showSeconds]="true" ></p-calendar>
+            
+                                          </div>
+                
+                                <div class="col-12 mb-0 md:col-1 md:mb-0  ">End Date</div>
+                                <div class="col-12 mb-0 md:col-2 md:mb-0  ">
+                                <p-calendar [(ngModel)]="enddateN"  [showTime]="true" [showSeconds]="true" ></p-calendar>
+            
+                                    </div>
+                
+                  <div class="col-12 mb-0 md:col-2 md:mb-0  "><button type="button" pButton label="Submit" (click)="onReload()" style=" background: rgb(3, 83, 136); color:white; font-size:12px; height:30px;"></button></div>  
+                        </div> -->
+                        <div style="width: 20%;">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+                                    placeholder="Search keyword" />
+                            </span>
+                        </div>
+                    </div>
+
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr class="tableDataFontSize tableDataFontAlign">
+                        <th class="tableDataFontAlign"> TicketID</th>
+                        <th class="tableDataFontAlign"> Agent Remarks</th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr class="tableDataFontSize">
+                        <td class="tableDataFontSize tableDataFontAlign "><button type="button" pButton class="mystylingAdded"
+                                label="{{product.fld_TicketID}}" (click)="onTicketId(product)"></button></td>
+                        <td class="tableDataFontSize tableDataFontAlign">{{product.fld_Remarks}}</td>
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="3" class="">No record found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+        <!-- customer tab -->
+        <p-tabPanel header="Customer">
+            <p-table #dt1 [value]="customerTableData" styleClass="p-datatable-gridlines" [paginator]="true" [rows]="10"
+                [rowsPerPageOptions]="[5, 10, 20, {showAll:'All'}]"
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                responsiveLayout="scroll" [globalFilterFields]="['fld_CustID', 'fld_PhoneID', 'fld_Remarks']">
+                <ng-template pTemplate="caption" class="tableDataFontSize">
+                    <div class="flex" style="width: 100%;">
+                        <div style="width: 80%; padding-top: 10px">
+                            Customer
+                        </div>
+
+                        <div style="width: 20%;">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+                                    placeholder="Search keyword" />
+                            </span>
+                        </div>
+                    </div>
+
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="tableDataFontSize">
+                        <th class="tableDataFontAlign">CustID</th>
+                        <th class="tableDataFontAlign">PhoneNo</th>
+                        <th class="tableDataFontAlign">Remarks</th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr class="tableDataFontSize">
+                        <td class="tableDataFontSize tableDataFontAlign"> <button type="button" pButton class="mystylingAdded"
+                                label="{{product.fld_CustID}}" (click)="onTicketId(product)"></button></td>
+                        <td class="tableDataFontSize tableDataFontAlign">{{product.fld_PhoneID}}</td>
+                        <td class="tableDataFontSize tableDataFontAlign">{{product.fld_Remarks}}</td>
+                    </tr>
+
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="3" class="">No record found.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel>
+
+
+
+        <!-- ticket history tab -->
+        <!-- <p-tabPanel header="Ticket History">
+            <p-table #dt3 [value]="tickethistoryDataTable" styleClass="p-datatable-gridlines" scrollHeight="230px"
+                responsiveLayout="scroll" [globalFilterFields]="['fld_TicketID', 'fld_Remarks', 'fld_Action_No']">
+                 <ng-template pTemplate="caption" class="tableDataFontSize"> Ticket History </ng-template>
+                <ng-template pTemplate="caption" class="tableDataFontSize">
+                    <div class="flex" style="width: 100%;">
+                        <div style="width: 80%; padding-top: 10px">
+                            Ticket History
+                        </div>
+
+                        <div style="width: 20%;">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt3.filterGlobal($any($event.target).value, 'contains')"
+                                    placeholder="Search keyword" />
+                            </span>
+                        </div>
+                    </div>
+
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="tableDataFontSize tableDataFontAlign">
+                        <th class="tableDataFontAlign"> TicketID</th>
+                        <th class="tableDataFontAlign">Agent Remarks</th>
+                        <th class="tableDataFontAlign">Ticket Action No</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr class="tableDataFontSize">
+                        <td class="tableDataFontSize tableDataFontAlign"><button type="button" pButton
+                                label="{{product.fld_TicketID}}" (click)="onTicketId(product)"></button></td>
+                        <td class="tableDataFontSize tableDataFontAlign">{{product.fld_Remarks}}</td>
+                        <td class="tableDataFontSize tableDataFontAlign">{{product.fld_Action_No}}</td>
+                    </tr>
+
+                </ng-template>
+            </p-table>
+
+        </p-tabPanel> -->
+
+        <!-- chat history tab -->
+        <!-- <p-tabPanel header="Chat History">
+            <p-table #dt4 [value]="chatHistoryDataTable" styleClass="p-datatable-gridlines" scrollHeight="230px"
+                responsiveLayout="scroll" [globalFilterFields]="['fld_CustID', 'fld_PhoneID', 'fld_Remarks']">
+                 <ng-template pTemplate="caption" class="tableDataFontSize"> Chat History </ng-template>
+                <ng-template pTemplate="caption" class="tableDataFontSize">
+                    <div class="flex" style="width: 100%;">
+                        <div style="width: 80%; padding-top: 10px">
+                            Chat History
+                        </div>
+
+                        <div style="width: 20%;">
+                            <span class="p-input-icon-left ml-auto">
+                                <i class="pi pi-search"></i>
+                                <input pInputText type="text"
+                                    (input)="dt4.filterGlobal($any($event.target).value, 'contains')"
+                                    placeholder="Search keyword" />
+                            </span>
+                        </div>
+                    </div>
+
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr class="tableDataFontSize ">
+                        <th class="tableDataFontAlign"> Session ID</th>
+                        <th class="tableDataFontAlign">Email ID</th>
+                        <th class="tableDataFontAlign">CoverSation Date</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr class="tableDataFontSize">
+                        <td class="tableDataFontSize tableDataFontAlign"></td>
+                        <td class="tableDataFontSize tableDataFontAlign"></td>
+                        <td class="tableDataFontSize tableDataFontAlign"></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-tabPanel> -->
+    </p-tabView>
+</p-dialog>
+<p-dialog header="Message" [(visible)]="rtmMessageDialgoue" position='top' [style]="{ width: '400px' }">
+    <div style="margin-top:10px;"> {{ rtmMessage }}</div>
+       
+    
+</p-dialog>

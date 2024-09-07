@@ -1,0 +1,32 @@
+::ng-deep .p-inputtext {
+    width: -webkit-fill-available !important;
+}
+
+// .sendBtn{
+//     margin-top: 14px
+// }
+
+// .textArea{
+//     height: 70px !important;
+// }
+
+
+.sendBtn {
+    margin-top: 14px
+}
+
+.textArea {
+    width: -webkit-fill-available !important;
+    height: 70px !important;
+}
+
+.body {
+    border: 1px solid lightgray;
+    // height: 100%;
+    height: 305px;
+    max-height: 150%;
+    overflow-y: scroll;
+    margin-left: 13px;
+    margin-top: -17px;
+    border-radius: 8px;
+} 

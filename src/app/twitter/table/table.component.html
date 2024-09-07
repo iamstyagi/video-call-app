@@ -1,0 +1,305 @@
+<p-table #dt [value]="tweets" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['from','title','message']"
+    [paginator]="true" [rowsPerPageOptions]="[5,10,20,30,{ showAll: 'All' }]" [(selection)]="selectedMails"
+    scrollHeight="350px" selectionMode="multiple" [rowHover]="true" dataKey="id"
+    [globalFilterFields]="['replyText','socialMediaUserScreenName','loginSocialMediaUser','insertDateTime', 'fld_TicketID', 'assignToID', 'agentName' ]">
+    <ng-template pTemplate="caption">
+        <div class="flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="flex gap-2 align-items-center">
+            </div>
+
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($any($event.target).value, 'contains')"
+                    placeholder="Search Tweet" class="w-full sm:w-auto" />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Text</th>
+            <th>From</th>
+            <th>To</th>
+            <th *ngIf="!inboxField && !outboxField && !sentField">Queue Time</th>
+            <th *ngIf="inboxField">Received Date Time</th>
+            <th *ngIf="inboxField">Reply Date Time</th>
+            <th *ngIf="inboxField">Ticket ID</th>
+            <th *ngIf="inboxField">Agent ID</th>
+            <th *ngIf="inboxField">Agent Name</th>
+            <th *ngIf="outboxField || sentField">Send Date Time</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-mail>
+        <tr (click)="selectRow(mail)" (click)="onRowSelect(mail.id)" class="cursor-pointer">
+            <!-- text -->
+            <td style="min-width: 7rem" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                {{mail.replyText}}
+            </td>
+            <!-- from -->
+            <td style="min-width: 9rem" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                <span class="font-medium white-space-nowrap overflow-hidden text-overflow-ellipsis block"
+                    [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                    style="max-width: 27rem">
+                    {{mail.socialMediaUserScreenName}}
+                </span>
+            </td>
+            <!-- to -->
+            <td style="min-width: 4rem" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                {{mail.loginSocialMediaUser}}
+            </td>
+            <!-- Queue Time -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="!inboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{''}}
+                    </span>
+                </div>
+            </td>
+            <!-- Received Date Time -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="inboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{mail.insertDateTime}}
+                    </span>
+                </div>
+            </td>
+            <!-- Reply Date Time -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="inboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{''}}
+                    </span>
+                </div>
+            </td>
+            <!-- Ticker ID -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="inboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{mail.fld_TicketID}}
+                    </span>
+                </div>
+            </td>
+            <!-- Agent ID -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="inboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{mail.assignToID}}
+                    </span>
+                </div>
+            </td>
+            <!-- Agent Name -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="inboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{mail.agentName}}
+                    </span>
+                </div>
+            </td>
+            <!-- Send Date Time -->
+            <td style="min-width: 6rem;" [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}"
+                *ngIf="outboxField">
+                <div class="flex w-full px-0">
+                    <span #date [ngClass]="{'text-900': !mail.fld_isRead, 'font-semibold': !mail.fld_isRead}">
+                        {{''}}
+                    </span>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
+
+<p-dialog header="Reply Account" [(visible)]="replyAccountDialog" [modal]="true"
+    [style]="{ width: '80vw', 'font-size':'12px' }" [draggable]="false" [resizable]="false" [position]="'top'">
+    <div class="flex flex-wrap">
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;"><b>From</b></div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown [options]="fromAccount" [(ngModel)]="selectedAccount"
+                optionLabel="account"></p-dropdown></div>
+        <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;"><b>To</b></div>
+        <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown [options]="toAccount" [(ngModel)]="to"
+                optionLabel="account"></p-dropdown></div>
+        <div class="col-12 mb-0 md:col-2 md:mb-0"><button pButton (click)="dmChat()">Open DM Chat</button></div>
+        <!-- <div class="col-12 mb-0 md:col-1 md:mb:0"></div> -->
+        <div class="col-12 mb-0 md:col-2 md:mb-0"><button pButton (click)="newTicket()"><i class="pi pi-add"
+                    style="font-size: 1.5rem"></i>&nbsp;&nbsp;New Ticket</button></div>
+    </div>
+    <div class="card" *ngFor="let data of listTweetsThread; let i = index">
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-4 md:mb-0" style="padding: 2px 15px;"><b> From:</b>
+                {{data.socialMediaUserScreenName}}</div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0" ></div> -->
+            <div class="col-12 mb-0 md:col-4 md:mb-0" style="padding: 2px 15px;"><b> To: </b>{{data.loginSocialMediaUser}}</div>
+            <!-- <div class="col-12 mb-0 md:col-3 md:mb-0" ></div> -->
+            <!-- <div class="col-12 mb-0 md:col-1 md:mb-0" >Time:</div> -->
+            <div class="col-12 mb-0 md:col-4 md:mb-0" style="padding: 2px 15px;"><b> Time:</b> {{data.insertDateTime}}
+            </div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-12 md:mb-0" style="padding: 2px 15px;"><b> Message:</b> {{data.replyText}}
+            </div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-4 md:mb-0" style="padding: 2px 15px;"><b> Agent ID:</b> {{data.assignToID}}
+            </div>
+            <div class="col-12 mb-0 md:col-4 md:mb-0" style="padding: 2px 15px;"><b> Agent Name:</b> {{data.agentName}}
+            </div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0"><button pButton (click)="replyFields(data.inboxRowID)"
+                    (click)="replyField(data)">Reply</button></div>
+        </div>
+        <div>
+            <div [hidden]="!data.showReplyInput" class="flex flex-wrap">
+                <span [hidden]="!data.showReplyInput" class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 9px;"><b>
+                        Template:</b></span>
+                <span [hidden]="!data.showReplyInput" class="col-12 mb-0 md:col-4 md:mb-0"
+                    style="padding: 0;">
+                    <p-dropdown [options]="listTemplates" optionLabel="label" optionValue="value" [(ngModel)]="listSelectedTemp[i]" (onClick)="selectTempDropdown(i)"></p-dropdown>
+                </span>
+            </div>
+
+            <div [hidden]="!data.showReplyInput" class="col-12 mb-0 md:col-12 md:mb-0" style="padding: 3px 15px;">
+                <textarea rows="5" cols="30" pInputTextarea [(ngModel)]="replyTemplates[i]" style="height: 90px !important;"></textarea>
+            </div>
+            <div [hidden]="!data.showReplyInput" class="col-12 mb-0 md:col-2 md:mb-0" style="padding: 0 15px;"><button pButton
+                    (click)="sendReply(data,replyTemplates[i])">Send</button>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="table" *ngFor="let data of listTicketRecords">
+        <div class="header flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.: {{data.ticketID}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source: {{data.sourceName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Type: {{data.source_SubType == 2 ? 'INC': (data.source_SubType ==
+                1 ? 'OUT' : 'N/A')}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign: {{data.campName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.: {{data.action_No}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time: {{data.ticketElapsedTime}}</div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket Start Time:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{ data.start_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket End Time: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticket_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Duration: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticketTime}}</div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 10px;">Ticket Type: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown [options]="ticketTypeArr1" [(ngModel)]="ticketType1"
+                    optionLabel="TicketType" [readonly]="updateDisable1" optionValue="itemValue"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">Status: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown [options]="statusArr1" [(ngModel)]="status1"
+                    optionLabel="label" [readonly]="updateDisable1" optionValue="value"></p-dropdown></div>
+            <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 10px;">Assigned By: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown [options]="assignedArr1" [(ngModel)]="assignedBy1"
+                    optionLabel="AssignedBy" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-1 md:mb-0" style="padding-top: 25px;">UpdatedBy: </div>
+            <div class="col-12 mb-0 md:col-3 md:mb-0"><p-dropdown [options]="updatedByArr1" [(ngModel)]="updatedBy1"
+                    optionLabel="updated" [readonly]="true"></p-dropdown></div>
+        </div>
+        <div style="margin: 0 13px;">Tree: </div>
+        <div style="margin: 0 13px;">
+            <div>Agent Remarks:</div>
+            <div><textarea type="text" pInputTextarea [(ngModel)]="agentRemarks1"
+                    [readonly]="updateDisable1"></textarea></div>
+        </div>
+        <div class="flex flex-wrap" style="margin: 0 13px;">
+            <button pButton (click)="update()">{{updatedValue1}}</button>
+            <div style="margin: 0 4px;"></div>
+            <button pButton (click)="ticketHistory()">View History</button>
+        </div>
+    </div>
+</p-dialog>
+
+
+<p-dialog header="Tweet Ticket History" [(visible)]="viewHstorytDialog" [modal]="true" [style]="{ width: '80vw' }"
+    [draggable]="false" [resizable]="false" [position]="'top'">
+    <div class="table" *ngFor="let data of noOfTables">
+        <div class="header flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket No.: {{data.ticketID}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Source: {{data.sourceName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Type: {{data.source_SubType == 2 ? 'INC': (data.source_SubType ==
+                1 ? 'OUT' : 'N/A')}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Campaign: {{data.campName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Action No.: {{data.action_No}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Elapsed Time: {{data.ticketElapsedTime}}</div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket Start Time:</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{ data.start_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Ticket End Time: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticket_Time | date: 'MMM d, yyyy HH:mm:ss' }}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Duration: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0">{{data.ticketTime}}</div>
+        </div>
+
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="padding-top: 13px;">Ticket Type: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.ticket_type_name}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="padding-top: 13px;">Status: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.ticket_StatusName}}</div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="padding-top: 13px;">Assigned By: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.assignedByID}}</div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="padding-top: 13px;">UpdatedBy: </div>
+            <div class="col-12 mb-0 md:col-2 md:mb-0" style="word-wrap: break-word;">{{data.updatedByID}}</div>
+        </div>
+        <div style="margin: 0 13px;">Tree: </div>
+        <div class="flex flex-wrap">
+            <div class="col-12 mb-0 md:col-2 md:mb-0">Agent Remarks:</div>
+            <div class="col-12 mb-0 md:col-10 md:mb-0">{{data.remarks}}</div>
+        </div>
+    </div>
+</p-dialog>
+
+
+
+<p-dialog header="Live DM" [(visible)]="liveChat" [modal]="true" [style]="{ width: '50vw', height: '90vh' }" [draggable]="false" [resizable]="false"  [position]="'top'">
+    <p class="m-0">
+        <div class="flex flex-column h-full">
+            <div style="background-color: #1089be; color: #fff; text-align: center; height: 40px; padding-top: 5px;"><h3>{{chatUser}}</h3></div>
+            <div class="p-3 md:px-4 lg:px-6 lg:py-4 mt-2 overflow-y-auto" style="padding: 0 15px !important; max-height: 55vh; border: 1px solid lightgrey; border-radius: 8px;" #chatWindow [scrollTop]="chatWindow.scrollHeight">
+                <div *ngFor="let message of chatMessages">
+                    <div *ngIf="message.received" class="grid grid-nogutter mb-0">
+                        <div class="col mt-1">
+                            <p class="text-900 font-semibold mb-0" style="font-size: 12px; color: rgb(2 50 82) !important;">{{message.messageFrom}}</p>
+                            <span class="text-700 inline-block font-medium border-1 surface-border p-1 white-space-normal border-round" style="word-break: break-word; max-width:80%;">{{message.messageText}}</span>
+                            <p class="text-700 mt-0" style="font-size: 9px;">{{message.messageTime | date: 'dd/MM/yyyy, hh:mm a'}}</p>
+                        </div>
+                    </div>
+        
+                    <div *ngIf="!message.received" class="grid grid-nogutter mb-0">
+                        <div class="col mt-1 text-right">
+                            <p class="text-900 font-semibold mb-0" style="font-size: 12px; font-weight: bolder !important;">{{message.messageFrom}}</p>
+                            <span class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round" style="word-break: break-word; max-width:80%;">{{message.messageText}}</span>
+                            <span *ngIf="message.media" class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round" style="word-break: break-word; max-width:80%;"><img [src]="'data:image/png;base64,' + message.mediabase64" style="height: 150px;"></span>
+                            <p class="text-700 mt-0" style="font-size: 9px;">{{message.messageTime | date: 'dd/MM/yyyy, hh:mm a'}} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="p-3 md:p-4 lg:p-6 flex flex-column sm:flex-row align-items-center mt-auto border-top-1 surface-border gap-3" style="padding: 10px 2px !important;">
+                <input id="message" type="text" pInputText placeholder="Type a message" class="flex-1 w-full sm:w-auto border-round" [(ngModel)]="textContent" (keydown.enter)="sendMessage()" autocomplete="off"/>
+                <div style="margin-right: 5px;"></div>
+                <div class="flex w-full sm:w-auto gap-3">
+                    <p-fileUpload #fileUpload  [multiple]="false" [maxFileSize]="10000000"  (onSelect)="dealWithFiles($event)"  (onClear)="dealWithFiles($event)" (onRemove)="dealWithFiles($event)"  [showCancelButton]="false" chooseLabel="Files"
+                    [showUploadButton]="false"></p-fileUpload>
+                </div>
+                <div class="flex w-full sm:w-auto gap-3">
+                    <button pButton pRipple label="Send" icon="pi pi-send" class="w-full sm:w-auto" (click)="sendMessage()"></button>
+                </div>
+            </div>
+        </div>
+    
+</p-dialog>

@@ -1,0 +1,481 @@
+<p-toast></p-toast>
+<div class="flex flex-column h-full">
+    <div class="flex align-items-center border-bottom-1 surface-border p-3 lg:p-6"
+        style="padding: 5px 30px !important; background-color: #ebeef2 !important" *ngIf="mobileNo">
+        <div class="relative flex align-items-center mr-3">
+            <img src="assets/images/user.png" alt="user.name" class="w-2rem h-2rem border-circle shadow-4"
+                style="padding: 7px;">
+        </div>
+        <div class="mr-2">
+            <span class="text-900 font-semibold block" style="color: black !important;">{{mobileNo}}</span>
+        </div>
+        <div class="flex align-items-center ml-auto">
+            <button pButton pRipple type="button" class="p-button p-button-filled p-button-danger" label="End"
+                *ngIf="sessionStatus" (click)="sessionClose(mobileNo)"></button>
+
+        </div>
+    </div>
+
+    <div class="p-3 md:px-4 lg:px-6 lg:py-4  overflow-y-auto" style="height: inherit;" #chatWindow
+        [scrollTop]="chatWindow.scrollHeight" (scroll)="onScroll($event)">
+        <div *ngFor="let message of completeArray">
+            <div class="grid grid-nogutter mb-0">
+                <div class="col mt-1" *ngIf="message.received; else notReceived">
+
+                    <!-- text -->
+                    <div *ngIf="message.messagetype == 'text' && message.messagereplyText" class="maintext">
+                        <span *ngIf="message.messagetype == 'text'" (contextmenu)="onImageRightClick($event, message)"
+                            class="sendedtext inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                            <div>
+                                <div *ngIf="message.messagetype == 'text' && message.messagereplyText"
+                                    class="repliedtext inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                                    {{ message.messagereplyText }}
+                                </div>
+                                <br>
+                            </div>
+                            <div style="padding: 8px 8px 0px 8px;">
+                                {{message.messageText }}
+                            </div>
+                        </span>
+                    </div>
+
+                    <span *ngIf="message.messagetype == 'text' && !message.messagereplyText"
+                        (contextmenu)="onImageRightClick($event, message)"
+                        class="sendedtext inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                        style="word-break: break-word; max-width:80%; background: #fff !important; color: black !important; padding: 8px 10px !important;">
+                        {{message.messageText }}
+                    </span>
+
+
+                    <!-- image -->
+                    <span class="repliedtext1">
+                        <a *ngIf="message.messagetype == 'image'" [href]="message.mediaurl" download="image.jpg"
+                            target="_blank" (contextmenu)="onImageRightClick($event, message)">
+                            <img [src]="message.mediaurl" class="w-13rem h-16rem border-square shadow-4" />
+                            <br>
+                            <nav style="color: #000 !important;">{{message.messageText}}</nav>
+                        </a>
+                    </span>
+
+
+                    <!-- documents -->
+                    <span [href]="message.mediaurl" *ngIf="message.messagetype == 'document'"
+                        (contextmenu)="onImageRightClick($event, message)"
+                        style="border: 1px solid lightgrey; padding: 10px 15px; border-radius: 5px; background-color: rgb(255, 255, 255);">
+                        <img src="assets/images/doc.png"
+                            style="height: 30px; width: 30px; margin-bottom: -9px; margin-right: 6px;">
+                        <a [href]="message.mediaurl" download="{{ message.filename }}" target="_blank"
+                            style="color: #000;">{{ message.filename }}</a>
+                    </span>
+
+                    <!-- audio -->
+                    <span *ngIf="message.messagetype === 'audio'" (contextmenu)="onImageRightClick($event, message)">
+                        <audio controls>
+                            <source [src]="message.mediaurl">
+                        </audio>
+                    </span>
+
+                    <!-- video -->
+                    <span *ngIf="message.messagetype === 'video'" style="border: 1px solid red;"
+                        (contextmenu)="onImageRightClick($event, message)">
+                        <video width="320" height="240" controls>
+                            <source [src]="message.mediaurl">
+                        </video>
+                    </span>
+
+
+
+                    <!-- for forward (common) -->
+                    <!-- <span pTooltip="Reply" tooltipPosition="bottom">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                            style="height: 20px; width: 20px;">
+                            <path pTooltip="Enter your username"
+                                d="M11 20L1 12L11 4V9C16.5228 9 21 13.4772 21 19C21 19.2729 20.9891 19.5433 20.9676 19.8107C19.4605 16.9502 16.458 15 13 15H11V20Z">
+                            </path>
+                        </svg>
+                    </span> -->
+
+                    <!-- for reply (common) -->
+                    <!-- <span pTooltip="Forward" tooltipPosition="bottom">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                            pTooltip="Enter your username" style="height: 20px; width: 20px;">
+                            <path
+                                d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z">
+                            </path>
+                        </svg>
+                    </span> -->
+
+                    <i class="pi pi-ellipsis-h" style="margin-left: 5px; cursor: pointer;"
+                        (click)="op.toggle($event); sendData(message)"></i>
+
+
+                    <p class="text-700 mt-0" style="color: black !important; font-size: 10px;">
+                        {{ message.messageTime }}
+                    </p>
+
+                </div>
+            </div>
+
+            <div class="grid grid-nogutter mb-0">
+                <ng-template #notReceived style="background-color: #dcf8c6">
+
+                    <div class="col mt-1 text-right">
+
+                        <!-- for forward (common) -->
+                        <!-- <span pTooltip="Forward" tooltipPosition="bottom" (click)="forwardMsg(message)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                style="height: 20px; width: 20px;">
+                                <path pTooltip="Enter your username"
+                                    d="M11 20L1 12L11 4V9C16.5228 9 21 13.4772 21 19C21 19.2729 20.9891 19.5433 20.9676 19.8107C19.4605 16.9502 16.458 15 13 15H11V20Z">
+                                </path>
+                            </svg>
+                        </span> -->
+
+                        <!-- for reply (common) -->
+                        <!-- <span pTooltip="Reply" tooltipPosition="bottom" (click)="replyMsg(message)">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                pTooltip="Enter your username" style="height: 20px; width: 20px;">
+                                <path
+                                    d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z">
+                                </path>
+                            </svg>
+                        </span> -->
+
+
+                        <span class="setThreeDotIcon">
+                            <i class="pi pi-ellipsis-h" style="margin-right: 5px; cursor: pointer;"
+                                (click)="op.toggle($event); sendData(message)"></i>
+
+                            <!-- text -->
+
+                            <!-- show forwarded text -->
+                            <div *ngIf="message.forward == true" class="maintext forwardTtext card">
+                                <span
+                                    class="sendedtext1 inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                                    <div
+                                        class="forwardtext inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            style="height: 12px; margin: -2px 0px;">
+                                            <path
+                                                d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z">
+                                            </path>
+                                        </svg>
+
+                                        Forwarded
+                                    </div>
+                                </span>
+                                <br>
+                                <div style="padding: 8px 8px 0px 8px !important; border: none;"
+                                    class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                                    {{message.messageText }}
+                                </div>
+                                <br>
+                                <div class="icon-container"
+                                    style="float: right; margin-bottom: -10px; margin-right: 8px;">
+                                    <i class="material-icons"
+                                        [style.color]="message.msgStatusColor">{{message.msgStatus}}</i>
+                                </div>
+                            </div>
+                            <br>
+                            <div *ngIf="message.messagetype == 'text' && message.messagereplyText" class="maintext">
+                                <span *ngIf="message.messagetype == 'text'"
+                                    (contextmenu)="onImageRightClick($event, message)"
+                                    class="sendedtext inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                                    <div *ngIf="message.messagetype == 'text' && message.messagereplyText"
+                                        class="repliedtext inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round">
+                                        {{ message.messagereplyText }}
+                                        <br>
+                                    </div>
+                                    <div style="padding: 8px 8px 0px 8px; margin-bottom: -20px;">
+                                        {{message.messageText }}
+                                    </div>
+
+                                    <br>
+                                    <div class="icon-container"
+                                        style="float: right; margin-bottom: -10px; margin-right: 8px;">
+                                        <i class="material-icons"
+                                            [style.color]="message.msgStatusColor">{{message.msgStatus}}</i>
+                                    </div>
+                                </span>
+                            </div>
+
+
+                            <span *ngIf="message.messagetype == 'text' && !message.messagereplyText && !message.forward"
+                                (contextmenu)="onImageRightClick($event, message)"
+                                class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                                style="word-break: break-word; max-width:80%; background: #dcf8c6 !important; color: black !important; padding: 8px 10px 0px 10px !important;">
+                                {{message.messageText }}
+                                <br>
+                                <div class="icon-container" style="float: right;">
+                                    <i class="material-icons"
+                                        [style.color]="message.msgStatusColor">{{message.msgStatus}}</i>
+                                </div>
+                            </span>
+
+
+                            <!-- image -->
+                            <span *ngIf="message.messagetype == 'image'"
+                                class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                                style="background: #dcf8c6 !important;padding: 8px 10px 0px 10px !important;">
+                                <a *ngIf="message.messagetype == 'image'" [href]="message.mediaurl" download="image.jpg"
+                                    target="_blank" (contextmenu)="onImageRightClick($event, message)">
+                                    <img [src]="message.mediaurl" class="w-13rem h-16rem border-square shadow-4" />
+                                </a>
+                                <br>
+                                <div class="icon-container" style="float: right;">
+                                    <i class="material-icons"
+                                        [style.color]="message.msgStatusColor">{{message.msgStatus}}</i>
+                                </div>
+                            </span>
+
+                            <!-- documents -->
+                            <span *ngIf="message.messagetype == 'document'"
+                                style=" width: -webkit-fill-available; display: flex; text-align: right; display: flex; justify-content: end;">
+                                <div style="border: 2px solid lightgray; border-radius: 5px; padding: 3px 15px 0px 15px;
+            background-color: rgb(255, 255, 255);">
+
+                                    <span [href]="message.mediaurl" *ngIf="message.messagetype == 'document'"
+                                        (contextmenu)="onImageRightClick($event, message)">
+                                        <img src="assets/images/doc.png"
+                                            style="height: 30px; width: 30px; margin-bottom: -9px; margin-right: 6px;">
+                                        <a [href]="message.mediaurl" download="{{ message.filename }}" target="_blank"
+                                            style="color: #000;">{{ message.filename }}</a>
+                                    </span>
+
+                                    <div class="icon-container" style="align-self: flex-end;">
+                                        <i class="material-icons"
+                                            [style.color]="message.msgStatusColor">{{message.msgStatus}}</i>
+                                    </div>
+                                </div>
+                            </span>
+
+
+                            <!-- audio -->
+                            <span *ngIf="message.messagetype === 'audio'"
+                                class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-1 white-space-normal border-round"
+                                style="background: #dcf8c6 !important;padding: 8px 10px 0px 10px !important; border-radius: 28px 28px 18px 28px !important;">
+                                <span *ngIf="message.messagetype === 'audio'">
+                                    <audio controls>
+                                        <!-- <source [src]="message.mediaurl"> -->
+                                        <source [src]="message.mediaurl" type="audio/ogg">
+                                        <source [src]="message.mediaurl" type="audio/mpeg">
+                                    </audio>
+                                </span>
+                                <br>
+                                <div class="icon-container" style="float: right;">
+                                    <i class="material-icons"
+                                        [style.color]="message.msgStatusColor">{{message.msgStatus}}</i>
+                                </div>
+                            </span>
+
+                            <!-- video -->
+                            <span *ngIf="message.messagetype === 'video'" style="border: 1px solid red;"
+                                (contextmenu)="onImageRightClick($event, message)">
+                                <video width="320" height="240" controls>
+                                    <source [src]="message.mediaurl">
+                                </video>
+                            </span>
+                        </span>
+
+
+                        <p class="text-700 mt-0" style="color: black !important; font-size: 10px;">
+                            ({{message.agentID}}) - {{ message.messageTime }}
+                        </p>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <!-- replied height section -->
+    <div class="reply p-3 md:p-4 lg:p-3 flex flex-column sm:flex-row align-items-center mt-auto border-top-1 surface-border gap-3"
+        *ngIf="repliedMsg" style="background-color: #ebeef2; max-height: 150px !important;">
+        <!-- its only to occupy space -->
+        <div class="flex w-full sm:w-auto gap-3" style="visibility: hidden;">
+            <p-fileUpload #fileUpload mode="basic" chooseLabel="Choose" [multiple]="true" [maxFileSize]="10000000"
+                (onSelect)="dealWithFiles($event)" (onClear)="dealWithFiles($event)" (onRemove)="dealWithFiles($event)"
+                [showCancelButton]="false" chooseLabel="Files" class="custom-file-upload">
+                <ng-template #defaultTemplate let-files>
+                    <ul *ngIf="files.length">
+                        <li *ngFor="let file of files">{{file.name}}</li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+        <div class="flex w-full sm:w-auto gap-3" style="visibility: hidden;">
+            <p-dropdown class="p-dropdown1" [options]="templateDropdown" [(ngModel)]="selectedTemp"
+                optionLabel="message" optionValue="message" [showClear]="true" placeholder="Templates"
+                (click)="changeTemp()"></p-dropdown>
+        </div>
+        <!-- its only to occupy space -->
+        <div class="replayData">
+            <div class="headingg">
+                <span *ngIf="repliedMsg.messagetype == 'text'">{{repliedMsg.messageText}}</span>
+                <span *ngIf="repliedMsg.messagetype == 'image'" style="display: flex;">
+                    <span>
+                        <img [src]="repliedMsg.mediaurl" class="w-5rem h-5rem border-square shadow-4" />
+                    </span>
+
+                    <span>
+                        {{repliedMsg.filename}}
+                    </span>
+                </span>
+
+                <span *ngIf="repliedMsg.messagetype == 'document'">
+                    <img src="assets/images/doc.png"
+                        style="height: 30px; width: 30px; margin-bottom: -9px; margin-right: 6px;">
+                    <a [href]="repliedMsg.mediaurl" download="{{ repliedMsg.filename }}" target="_blank"
+                        style="color: #000;">{{ repliedMsg.filename }}</a>
+                </span>
+                <span *ngIf="repliedMsg.messagetype == 'audio'">
+                    <i class="pi pi-sliders-v"
+                        style="height: 30px; margin-right: 6px; font-size: 1rem; margin-top: 20px !important;"></i>
+                    <a [href]="repliedMsg.mediaurl" download="{{ repliedMsg.filename }}" target="_blank"
+                        style="color: #000;">{{ repliedMsg.filename }}</a>
+                </span>
+                <span *ngIf="repliedMsg.messagetype == 'video'">{{''}}</span>
+            </div>
+        </div>
+        <div class="close">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                style="height: 30px; width: 30px; color: red; cursor: pointer" (click)="closeReply()">
+                <path
+                    d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22ZM12 10.5858L9.17157 7.75736L7.75736 9.17157L10.5858 12L7.75736 14.8284L9.17157 16.2426L12 13.4142L14.8284 16.2426L16.2426 14.8284L13.4142 12L16.2426 9.17157L14.8284 7.75736L12 10.5858Z">
+                </path>
+            </svg>
+        </div>
+    </div>
+
+    <!-- main -->
+    <div class="p-3 md:p-4 lg:p-3 flex flex-column sm:flex-row align-items-center mt-auto border-top-1 surface-border gap-3"
+        style="background-color: #ebeef2 !important;" *ngIf="mobileNo">
+        <div class="flex w-full sm:w-auto gap-3">
+            <!-- gaurav code to select media -->
+            <!-- <p-fileUpload #fileUpload [multiple]="true" [maxFileSize]="10000000" (onSelect)="dealWithFiles($event)"
+                (onClear)="dealWithFiles($event)" (onRemove)="dealWithFiles($event)" [showCancelButton]="false"
+                chooseLabel="Files" [showUploadButton]="false"></p-fileUpload> -->
+
+            <!-- before attach icon works properly -->
+            <!-- <p-fileUpload #fileUpload mode="basic" chooseLabel="Choose" [multiple]="true" [maxFileSize]="10000000"
+                (onSelect)="dealWithFiles($event)" (onClear)="dealWithFiles($event)" (onRemove)="dealWithFiles($event)"
+                [showCancelButton]="false" chooseLabel="Files"></p-fileUpload> -->
+
+            <p-fileUpload #fileInput mode="basic" chooseLabel="Choose" [multiple]="false" [maxFileSize]="10000000"
+                *ngIf="selectedExcelFiles" [showCancelButton]="true" (onSelect)="dealWithFiles($event)"
+                (onClear)="dealWithFiles($event)" (onRemove)="dealWithFiles($event)" [showCancelButton]="true"
+                chooseLabel="Files" class="custom-file-upload">
+                <ng-template #defaultTemplate let-files>
+                    <ul *ngIf="files.length">
+                        <li *ngFor="let file of files">{{file.name}}</li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload>
+
+            <!-- <p-fileUpload #fileInput mode="basic" chooseLabel="Choose" [multiple]="false" [maxFileSize]="10000000" *ngIf="!selectedExcelFiles"
+                [showCancelButton]="true" (onSelect)="dealWithFiles($event)" (onClear)="dealWithFiles($event)"
+                (onRemove)="dealWithFiles($event)" [showCancelButton]="true" chooseLabel="Files"
+                class="custom-file-upload">
+                <ng-template #defaultTemplate let-files>
+                    <ul *ngIf="files.length">
+                        <li *ngFor="let file of files">{{file.name}}</li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload> -->
+
+            <!-- <i class="pi pi-times-circle"
+                style="color: red; font-size: 20px; margin-top: 10px; margin-left: 5px; cursor: pointer;"
+                (click)="removeAttachment()"></i> -->
+
+
+            <!-- <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" [showCancelButton]="false" [showUploadButton]="false" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" maxFileSize="1000000">
+                <ng-template pTemplate="content">
+                    <ul *ngIf="uploadedFiles.length">
+                        <li *ngFor="let file of uploadedFiles">{{ file.name }}</li>
+                    </ul>
+                </ng-template>
+            </p-fileUpload> -->
+
+
+            &nbsp;&nbsp;&nbsp;
+        </div>
+        <div class="flex w-full sm:w-auto gap-3">
+            <p-dropdown class="p-dropdown1" [options]="templateDropdown" [(ngModel)]="selectedTemp"
+                optionLabel="templateText" optionValue="rowID" [showClear]="true" placeholder="Templates"
+                (onChange)="changeTemp()" (onClear)="onClear()"></p-dropdown>
+        </div>
+        <!-- <div class="flex w-full sm:w-auto gap-3">
+            <p-button (click)="op.toggle($event)" icon="pi pi-file" label="Templates"
+                [style]="{'background': '#128C7E !important'}"></p-button>
+        </div>
+        &nbsp;&nbsp;&nbsp; -->
+        <!-- <div>
+            <i class="pi pi-ellipsis-v" style="font-size: 1.5rem; font-weight: bolder; cursor: pointer;"
+                (click)="op.toggle($event)"></i>
+        </div> -->
+        <input #messageInput id="messageInput" type="text" pInputText placeholder="Type a message"
+            class="flex-1 w-full sm:w-auto border-round" [(ngModel)]="textContent" (keydown.enter)="sendMessage()"
+            autocomplete="off" [readonly]="disabledInput" />
+        &nbsp; &nbsp;
+        <div class="flex w-full sm:w-auto gap-3">
+            <button pButton pRipple icon="pi pi-send" class="w-full sm:w-auto" (click)="sendMessage()"></button> &nbsp;
+            &nbsp;
+        </div>
+    </div>
+</div>
+
+
+<p-overlayPanel #op>
+    <ng-template pTemplate="content">
+
+        <div class="align-items-center replySection" (click)="replyMsg(mySendDat);">
+            Reply
+        </div>
+        <br>
+        <div class="align-items-center replySection" (click)="forwardMsg(mySendDat)">
+            Forward
+        </div>
+
+    </ng-template>
+</p-overlayPanel>
+
+
+<p-dialog position="top" [(visible)]="newNumberDialog" [style]="{'width': '45vw', 'height': 'auto'}"
+    header="Message Forwarding" [modal]="true" [draggable]="false" [resizable]="false">
+
+    <div class="grid forms-grid flex-row p-fluid mt-2">
+        <div class="col-12 mb-0 md:col-4 md:mb-0">Enter the Number to Forward<span style="color:red">*</span> :</div>
+        <div class="col-12 mb-0 md:col-8 md:mb-0">
+            <input type="text" pInputText [(ngModel)]="newNo" class="p-inputtext-sm" maxlength="12" [maxlength]="12"
+                [maxLength]="12" />
+        </div>
+
+        <div class="flex col-12 mb-0 md:col-12 md:mb-0" style="padding: 0;">
+            <div class="col-12 mb-0 md:col-4 md:mb-0"></div>
+            <div class="col-12 mb-0 md:col-8" style="margin-top: -29px; font-size: 10px;">Please enter your number with
+                your country code</div>
+        </div>
+    </div>
+    
+    <div class="grid forms-grid flex-row p-fluid mt-2">
+        <div class="col-12 mb-0 md:col-4 md:mb-0">Contact List:</div>
+        <div class="col-12 mb-0 md:col-8 md:mb-0">
+            <ul>
+                <li *ngFor="let item of forwardContacts" (click)="handleItemClick(item)">
+                    <span>{{item.phone_number}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+
+
+    <div class="grid forms-grid flex-row p-fluid">
+        <div class="col-12 mb-0 md:col-8 md:mb-0"></div>
+        <div class="col-12 mb-0 md:col-4 md:mb-0">
+            <button pButton label="Forward" icon="pi pi-send" (click)="sendNewMsg()" style="background: #128C7E !important;
+      border: #128C7E !important;"></button>
+        </div>
+    </div>
+
+</p-dialog>
