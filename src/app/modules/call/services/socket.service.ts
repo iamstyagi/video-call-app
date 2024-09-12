@@ -10,7 +10,8 @@ export class SocketService {
   public socket: Socket;
 
   constructor() {
-    this.socket = io('https://video-calling-1-8uym.onrender.com', { path: '/socket' }); //https://live.datnikon.com/
+    this.socket = io('localhost:3000', { path: '/socket' }); //https://live.datnikon.com/
+    // this.socket = io('https://video-calling-2.onrender.com', { path: '/socket' }); //https://live.datnikon.com/
     this.hanleUserConnect();
     this.handleNewMessage();
   }

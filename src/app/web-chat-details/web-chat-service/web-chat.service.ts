@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import io, { Socket } from 'socket.io-client';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebChatService {
-  socket: io.Socket;
+  // socket: io.Socket;
+  public socket: Socket;
+
   // url = 'http://192.168.68.56:8080'
   webChatSocketUrl = environment.webChatSocketUrl
   // baseUrl = 'http://192.168.68.56:8091/ChatApi/'
@@ -32,7 +35,8 @@ export class WebChatService {
   //  this.campId = sessionStorage.getItem('getDynamicFormFieldsCache')
   }
   connectSocket(){
-    this.socket = io.connect(this.webChatSocketUrl, { path: '/webchat'});
+    this.socket = io(this.webChatSocketUrl, { path: '/webchat'});
+    // this.socket = io.connect(this.webChatSocketUrl, { path: '/webchat'});
     this.socket.on('chatting', (message) => {
     });
   }
