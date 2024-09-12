@@ -12,6 +12,8 @@ backend
 /dist
 /tmp
 /out-tsc
+/backend
+
 
 
 # dependencies
