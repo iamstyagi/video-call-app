@@ -11,7 +11,9 @@
   },
   "scripts": {
     "ng": "ng",
-    "start": "npm install -g peer && peerjs --port 3001 & ng serve"
+    "start-peerjs": "node peerjs-server.js",
+    "start": "ng serve",
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
