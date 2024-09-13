@@ -11,7 +11,6 @@
   },
   "scripts": {
     "ng": "ng",
-    "start-peerjs": "node peerjs-server.js",
     "start": "ng serve",
     "build": "ng build"
   },
